@@ -200,23 +200,6 @@ When editing multiple images:
 - Changes are applied to all selected images
 - Empty values will not overwrite existing metadata
 
-### Reverse Geocoding
-
-When reverse geocoding is enabled (🌍🔍 icon toggled on):
-
-1. **Set GPS Coordinates**: Click on map to set active marker, then click "Update GPS" button
-2. **Automatic Lookup**: Application queries OpenStreetMap Nominatim API for location information
-3. **Review Dialog**: Shows detected country (with searchable picker) and city
-4. **Edit if Needed**: Modify country or city before applying
-5. **Apply**: Writes GPS coordinates, country, country code, city, and updates keywords
-
-**Metadata Written:**
-- GPS: `EXIF:GPSLatitude`, `EXIF:GPSLongitude`
-- Country: `XMP-photoshop:Country`, `IPTC:Country-PrimaryLocationName`
-- Country Code: `XMP-iptcCore:CountryCode`, `IPTC:Country-PrimaryLocationCode` (3-letter ISO)
-- City: `XMP-photoshop:City`, `IPTC:City`
-- Keywords: Automatically includes country code and country name
-
 ### Date/Time Management
 
 The application handles multiple date fields with timezone awareness:
@@ -245,21 +228,27 @@ Keywords are automatically managed:
 ```
 geotag/
 ├── main.py                          # Application entry point
-├── pyproject.toml                   # Project dependencies
-├── README.md                        # This file
-└── geosetter_lite/                       # Main package
-    ├── __init__.py
-    ├── image_model.py               # Image data model with metadata fields
+├── data/                            # Data files
+│   └── world_locations.csv          # World locations database (1000+ locations)
+└── geosetter_lite/                  # Main package
+    ├── ai_service.py                # AI services (similarity detection, geolocation prediction)
+    ├── config.py                    # Configuration management for AI settings
     ├── exiftool_service.py          # ExifTool wrapper with backup management
     ├── file_scanner.py              # Directory scanner with auto-initialization
-    ├── utils.py                     # Utility functions (formatting, etc.)
+    ├── geocoding_dialog.py          # Reverse geocoding results dialog
+    ├── geolocation_dialog.py        # Geolocation prediction results dialog
+    ├── image_model.py               # Image data model with metadata fields
+    ├── location_database.py         # SQLite database for world locations
     ├── main_window.py               # Main application window (3-pane layout)
-    ├── map_widget.py                # Map widget with Leaflet/OpenStreetMap
     ├── map_panel.py                 # Map panel with toolbar and icons
-    ├── metadata_editor.py           # Metadata editor dialog with tag deletion
-    ├── table_delegates.py           # Custom cell editors (country, date, timezone)
+    ├── map_widget.py                # Map widget with Leaflet/OpenStreetMap
+    ├── metadata_editor.py           # Metadata editor dialog with tag deletion and filtering
+    ├── progress_dialog.py           # Progress dialog for long-running operations
     ├── reverse_geocoding_service.py # Nominatim API integration
-    └── geocoding_dialog.py          # Reverse geocoding results dialog
+    ├── settings_dialog.py           # AI settings configuration dialog
+    ├── similarity_dialog.py         # Similar photos results dialog
+    ├── table_delegates.py           # Custom cell editors (country, date, timezone)
+    └── utils.py                     # Utility functions (formatting, etc.)
 ```
 
 ## Dependencies
@@ -278,26 +267,21 @@ geotag/
 
 The application writes to multiple metadata standards for maximum compatibility:
 
-### Location Tags
-- **Country**: `XMP-photoshop:Country`, `IPTC:Country-PrimaryLocationName`
-- **Country Code**: `XMP-iptcCore:CountryCode`, `IPTC:Country-PrimaryLocationCode` (3-letter ISO 3166-1 alpha-3)
-- **City**: `XMP-photoshop:City`, `IPTC:City`
-- **Sublocation**: `XMP-iptcCore:Location`, `IPTC:Sub-location`
-
-### GPS Tags
-- **Coordinates**: `EXIF:GPSLatitude`, `EXIF:GPSLongitude`
-- **GPS Date/Time**: `EXIF:GPSDateStamp`, `EXIF:GPSTimeStamp`, `XMP-exif:GPSDateTime` (UTC)
-- **Composite**: `Composite:GPSDateTime` (read-only, calculated by ExifTool)
-
-### Date/Time Tags
-- **Taken Date**: `EXIF:DateTimeOriginal`, `XMP-exif:DateTimeOriginal` (with timezone offset)
-- **Created Date**: `EXIF:CreateDate`, `XMP-exif:DateTimeDigitized` (with timezone offset)
-- **Timezone Offset**: `EXIF:TimeZoneOffset` (decimal hours), `EXIF:OffsetTime`, `EXIF:OffsetTimeOriginal`, `EXIF:OffsetTimeDigitized` ("+HH:MM" format)
-
-### Other Tags
-- **Headline**: `IPTC:Headline`, `XMP-photoshop:Headline`
-- **Keywords**: `IPTC:Keywords`, `XMP-dc:Subject` (asterisk-separated)
-- **Camera Model**: `EXIF:Model`
+| Category | Field | Metadata Tags | Notes |
+|----------|-------|---------------|-------|
+| **Location** | Country | `XMP-photoshop:Country`<br>`IPTC:Country-PrimaryLocationName` | Country name |
+| **Location** | Country Code | `XMP-iptcCore:CountryCode`<br>`IPTC:Country-PrimaryLocationCode` | 3-letter ISO 3166-1 alpha-3 |
+| **Location** | City | `XMP-photoshop:City`<br>`IPTC:City` | City name |
+| **Location** | Sublocation | `XMP-iptcCore:Location`<br>`IPTC:Sub-location` | Specific location within city |
+| **GPS** | Coordinates | `EXIF:GPSLatitude`<br>`EXIF:GPSLongitude` | Decimal degrees |
+| **GPS** | GPS Date/Time | `EXIF:GPSDateStamp`<br>`EXIF:GPSTimeStamp`<br>`XMP-exif:GPSDateTime` | UTC time |
+| **GPS** | GPS DateTime (Composite) | `Composite:GPSDateTime` | Read-only, calculated by ExifTool |
+| **Date/Time** | Taken Date | `EXIF:DateTimeOriginal`<br>`XMP-exif:DateTimeOriginal` | With timezone offset |
+| **Date/Time** | Created Date | `EXIF:CreateDate`<br>`XMP-exif:DateTimeDigitized` | With timezone offset |
+| **Date/Time** | Timezone Offset | `EXIF:TimeZoneOffset`<br>`EXIF:OffsetTime`<br>`EXIF:OffsetTimeOriginal`<br>`EXIF:OffsetTimeDigitized` | Decimal hours or "+HH:MM" format |
+| **Other** | Headline | `IPTC:Headline`<br>`XMP-photoshop:Headline` | Image headline/title |
+| **Other** | Keywords | `IPTC:Keywords`<br>`XMP-dc:Subject` | Asterisk-separated |
+| **Other** | Camera Model | `EXIF:Model` | Camera make/model |
 
 ## Best Practices
 
