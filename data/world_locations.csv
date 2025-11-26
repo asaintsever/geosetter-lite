@@ -1,0 +1,1174 @@
+latitude,longitude,description,country,city,category
+40.7128,-74.0060,"New York City skyline, skyscrapers, Times Square, Central Park",United States,New York,urban
+34.0522,-118.2437,"Los Angeles, Hollywood sign, palm trees, beaches, urban sprawl",United States,Los Angeles,urban
+41.8781,-87.6298,"Chicago skyline, Willis Tower, Lake Michigan, urban architecture",United States,Chicago,urban
+29.7604,-95.3698,"Houston, modern skyline, highways, urban Texas",United States,Houston,urban
+33.4484,-112.0740,"Phoenix desert, cacti, dry landscape, Arizona",United States,Phoenix,desert
+39.7392,-104.9903,"Denver, Rocky Mountains, urban Colorado",United States,Denver,mountain
+37.7749,-122.4194,"San Francisco, Golden Gate Bridge, hills, cable cars, bay",United States,San Francisco,urban
+47.6062,-122.3321,"Seattle, Space Needle, mountains, Puget Sound",United States,Seattle,urban
+25.7617,-80.1918,"Miami beaches, Art Deco, tropical, palm trees, ocean",United States,Miami,coastal
+42.3601,-71.0589,"Boston, historic buildings, harbor, New England architecture",United States,Boston,urban
+38.9072,-77.0369,"Washington DC, monuments, Capitol, White House, museums",United States,Washington,urban
+33.7490,-84.3880,"Atlanta, modern skyline, urban Georgia",United States,Atlanta,urban
+32.7767,-96.7970,"Dallas, modern architecture, urban Texas",United States,Dallas,urban
+36.1699,-115.1398,"Las Vegas, casinos, desert, neon lights, Nevada",United States,Las Vegas,desert
+45.5152,-122.6784,"Portland, bridges, mountains, Pacific Northwest",United States,Portland,urban
+43.6532,-79.3832,"Toronto, CN Tower, urban skyline, Lake Ontario",Canada,Toronto,urban
+45.5017,-73.5673,"Montreal, European architecture, Saint Lawrence River",Canada,Montreal,urban
+49.2827,-123.1207,"Vancouver, mountains, ocean, modern city, Pacific coast",Canada,Vancouver,coastal
+51.0447,-114.0719,"Calgary, Rocky Mountains, prairies, Alberta",Canada,Calgary,mountain
+45.4215,-75.6972,"Ottawa, Parliament buildings, Rideau Canal",Canada,Ottawa,urban
+53.5461,-113.4938,"Edmonton, prairies, urban Alberta",Canada,Edmonton,urban
+19.4326,-99.1332,"Mexico City, historic center, Aztec ruins, urban sprawl",Mexico,Mexico City,urban
+25.6866,-100.3161,"Monterrey, mountains, industrial, northern Mexico",Mexico,Monterrey,mountain
+20.6597,-103.3496,"Guadalajara, colonial architecture, plazas",Mexico,Guadalajara,urban
+21.1619,-86.8515,"Cancun, Caribbean beaches, resorts, turquoise water",Mexico,Cancun,coastal
+51.5074,-0.1278,"London, Big Ben, Tower Bridge, red buses, Thames River",United Kingdom,London,urban
+53.4808,-2.2426,"Manchester, industrial architecture, northern England",United Kingdom,Manchester,urban
+55.9533,-3.1883,"Edinburgh, castle, historic stone buildings, Scotland",United Kingdom,Edinburgh,urban
+48.8566,2.3522,"Paris, Eiffel Tower, Seine River, cafes, Haussmann architecture",France,Paris,urban
+43.2965,5.3698,"Marseille, Mediterranean port, old harbor",France,Marseille,coastal
+45.7640,4.8357,"Lyon, rivers, historic architecture, French Alps nearby",France,Lyon,urban
+43.6047,1.4442,"Toulouse, pink brick buildings, southern France",France,Toulouse,urban
+43.7102,7.2620,"Nice, French Riviera, Mediterranean beaches",France,Nice,coastal
+52.5200,13.4050,"Berlin, Brandenburg Gate, modern architecture, historic sites",Germany,Berlin,urban
+48.1351,11.5820,"Munich, Bavarian architecture, beer gardens, Alps",Germany,Munich,urban
+50.1109,8.6821,"Frankfurt, modern skyline, financial district",Germany,Frankfurt,urban
+53.5511,9.9937,"Hamburg, port city, canals, northern Germany",Germany,Hamburg,urban
+51.2277,6.7735,"Düsseldorf, Rhine River, modern architecture",Germany,Düsseldorf,urban
+41.9028,12.4964,"Rome, Colosseum, ancient ruins, fountains, Vatican",Italy,Rome,urban
+45.4642,9.1900,"Milan, fashion capital, Duomo, modern architecture",Italy,Milan,urban
+43.7696,11.2558,"Florence, Renaissance architecture, Duomo, Tuscany",Italy,Florence,urban
+40.8518,14.2681,"Naples, Mount Vesuvius, bay, southern Italy",Italy,Naples,coastal
+45.4408,12.3155,"Venice, canals, gondolas, historic buildings",Italy,Venice,urban
+40.4168,-3.7038,"Madrid, plazas, Spanish architecture, royal palace",Spain,Madrid,urban
+41.3851,2.1734,"Barcelona, Sagrada Familia, Gothic Quarter, Mediterranean",Spain,Barcelona,coastal
+37.3891,-5.9845,"Seville, Moorish architecture, Andalusia",Spain,Seville,urban
+39.4699,-0.3763,"Valencia, modern architecture, Mediterranean beaches",Spain,Valencia,coastal
+52.3676,4.9041,"Amsterdam, canals, bicycles, historic buildings",Netherlands,Amsterdam,urban
+51.9225,4.47917,"Rotterdam, modern architecture, port city",Netherlands,Rotterdam,urban
+50.8503,4.3517,"Brussels, Grand Place, European architecture",Belgium,Brussels,urban
+47.3769,8.5417,"Zurich, lake, Alps, Swiss architecture",Switzerland,Zurich,mountain
+46.2044,6.1432,"Geneva, lake, Alps, international city",Switzerland,Geneva,mountain
+48.2082,16.3738,"Vienna, imperial architecture, palaces, Danube",Austria,Vienna,urban
+52.2297,21.0122,"Warsaw, modern and historic architecture, Poland",Poland,Warsaw,urban
+50.0647,19.9450,"Krakow, medieval architecture, historic center",Poland,Krakow,urban
+50.0755,14.4378,"Prague, castle, Charles Bridge, Gothic architecture",Czech Republic,Prague,urban
+55.7558,37.6173,"Moscow, Red Square, Kremlin, onion domes, Russian architecture",Russia,Moscow,urban
+59.9343,30.3351,"Saint Petersburg, canals, palaces, Neva River",Russia,Saint Petersburg,urban
+37.9838,23.7275,"Athens, Acropolis, ancient ruins, Mediterranean",Greece,Athens,urban
+38.7223,-9.1393,"Lisbon, hills, trams, Tagus River, tiles",Portugal,Lisbon,coastal
+59.3293,18.0686,"Stockholm, islands, water, Nordic architecture",Sweden,Stockholm,urban
+60.1699,24.9384,"Helsinki, harbor, Nordic design, Finland",Finland,Helsinki,urban
+59.9139,10.7522,"Oslo, fjords, mountains, Norwegian architecture",Norway,Oslo,urban
+55.6761,12.5683,"Copenhagen, canals, bicycles, colorful buildings",Denmark,Copenhagen,urban
+35.6762,139.6503,"Tokyo, neon lights, skyscrapers, temples, modern city",Japan,Tokyo,urban
+34.6937,135.5023,"Osaka, urban Japan, castle, modern architecture",Japan,Osaka,urban
+35.0116,135.7681,"Kyoto, temples, traditional architecture, gardens",Japan,Kyoto,urban
+43.0642,141.3469,"Sapporo, snow, northern Japan, mountains",Japan,Sapporo,urban
+39.9042,116.4074,"Beijing, Forbidden City, modern buildings, traditional architecture",China,Beijing,urban
+31.2304,121.4737,"Shanghai, skyscrapers, Bund waterfront, modern China",China,Shanghai,urban
+22.3193,114.1694,"Hong Kong, skyscrapers, harbor, dense urban, Victoria Peak",China,Hong Kong,urban
+23.1291,113.2644,"Guangzhou, modern architecture, Pearl River",China,Guangzhou,urban
+30.5728,104.0668,"Chengdu, pandas, Sichuan, mountains",China,Chengdu,urban
+39.0742,117.2002,"Tianjin, port city, modern architecture",China,Tianjin,urban
+37.5665,126.9780,"Seoul, modern skyscrapers, palaces, Han River",South Korea,Seoul,urban
+35.1796,129.0756,"Busan, beaches, port city, mountains",South Korea,Busan,coastal
+28.6139,77.2090,"Delhi, monuments, crowded streets, India Gate, Red Fort",India,Delhi,urban
+19.0760,72.8777,"Mumbai, Bollywood, Gateway of India, Arabian Sea",India,Mumbai,coastal
+12.9716,77.5946,"Bangalore, tech city, gardens, southern India",India,Bangalore,urban
+13.0827,80.2707,"Chennai, temples, Bay of Bengal, southern India",India,Chennai,coastal
+22.5726,88.3639,"Kolkata, colonial architecture, Hooghly River",India,Kolkata,urban
+17.3850,78.4867,"Hyderabad, tech city, historic monuments, southern India",India,Hyderabad,urban
+1.3521,103.8198,"Singapore, Marina Bay, modern skyline, tropical, gardens",Singapore,Singapore,urban
+13.7563,100.5018,"Bangkok, temples, tuk-tuks, Chao Phraya River, tropical",Thailand,Bangkok,urban
+3.1390,101.6869,"Kuala Lumpur, Petronas Towers, tropical, modern Malaysia",Malaysia,Kuala Lumpur,urban
+-6.2088,106.8456,"Jakarta, tropical, crowded, Indonesian capital",Indonesia,Jakarta,urban
+14.5995,120.9842,"Manila, tropical, Spanish colonial, Philippines",Philippines,Manila,urban
+21.0285,105.8542,"Hanoi, French colonial, lakes, Vietnamese architecture",Vietnam,Hanoi,urban
+10.8231,106.6297,"Ho Chi Minh City, French colonial, tropical, Vietnam",Vietnam,Ho Chi Minh City,urban
+25.2048,55.2708,"Dubai, desert, modern skyscrapers, Burj Khalifa, luxury",UAE,Dubai,desert
+24.4539,54.3773,"Abu Dhabi, modern architecture, desert, UAE capital",UAE,Abu Dhabi,desert
+26.2285,50.5860,"Manama, modern architecture, Persian Gulf, Bahrain",Bahrain,Manama,coastal
+29.3759,47.9774,"Kuwait City, modern architecture, Persian Gulf",Kuwait,Kuwait City,coastal
+31.7683,35.2137,"Jerusalem, ancient stone, religious sites, historic",Israel,Jerusalem,urban
+32.0853,34.7818,"Tel Aviv, beaches, modern city, Mediterranean",Israel,Tel Aviv,coastal
+33.8886,35.4955,"Beirut, Mediterranean, historic, Lebanese architecture",Lebanon,Beirut,coastal
+33.5138,36.2765,"Damascus, ancient city, Middle Eastern architecture",Syria,Damascus,urban
+41.7151,44.8271,"Tbilisi, mountains, historic architecture, Georgia",Georgia,Tbilisi,mountain
+41.2995,69.2401,"Tashkent, Soviet architecture, Uzbekistan",Uzbekistan,Tashkent,urban
+43.2220,76.8512,"Almaty, mountains, Soviet architecture, Kazakhstan",Kazakhstan,Almaty,mountain
+30.0444,31.2357,"Cairo, pyramids, Nile River, desert, ancient monuments",Egypt,Cairo,desert
+31.2001,29.9187,"Alexandria, Mediterranean, ancient port, Egypt",Egypt,Alexandria,coastal
+33.5731,-7.5898,"Casablanca, Atlantic coast, Moroccan architecture",Morocco,Casablanca,coastal
+36.7538,3.0588,"Algiers, Mediterranean, white buildings, Algeria",Algeria,Algiers,coastal
+36.8065,10.1815,"Tunis, Mediterranean, ancient ruins, Tunisia",Tunisia,Tunis,coastal
+-1.2921,36.8219,"Nairobi, savanna, modern city, Kenya",Kenya,Nairobi,urban
+-6.7924,39.2083,"Dar es Salaam, Indian Ocean, tropical, Tanzania",Tanzania,Dar es Salaam,coastal
+-1.9403,29.8739,"Kigali, hills, modern city, Rwanda",Rwanda,Kigali,urban
+0.3476,32.5825,"Kampala, lakes, hills, Uganda",Uganda,Kampala,urban
+9.0320,38.7469,"Addis Ababa, highlands, Ethiopian capital",Ethiopia,Addis Ababa,mountain
+6.5244,3.3792,"Lagos, Atlantic coast, crowded, Nigeria",Nigeria,Lagos,coastal
+9.0765,7.3986,"Abuja, modern architecture, Nigerian capital",Nigeria,Abuja,urban
+5.6037,-0.1870,"Accra, Atlantic coast, tropical, Ghana",Ghana,Accra,coastal
+12.6392,-8.0029,"Bamako, Niger River, Mali",Mali,Bamako,urban
+14.7167,-17.4677,"Dakar, Atlantic coast, westernmost city, Senegal",Senegal,Dakar,coastal
+-33.9249,18.4241,"Cape Town, Table Mountain, Atlantic coast, beaches",South Africa,Cape Town,coastal
+-26.2041,28.0473,"Johannesburg, urban, highveld, South Africa",South Africa,Johannesburg,urban
+-29.8587,31.0218,"Durban, Indian Ocean beaches, subtropical, South Africa",South Africa,Durban,coastal
+-17.8252,31.0335,"Harare, jacaranda trees, Zimbabwe capital",Zimbabwe,Harare,urban
+-15.4167,28.2833,"Lusaka, savanna, Zambia capital",Zambia,Lusaka,urban
+-25.7479,28.2293,"Pretoria, jacaranda trees, South African capital",South Africa,Pretoria,urban
+-23.5505,-46.6333,"São Paulo, urban sprawl, skyscrapers, tropical Brazil",Brazil,São Paulo,urban
+-22.9068,-43.1729,"Rio de Janeiro, beaches, Christ statue, Sugarloaf Mountain",Brazil,Rio de Janeiro,coastal
+-15.8267,-47.9218,"Brasília, modern architecture, planned city, Brazilian capital",Brazil,Brasília,urban
+-12.9714,-38.5014,"Salvador, colonial architecture, beaches, Bahia",Brazil,Salvador,coastal
+-3.7172,-38.5433,"Fortaleza, beaches, northeastern Brazil",Brazil,Fortaleza,coastal
+-30.0346,-51.2177,"Porto Alegre, southern Brazil, European influence",Brazil,Porto Alegre,urban
+-34.6037,-58.3816,"Buenos Aires, European architecture, tango, Río de la Plata",Argentina,Buenos Aires,urban
+-31.4201,-64.1888,"Córdoba, colonial architecture, Argentina",Argentina,Córdoba,urban
+-32.8895,-68.8458,"Mendoza, Andes mountains, wine region",Argentina,Mendoza,mountain
+-33.4489,-70.6693,"Santiago, Andes mountains, modern city, Chilean capital",Chile,Santiago,mountain
+-33.0472,-71.6127,"Valparaíso, colorful hills, Pacific port, Chile",Chile,Valparaíso,coastal
+4.7110,-74.0721,"Bogotá, Andes mountains, colonial architecture, Colombian capital",Colombia,Bogotá,mountain
+6.2476,-75.5658,"Medellín, mountains, modern city, Colombia",Colombia,Medellín,mountain
+10.3910,-75.4794,"Cartagena, Caribbean coast, colonial walls, Colombia",Colombia,Cartagena,coastal
+-12.0464,-77.0428,"Lima, Pacific coast, colonial architecture, Peruvian capital",Peru,Lima,coastal
+-13.5319,-71.9675,"Cusco, Andes mountains, Incan ruins, colonial architecture",Peru,Cusco,mountain
+10.4806,-66.9036,"Caracas, mountains, modern city, Venezuelan capital",Venezuela,Caracas,mountain
+-0.1807,-78.4678,"Quito, Andes mountains, colonial architecture, Ecuadorian capital",Ecuador,Quito,mountain
+-16.5000,-68.1500,"La Paz, Andes mountains, highest capital, Bolivia",Bolivia,La Paz,mountain
+-25.2637,-57.5759,"Asunción, Paraguay River, Paraguayan capital",Paraguay,Asunción,urban
+-34.9011,-56.1645,"Montevideo, Río de la Plata, beaches, Uruguayan capital",Uruguay,Montevideo,coastal
+-33.8688,151.2093,"Sydney, Opera House, harbor, beaches, modern city",Australia,Sydney,coastal
+-37.8136,144.9631,"Melbourne, Victorian architecture, urban, cultural city",Australia,Melbourne,urban
+-27.4698,153.0251,"Brisbane, subtropical, Brisbane River, Queensland",Australia,Brisbane,urban
+-31.9505,115.8605,"Perth, Indian Ocean, isolated city, Western Australia",Australia,Perth,coastal
+-34.9285,138.6007,"Adelaide, planned city, South Australia",Australia,Adelaide,urban
+-35.2809,149.1300,"Canberra, planned capital, Australian Capital Territory",Australia,Canberra,urban
+-42.8821,147.3272,"Hobart, harbor, Tasmania, historic",Australia,Hobart,coastal
+-12.4634,130.8456,"Darwin, tropical, Northern Territory, Australia",Australia,Darwin,coastal
+-36.8485,174.7633,"Auckland, harbors, volcanoes, New Zealand",New Zealand,Auckland,coastal
+-41.2865,174.7762,"Wellington, harbor, hills, New Zealand capital",New Zealand,Wellington,coastal
+-43.5321,172.6362,"Christchurch, gardens, South Island, New Zealand",New Zealand,Christchurch,urban
+-17.7134,178.0650,"Suva, tropical, Fiji capital",Fiji,Suva,coastal
+-13.8333,-171.7500,"Apia, tropical, Samoa capital",Samoa,Apia,coastal
+27.9881,86.9250,"Mount Everest, Himalayas, snow peaks, highest mountain",Nepal,Everest,mountain
+46.8182,8.2275,"Swiss Alps, mountains, snow, lakes, Alpine scenery",Switzerland,Alps,mountain
+35.3606,138.7274,"Mount Fuji, snow-capped volcano, iconic Japanese mountain",Japan,Mount Fuji,mountain
+61.0000,-142.0000,"Alaska wilderness, mountains, forests, glaciers, wildlife",United States,Alaska,wilderness
+-3.0674,37.3556,"Mount Kilimanjaro, snow-capped, African savanna",Tanzania,Kilimanjaro,mountain
+45.8326,6.8652,"Mont Blanc, Alps, snow peaks, France-Italy border",France,Mont Blanc,mountain
+36.1069,-112.1129,"Grand Canyon, desert, red rock formations, Arizona",United States,Grand Canyon,desert
+30.0444,31.2357,"Sahara Desert, sand dunes, arid landscape, North Africa",Egypt,Sahara,desert
+-24.0000,133.0000,"Australian Outback, red desert, rock formations",Australia,Outback,desert
+29.9773,31.1325,"Giza Pyramids, ancient monuments, desert, Egypt",Egypt,Giza,desert
+30.3285,35.4444,"Petra, ancient city, red rock, Jordan",Jordan,Petra,desert
+-3.4653,-62.2159,"Amazon Rainforest, tropical jungle, dense vegetation, rivers",Brazil,Amazon,jungle
+47.5000,-121.5000,"Pacific Northwest forests, evergreens, mountains, Washington",United States,Pacific Northwest,forest
+-19.0000,29.0000,"Victoria Falls, waterfall, rainforest, Zimbabwe-Zambia",Zimbabwe,Victoria Falls,waterfall
+21.3099,-157.8581,"Waikiki Beach, palm trees, ocean, Hawaii",United States,Hawaii,coastal
+-8.3405,115.0920,"Bali, tropical beaches, rice terraces, temples, Indonesia",Indonesia,Bali,coastal
+18.2208,-66.5901,"Puerto Rico, Caribbean beaches, tropical, colonial architecture",Puerto Rico,San Juan,coastal
+20.7984,-156.3319,"Maui, tropical beaches, volcanoes, Hawaii",United States,Maui,coastal
+64.9631,-19.0208,"Iceland, geysers, volcanoes, glaciers, Nordic landscape",Iceland,Reykjavik,volcanic
+-13.1631,-72.5450,"Machu Picchu, ancient Incan ruins, mountains, Peru",Peru,Machu Picchu,mountain
+40.4319,116.5704,"Great Wall of China, ancient wall, mountains, historic",China,Great Wall,mountain
+29.9792,31.1342,"Sphinx and Pyramids, ancient Egypt, desert monuments",Egypt,Giza,desert
+41.8902,12.4922,"Roman Forum, ancient ruins, historic Rome",Italy,Rome,urban
+37.9715,23.7267,"Parthenon, ancient Greek temple, Athens, Acropolis",Greece,Athens,urban
+22.5431,114.0579,"Shenzhen, modern skyline, tech city, China",China,Shenzhen,urban
+29.5630,106.5516,"Chongqing, mountains, Yangtze River, China",China,Chongqing,urban
+34.3416,108.9398,"Xi'an, ancient city, Terracotta Warriors, China",China,Xi'an,urban
+25.0330,121.5654,"Taipei, modern city, mountains, Taiwan",Taiwan,Taipei,urban
+15.8700,100.9925,"Bangkok suburbs, Thai temples, tropical",Thailand,Bangkok,urban
+11.5564,104.9282,"Phnom Penh, temples, Mekong River, Cambodia",Cambodia,Phnom Penh,urban
+16.8409,96.1735,"Yangon, golden pagodas, colonial buildings, Myanmar",Myanmar,Yangon,urban
+27.7172,85.3240,"Kathmandu, temples, Himalayas, Nepal",Nepal,Kathmandu,mountain
+6.9271,79.8612,"Colombo, tropical, Indian Ocean, Sri Lanka",Sri Lanka,Colombo,coastal
+23.8103,90.4125,"Dhaka, crowded, rivers, Bangladesh",Bangladesh,Dhaka,urban
+33.6844,73.0479,"Islamabad, modern capital, mountains, Pakistan",Pakistan,Islamabad,mountain
+31.5497,74.3436,"Lahore, Mughal architecture, Pakistan",Pakistan,Lahore,urban
+34.5553,69.2075,"Kabul, mountains, Afghan capital",Afghanistan,Kabul,mountain
+41.0082,28.9784,"Istanbul, Bosphorus, mosques, bridges, Turkey",Turkey,Istanbul,urban
+39.9334,32.8597,"Ankara, modern architecture, Turkish capital",Turkey,Ankara,urban
+44.4268,26.1025,"Bucharest, Eastern European architecture, Romania",Romania,Bucharest,urban
+47.4979,19.0402,"Budapest, Danube River, historic architecture, Hungary",Hungary,Budapest,urban
+44.7866,20.4489,"Belgrade, Danube, Serbian architecture",Serbia,Belgrade,urban
+42.6977,23.3219,"Sofia, mountains, Bulgarian capital",Bulgaria,Sofia,mountain
+50.4501,30.5234,"Kyiv, Dnieper River, golden domes, Ukraine",Ukraine,Kyiv,urban
+53.9006,27.5590,"Minsk, Soviet architecture, Belarus",Belarus,Minsk,urban
+40.1792,44.4991,"Yerevan, mountains, pink stone, Armenia",Armenia,Yerevan,mountain
+40.4093,49.8671,"Baku, Caspian Sea, modern architecture, Azerbaijan",Azerbaijan,Baku,coastal
+15.5007,32.5599,"Khartoum, Nile confluence, Sudan",Sudan,Khartoum,desert
+3.8480,11.5021,"Yaoundé, tropical, hills, Cameroon",Cameroon,Yaoundé,urban
+4.0511,9.7679,"Douala, Atlantic port, Cameroon",Cameroon,Douala,coastal
+6.1319,1.2228,"Lomé, Atlantic coast, Togo",Togo,Lomé,coastal
+6.3703,5.6037,"Benin City, tropical, Nigeria",Nigeria,Benin City,urban
+7.3775,3.9470,"Ibadan, tropical, Nigeria",Nigeria,Ibadan,urban
+13.5127,2.1128,"Niamey, Niger River, Niger",Niger,Niamey,desert
+12.3714,-1.5197,"Ouagadougou, Sahel, Burkina Faso",Burkina Faso,Ouagadougou,desert
+5.3600,-4.0083,"Abidjan, lagoon, Ivory Coast",Ivory Coast,Abidjan,coastal
+7.5400,-5.5471,"Yamoussoukro, basilica, Ivory Coast capital",Ivory Coast,Yamoussoukro,urban
+9.5370,-13.6785,"Conakry, Atlantic coast, Guinea",Guinea,Conakry,coastal
+8.4657,-13.2317,"Freetown, harbor, Sierra Leone",Sierra Leone,Freetown,coastal
+6.4281,-9.4295,"Monrovia, Atlantic coast, Liberia",Liberia,Monrovia,coastal
+-8.0476,-34.8770,"Recife, beaches, northeastern Brazil",Brazil,Recife,coastal
+-19.9167,-43.9345,"Belo Horizonte, mountains, Brazil",Brazil,Belo Horizonte,urban
+-25.4284,-49.2733,"Curitiba, planned city, southern Brazil",Brazil,Curitiba,urban
+-0.9293,-78.6114,"Guayaquil, Pacific port, Ecuador",Ecuador,Guayaquil,coastal
+-17.8146,-63.1561,"Santa Cruz, tropical, Bolivia",Bolivia,Santa Cruz,urban
+39.5501,116.2400,"Badaling Great Wall, ancient fortifications, mountains, China",China,Beijing,mountain
+22.9519,113.5883,"Guangzhou Tower, Pearl River, modern China",China,Guangzhou,urban
+30.2741,120.1551,"Hangzhou, West Lake, pagodas, traditional gardens",China,Hangzhou,urban
+36.6512,117.1201,"Jinan, springs, Shandong province",China,Jinan,urban
+38.0428,114.5149,"Shijiazhuang, industrial city, Hebei",China,Shijiazhuang,urban
+29.8683,121.5440,"Ningbo, port city, eastern China",China,Ningbo,coastal
+32.0603,118.7969,"Nanjing, ancient capital, Yangtze River",China,Nanjing,urban
+36.0611,103.8343,"Lanzhou, Yellow River, Silk Road",China,Lanzhou,urban
+43.8256,87.6168,"Urumqi, Xinjiang, mountains, Silk Road",China,Urumqi,mountain
+26.0789,119.2965,"Fuzhou, Fujian coast, Min River",China,Fuzhou,coastal
+24.4798,118.0894,"Xiamen, island city, coastal Fujian",China,Xiamen,coastal
+34.7466,113.6253,"Zhengzhou, Yellow River, central China",China,Zhengzhou,urban
+30.5928,114.3055,"Wuhan, Yangtze River, central China",China,Wuhan,urban
+28.2282,112.9388,"Changsha, Hunan, Xiang River",China,Changsha,urban
+26.6470,106.6302,"Guiyang, mountains, southwestern China",China,Guiyang,mountain
+25.0406,102.7129,"Kunming, Spring City, Yunnan",China,Kunming,mountain
+36.6747,117.0008,"Qingdao, beaches, German architecture, Shandong",China,Qingdao,coastal
+37.8651,112.5489,"Taiyuan, coal city, Shanxi",China,Taiyuan,urban
+38.4680,106.2730,"Yinchuan, Ningxia, Yellow River",China,Yinchuan,urban
+40.8414,111.7519,"Hohhot, Inner Mongolia, grasslands",China,Hohhot,urban
+29.5630,106.5516,"Chongqing mountains, fog city, spicy food",China,Chongqing,mountain
+34.2658,108.9541,"Xi'an city walls, Muslim Quarter, dumplings",China,Xi'an,urban
+45.7560,126.6425,"Harbin, ice city, Russian architecture, winter",China,Harbin,urban
+41.8057,123.4315,"Shenyang, Manchuria, imperial palace",China,Shenyang,urban
+43.8171,125.3235,"Changchun, automotive city, northeastern China",China,Changchun,urban
+36.0534,103.8236,"Lanzhou Yellow River, Silk Road gateway",China,Lanzhou,urban
+37.4638,104.8289,"Yinchuan Ningxia, desert, Yellow River",China,Yinchuan,desert
+29.1416,119.6486,"Lishui, mountains, Zhejiang",China,Lishui,mountain
+28.6765,115.8918,"Nanchang, Jiangxi, Gan River",China,Nanchang,urban
+32.6546,119.9623,"Yangzhou, canals, gardens, Jiangsu",China,Yangzhou,urban
+31.8639,117.2808,"Hefei, Anhui capital, lakes",China,Hefei,urban
+34.7817,113.7539,"Kaifeng, ancient capital, Yellow River",China,Kaifeng,urban
+35.5467,139.7789,"Yokohama, port city, Tokyo Bay",Japan,Yokohama,coastal
+35.1815,136.9066,"Nagoya, castle, industrial city",Japan,Nagoya,urban
+34.6851,135.8048,"Nara, ancient temples, deer park",Japan,Nara,urban
+35.4437,139.6380,"Kamakura, Great Buddha, beaches, temples",Japan,Kamakura,coastal
+36.2048,138.2529,"Kofu, Mount Fuji views, Yamanashi",Japan,Kofu,mountain
+35.0116,135.7681,"Kyoto temples, geishas, bamboo forests",Japan,Kyoto,urban
+34.3853,132.4553,"Hiroshima, Peace Memorial, Inland Sea",Japan,Hiroshima,coastal
+33.5904,130.4017,"Fukuoka, Hakata, ramen, Kyushu",Japan,Fukuoka,urban
+31.5966,130.5571,"Kagoshima, volcano, southern Kyushu",Japan,Kagoshima,coastal
+26.2124,127.6809,"Naha, Okinawa, tropical beaches, coral",Japan,Naha,coastal
+38.2682,140.8694,"Sendai, Tohoku, Date Masamune",Japan,Sendai,urban
+39.7186,141.1527,"Morioka, northern Honshu, mountains",Japan,Morioka,mountain
+40.8244,140.7472,"Aomori, northern tip, apple orchards",Japan,Aomori,urban
+42.7750,141.6850,"Hakodate, Hokkaido, night views, seafood",Japan,Hakodate,coastal
+35.4437,133.0506,"Matsue, castle, Lake Shinji",Japan,Matsue,urban
+34.6618,133.9346,"Okayama, Korakuen Garden, castle",Japan,Okayama,urban
+35.1802,126.9024,"Gwangju, South Korea, art city",South Korea,Gwangju,urban
+35.8714,128.6014,"Daegu, South Korea, textile city",South Korea,Daegu,urban
+37.4563,126.7052,"Incheon, port city, international airport",South Korea,Incheon,coastal
+35.1796,129.0756,"Busan beaches, seafood, second largest city",South Korea,Busan,coastal
+33.5097,126.5219,"Jeju Island, volcanic, beaches, honeymoon destination",South Korea,Jeju,coastal
+36.3504,127.3845,"Daejeon, science city, central Korea",South Korea,Daejeon,urban
+37.8813,127.7300,"Chuncheon, lakes, mountains, Gangwon",South Korea,Chuncheon,mountain
+35.5384,129.3114,"Pohang, steel city, eastern coast",South Korea,Pohang,coastal
+35.1028,126.8526,"Mokpo, southwestern port, islands",South Korea,Mokpo,coastal
+37.4532,126.4407,"Suwon, fortress city, Samsung",South Korea,Suwon,urban
+18.7883,98.9853,"Chiang Mai, temples, mountains, northern Thailand",Thailand,Chiang Mai,mountain
+7.8804,98.3923,"Phuket, beaches, Andaman Sea, resorts",Thailand,Phuket,coastal
+12.9236,100.8825,"Pattaya, beaches, nightlife, Gulf of Thailand",Thailand,Pattaya,coastal
+8.5604,99.6144,"Krabi, limestone cliffs, beaches, islands",Thailand,Krabi,coastal
+7.0067,100.4739,"Hat Yai, southern Thailand, Malaysian border",Thailand,Hat Yai,urban
+13.3611,100.9847,"Chonburi, industrial, eastern seaboard",Thailand,Chonburi,urban
+16.4419,102.8359,"Khon Kaen, northeastern Thailand, Isaan",Thailand,Khon Kaen,urban
+18.2885,99.4981,"Lampang, northern Thailand, horse carriages",Thailand,Lampang,urban
+14.9930,102.1028,"Nakhon Ratchasima, gateway to Isaan",Thailand,Nakhon Ratchasima,urban
+7.5564,99.6117,"Surat Thani, islands gateway, southern Thailand",Thailand,Surat Thani,coastal
+5.6108,100.0673,"George Town, Penang, colonial, street food",Malaysia,George Town,coastal
+1.4927,103.7414,"Johor Bahru, southern Malaysia, Singapore border",Malaysia,Johor Bahru,urban
+5.4141,100.3288,"Penang Island, beaches, heritage, food",Malaysia,Penang,coastal
+2.1896,102.2501,"Malacca, historic port, Dutch architecture",Malaysia,Malacca,coastal
+6.1248,102.2389,"Kota Bharu, northeastern Malaysia, Islamic culture",Malaysia,Kota Bharu,coastal
+4.2105,103.2109,"Kuala Terengganu, east coast, islands",Malaysia,Kuala Terengganu,coastal
+5.9804,116.0735,"Kota Kinabalu, Sabah, Mount Kinabalu",Malaysia,Kota Kinabalu,coastal
+1.5535,110.3593,"Kuching, Sarawak, Borneo, cats",Malaysia,Kuching,urban
+4.8945,114.9422,"Bandar Seri Begawan, Brunei capital, mosques",Brunei,Bandar Seri Begawan,urban
+-7.2575,112.7521,"Surabaya, Java, second largest Indonesian city",Indonesia,Surabaya,urban
+-6.9175,107.6191,"Bandung, Java, mountains, tea plantations",Indonesia,Bandung,mountain
+-7.7956,110.3695,"Yogyakarta, Java, temples, batik, sultan",Indonesia,Yogyakarta,urban
+3.5952,98.6722,"Medan, Sumatra, Lake Toba gateway",Indonesia,Medan,urban
+-0.9471,100.4172,"Padang, Sumatra, Minangkabau, spicy food",Indonesia,Padang,coastal
+-5.1477,119.4327,"Makassar, Sulawesi, spice trade, seafood",Indonesia,Makassar,coastal
+-8.6705,115.2126,"Ubud, Bali, rice terraces, arts, yoga",Indonesia,Ubud,mountain
+-8.4095,115.1889,"Sanur, Bali, beaches, traditional",Indonesia,Sanur,coastal
+-8.7467,115.1681,"Nusa Dua, Bali, luxury resorts, beaches",Indonesia,Nusa Dua,coastal
+0.5071,101.4478,"Pekanbaru, Sumatra, oil city",Indonesia,Pekanbaru,urban
+14.5995,120.9842,"Manila Intramuros, Spanish colonial, walled city",Philippines,Manila,urban
+10.3157,123.8854,"Cebu City, Visayas, beaches, Sinulog",Philippines,Cebu City,coastal
+7.0731,125.6128,"Davao, Mindanao, Mount Apo, durian",Philippines,Davao,urban
+15.4817,120.5979,"Angeles City, Clark, former US base",Philippines,Angeles City,urban
+14.6760,121.0437,"Quezon City, Metro Manila, largest city",Philippines,Quezon City,urban
+10.7202,122.5621,"Iloilo City, Panay, historic, churches",Philippines,Iloilo City,urban
+14.6760,120.9818,"Makati, Metro Manila, financial district",Philippines,Makati,urban
+9.3068,123.3054,"Bohol, Chocolate Hills, tarsiers",Philippines,Bohol,coastal
+13.6218,123.1948,"Legazpi, Bicol, Mayon Volcano",Philippines,Legazpi,mountain
+16.4023,120.5960,"Baguio, summer capital, pine trees, cool",Philippines,Baguio,mountain
+16.8531,121.2260,"Vigan, Spanish colonial, cobblestones, UNESCO",Philippines,Vigan,urban
+10.7940,106.6950,"Ho Chi Minh City Saigon, French colonial, motorbikes",Vietnam,Ho Chi Minh City,urban
+16.0544,108.2022,"Da Nang, beaches, Marble Mountains, central Vietnam",Vietnam,Da Nang,coastal
+15.8801,108.3380,"Hoi An, ancient town, lanterns, UNESCO",Vietnam,Hoi An,urban
+12.2388,109.1967,"Nha Trang, beaches, diving, coastal resort",Vietnam,Nha Trang,coastal
+10.0452,105.7469,"Can Tho, Mekong Delta, floating markets",Vietnam,Can Tho,urban
+21.0245,105.8412,"Halong Bay, limestone karsts, emerald waters",Vietnam,Halong Bay,coastal
+22.8076,106.6860,"Lang Son, northern border, karst mountains",Vietnam,Lang Son,mountain
+20.8449,106.6881,"Haiphong, port city, Cat Ba Island",Vietnam,Haiphong,coastal
+16.4637,107.5909,"Hue, imperial city, Perfume River, tombs",Vietnam,Hue,urban
+21.5944,105.8480,"Ninh Binh, Halong Bay on land, rice paddies",Vietnam,Ninh Binh,mountain
+11.9404,108.4583,"Da Lat, highlands, cool climate, flowers",Vietnam,Da Lat,mountain
+10.9758,106.9710,"Vung Tau, beach resort, oil industry",Vietnam,Vung Tau,coastal
+20.9101,107.0843,"Nam Dinh, Red River Delta, textiles",Vietnam,Nam Dinh,urban
+21.3380,103.0130,"Dien Bien Phu, historic battle site, mountains",Vietnam,Dien Bien Phu,mountain
+11.9349,108.4424,"Dalat, French colonial, pine forests",Vietnam,Dalat,mountain
+13.3671,103.8448,"Siem Reap, Angkor Wat, temples, Cambodia",Cambodia,Siem Reap,urban
+10.6090,103.5200,"Sihanoukville, beaches, islands, Cambodia",Cambodia,Sihanoukville,coastal
+12.5657,104.9910,"Battambang, rice bowl, French colonial",Cambodia,Battambang,urban
+13.5879,102.9700,"Kampong Cham, Mekong River, rubber plantations",Cambodia,Kampong Cham,urban
+11.5449,104.8922,"Kep, coastal town, crab market, French villas",Cambodia,Kep,coastal
+10.6104,103.4800,"Kampot, pepper, riverside, French architecture",Cambodia,Kampot,coastal
+13.1025,103.1986,"Pursat, central Cambodia, floating villages",Cambodia,Pursat,urban
+17.9757,102.6331,"Vientiane, Laos capital, Mekong River, temples",Laos,Vientiane,urban
+19.8845,102.1348,"Luang Prabang, UNESCO, temples, waterfalls",Laos,Luang Prabang,mountain
+15.1202,105.7829,"Pakse, southern Laos, Bolaven Plateau",Laos,Pakse,urban
+19.4500,103.3833,"Phonsavan, Plain of Jars, highlands",Laos,Phonsavan,mountain
+20.9333,101.7000,"Luang Namtha, northern Laos, trekking",Laos,Luang Namtha,mountain
+18.8900,105.1400,"Thakhek, central Laos, caves, karst",Laos,Thakhek,mountain
+21.1167,101.1500,"Bokeo, Golden Triangle, nature reserves",Laos,Bokeo,mountain
+16.5500,104.7667,"Savannakhet, southern Laos, Mekong",Laos,Savannakhet,urban
+21.2500,100.8833,"Oudomxay, northern Laos, mountains",Laos,Oudomxay,mountain
+19.2500,103.2000,"Xieng Khouang, highlands, war history",Laos,Xieng Khouang,mountain
+22.3964,114.1095,"Shenzhen tech hub, modern skyline, border Hong Kong",China,Shenzhen,urban
+22.5431,113.9430,"Dongguan, manufacturing, Pearl River Delta",China,Dongguan,urban
+23.0542,113.7456,"Foshan, ceramics, Cantonese opera",China,Foshan,urban
+21.2707,110.3594,"Zhanjiang, southern port, Leizhou Peninsula",China,Zhanjiang,coastal
+23.6753,116.6817,"Shantou, Chaoshan culture, eastern Guangdong",China,Shantou,coastal
+24.2899,116.3644,"Meizhou, Hakka culture, mountains",China,Meizhou,mountain
+23.1167,113.2500,"Zhongshan, Pearl River Delta, Sun Yat-sen",China,Zhongshan,urban
+22.2711,113.5767,"Zhuhai, Special Economic Zone, Macau border",China,Zhuhai,coastal
+21.6147,110.9267,"Beihai, Silver Beach, Gulf of Tonkin",China,Beihai,coastal
+22.8170,108.3669,"Nanning, Guangxi capital, karst landscapes",China,Nanning,urban
+25.2736,110.2900,"Guilin, karst mountains, Li River, scenic",China,Guilin,mountain
+24.3258,109.4113,"Liuzhou, industrial city, Guangxi",China,Liuzhou,urban
+23.5566,109.9200,"Wuzhou, eastern Guangxi, rivers",China,Wuzhou,urban
+26.5783,106.7135,"Guiyang mountains, Miao culture, southwestern",China,Guiyang,mountain
+26.6470,106.6302,"Anshun, waterfalls, Huangguoshu",China,Anshun,mountain
+27.7278,106.9272,"Zunyi, historic city, northern Guizhou",China,Zunyi,urban
+26.2534,107.9813,"Kaili, Miao villages, southeastern Guizhou",China,Kaili,mountain
+25.5926,100.2329,"Kunming Spring City, Yunnan, mild climate",China,Kunming,mountain
+25.0406,102.7129,"Dali, ancient town, Erhai Lake, Bai culture",China,Dali,mountain
+26.8728,100.2297,"Lijiang, Old Town, Naxi culture, UNESCO",China,Lijiang,mountain
+27.8260,100.2447,"Shangri-La, Tibetan culture, high altitude",China,Shangri-La,mountain
+24.3500,98.5833,"Baoshan, western Yunnan, Burma Road",China,Baoshan,mountain
+23.3667,103.3833,"Pu'er, tea production, southern Yunnan",China,Pu'er,mountain
+22.7833,100.9833,"Jinghong, Xishuangbanna, tropical, Dai culture",China,Jinghong,jungle
+24.3500,103.3833,"Wenshan, southeastern Yunnan, karst",China,Wenshan,mountain
+29.9871,103.7578,"Leshan, Giant Buddha, Sichuan",China,Leshan,mountain
+31.1397,121.3661,"Suzhou, gardens, canals, silk, Venice of East",China,Suzhou,urban
+31.5702,120.2979,"Wuxi, Taihu Lake, Jiangsu",China,Wuxi,urban
+32.0603,118.7969,"Nanjing ancient capital, city walls, Yangtze",China,Nanjing,urban
+33.9633,118.3557,"Huai'an, Grand Canal, northern Jiangsu",China,Huai'an,urban
+34.2778,117.1579,"Xuzhou, historic city, northern Jiangsu",China,Xuzhou,urban
+32.0361,119.4200,"Zhenjiang, Yangtze River, Jiangsu",China,Zhenjiang,urban
+32.3912,119.4252,"Yangzhou canals, gardens, Grand Canal",China,Yangzhou,urban
+33.3475,119.0283,"Yancheng, coastal wetlands, Jiangsu",China,Yancheng,coastal
+30.7453,120.7603,"Jiaxing, water town, Zhejiang",China,Jiaxing,urban
+30.2741,120.1551,"Hangzhou West Lake, tea, silk, paradise",China,Hangzhou,urban
+29.8683,121.5440,"Ningbo port, eastern Zhejiang, coast",China,Ningbo,coastal
+28.0026,120.6987,"Wenzhou, entrepreneurial city, Zhejiang",China,Wenzhou,coastal
+30.0019,122.1147,"Zhoushan, islands, fishing, Putuo Mountain",China,Zhoushan,coastal
+29.1416,119.6486,"Lishui mountains, green city, Zhejiang",China,Lishui,mountain
+28.4517,121.4208,"Taizhou, coastal Zhejiang, manufacturing",China,Taizhou,coastal
+29.9977,120.5853,"Huzhou, Taihu Lake, silk, Zhejiang",China,Huzhou,urban
+30.8703,120.0933,"Jiaxing South Lake, red boat, Zhejiang",China,Jiaxing,urban
+28.6765,115.8918,"Nanchang Jiangxi capital, Gan River, red city",China,Nanchang,urban
+25.8545,114.9335,"Ganzhou, southern Jiangxi, Hakka",China,Ganzhou,urban
+27.8119,114.9403,"Yichun, northwestern Jiangxi, mountains",China,Yichun,mountain
+28.6743,115.8579,"Jiujiang, Yangtze River, Lushan Mountain",China,Jiujiang,mountain
+27.1189,114.3916,"Jingdezhen, porcelain capital, ceramics",China,Jingdezhen,urban
+27.9477,115.9990,"Shangrao, northeastern Jiangxi, Sanqing Mountain",China,Shangrao,mountain
+28.2386,117.0075,"Fuzhou, Jiangxi, southeastern",China,Fuzhou,urban
+27.6104,115.7227,"Ji'an, central Jiangxi, revolutionary base",China,Ji'an,urban
+27.8119,113.8520,"Pingxiang, western Jiangxi, coal",China,Pingxiang,urban
+28.2386,116.9817,"Yingtan, Longhu Mountain, Taoism",China,Yingtan,mountain
+31.8639,117.2808,"Hefei Anhui capital, innovation hub, lakes",China,Hefei,urban
+30.5255,117.0174,"Wuhu, Yangtze River, southern Anhui",China,Wuhu,urban
+32.9564,117.3614,"Bengbu, central Anhui, Pearl of Huai River",China,Bengbu,urban
+33.9717,117.3889,"Suzhou, northern Anhui, Grand Canal",China,Suzhou,urban
+30.9289,117.8102,"Anqing, southwestern Anhui, Yangtze",China,Anqing,urban
+29.7470,118.3158,"Huangshan, Yellow Mountain, UNESCO, pine trees",China,Huangshan,mountain
+32.0361,118.3757,"Chuzhou, eastern Anhui, Langya Mountain",China,Chuzhou,urban
+30.9408,117.3620,"Tongling, copper city, Yangtze River",China,Tongling,urban
+31.7011,118.3758,"Ma'anshan, steel city, Yangtze River",China,Ma'anshan,urban
+34.8670,113.8831,"Kaifeng ancient capital, Yellow River, Song Dynasty",China,Kaifeng,urban
+35.3074,113.8854,"Anyang, oracle bones, ancient Yin ruins",China,Anyang,urban
+35.7452,113.8831,"Xinxiang, northern Henan, Yellow River",China,Xinxiang,urban
+34.6836,113.8053,"Xuchang, central Henan, Three Kingdoms",China,Xuchang,urban
+33.7453,113.8831,"Pingdingshan, coal city, central Henan",China,Pingdingshan,urban
+32.9987,112.5292,"Nanyang, southwestern Henan, Han culture",China,Nanyang,urban
+34.7817,113.6530,"Luoyang, ancient capital, Longmen Grottoes, peonies",China,Luoyang,urban
+35.2401,113.8831,"Jiaozuo, northern Henan, Taiji",China,Jiaozuo,urban
+35.7452,114.3520,"Puyang, northeastern Henan, oil",China,Puyang,urban
+34.0260,113.7520,"Xuchang, central Henan, manufacturing",China,Xuchang,urban
+30.5928,114.3055,"Wuhan Yangtze, Yellow Crane Tower, hot dry noodles",China,Wuhan,urban
+30.3398,111.2900,"Yichang, Three Gorges Dam, western Hubei",China,Yichang,urban
+32.6475,114.8720,"Huanggang, eastern Hubei, education",China,Huanggang,urban
+30.7019,111.2900,"Jingzhou, ancient city, Three Kingdoms",China,Jingzhou,urban
+32.0361,112.2036,"Xiangyang, northwestern Hubei, ancient walls",China,Xiangyang,urban
+30.3398,112.2036,"Jingmen, central Hubei, Chu culture",China,Jingmen,urban
+32.6475,113.8720,"Xiaogan, northeastern Hubei, filial piety",China,Xiaogan,urban
+29.7019,113.0833,"Yueyang, Dongting Lake, Yueyang Tower",China,Yueyang,urban
+28.2282,112.9388,"Changsha Hunan capital, Mao Zedong, spicy food",China,Changsha,urban
+27.7104,111.2900,"Hengyang, southern Hunan, Mount Heng",China,Hengyang,urban
+27.8104,113.0320,"Zhuzhou, eastern Hunan, railways",China,Zhuzhou,urban
+27.8519,113.1520,"Xiangtan, Mao's hometown, eastern Hunan",China,Xiangtan,urban
+26.8998,112.0083,"Shaoyang, southwestern Hunan, mountains",China,Shaoyang,mountain
+29.1416,111.6914,"Zhangjiajie, Avatar mountains, glass bridge, UNESCO",China,Zhangjiajie,mountain
+28.5700,111.7300,"Changde, northwestern Hunan, Taohuayuan",China,Changde,urban
+27.5700,111.4700,"Loudi, central Hunan, coal",China,Loudi,urban
+26.4073,111.7300,"Chenzhou, southern Hunan, Dongjiang Lake",China,Chenzhou,mountain
+27.5700,109.7380,"Huaihua, western Hunan, Dong culture",China,Huaihua,mountain
+28.3104,109.7380,"Jishou, Xiangxi, Miao culture, Fenghuang",China,Jishou,mountain
+25.2736,110.2900,"Guilin karst peaks, Li River, scenic beauty",China,Guilin,mountain
+22.8170,108.3669,"Nanning Guangxi capital, ASEAN Expo, tropical",China,Nanning,urban
+24.3258,109.4113,"Liuzhou, industrial, snail noodles, Guangxi",China,Liuzhou,urban
+23.5566,109.9200,"Wuzhou, eastern Guangxi, gem trade",China,Wuzhou,urban
+21.6147,110.9267,"Beihai Silver Beach, tropical, Gulf of Tonkin",China,Beihai,coastal
+24.3258,107.8540,"Hechi, northwestern Guangxi, Zhuang culture",China,Hechi,mountain
+23.7369,108.6200,"Laibin, central Guangxi, Yao culture",China,Laibin,urban
+22.4064,109.1200,"Qinzhou, southern Guangxi, dolphins",China,Qinzhou,coastal
+21.9733,109.1200,"Fangchenggang, southwestern Guangxi, port",China,Fangchenggang,coastal
+23.9000,106.6167,"Baise, western Guangxi, revolutionary base",China,Baise,mountain
+24.3258,106.6167,"Hezhou, eastern Guangxi, Hakka",China,Hezhou,urban
+25.0818,104.8754,"Qujing, eastern Yunnan, Pearl River source",China,Qujing,mountain
+23.3667,103.3833,"Yuxi, central Yunnan, tobacco",China,Yuxi,mountain
+24.3500,98.5833,"Baoshan, western Yunnan, jade",China,Baoshan,mountain
+25.5926,99.1670,"Dali ancient town, Erhai Lake, Three Pagodas",China,Dali,mountain
+27.8260,100.2447,"Shangri-La Tibetan culture, Songzanlin Monastery",China,Shangri-La,mountain
+23.3667,103.7833,"Honghe, southern Yunnan, Hani terraces",China,Honghe,mountain
+24.3500,103.3833,"Wenshan, southeastern Yunnan, Zhuang culture",China,Wenshan,mountain
+22.7833,100.9833,"Xishuangbanna tropical, Dai culture, elephants",China,Xishuangbanna,jungle
+25.5926,98.5833,"Dehong, western Yunnan, Burma border",China,Dehong,mountain
+27.8260,98.5833,"Nujiang, northwestern Yunnan, gorges, Nu River",China,Nujiang,mountain
+26.8728,99.7070,"Diqing, northwestern Yunnan, Tibetan, Meili Snow Mountain",China,Diqing,mountain
+23.3667,100.9833,"Lincang, southwestern Yunnan, tea, Wa culture",China,Lincang,mountain
+24.3500,100.9833,"Simao, southern Yunnan, Pu'er tea",China,Simao,mountain
+30.6587,104.0665,"Chengdu pandas, spicy food, teahouses, Sichuan",China,Chengdu,urban
+29.5630,103.7578,"Meishan, Sichuan, Mount Emei gateway",China,Meishan,mountain
+29.9871,103.7578,"Leshan Giant Buddha, confluence, UNESCO",China,Leshan,mountain
+31.1397,104.0665,"Deyang, northern Sichuan, Sanxingdui",China,Deyang,urban
+30.5255,103.0174,"Ya'an, western Sichuan, pandas, tea",China,Ya'an,mountain
+28.7694,104.6308,"Zigong, salt city, dinosaurs, Sichuan",China,Zigong,urban
+29.5630,105.0665,"Neijiang, eastern Sichuan, sugar",China,Neijiang,urban
+28.8891,105.4433,"Luzhou, southeastern Sichuan, baijiu",China,Luzhou,urban
+31.8639,106.0830,"Guang'an, Deng Xiaoping's hometown, eastern Sichuan",China,Guang'an,urban
+30.8003,106.6308,"Nanchong, northeastern Sichuan, silk",China,Nanchong,urban
+32.4336,105.8430,"Guangyuan, northern Sichuan, Jianmen Pass",China,Guangyuan,mountain
+31.4677,104.6415,"Mianyang, science city, northern Sichuan",China,Mianyang,urban
+32.6475,106.0830,"Bazhong, northeastern Sichuan, mountains",China,Bazhong,mountain
+31.8639,107.5020,"Dazhou, northeastern Sichuan, natural gas",China,Dazhou,urban
+28.7694,106.0830,"Yibin, southern Sichuan, Yangtze source, bamboo",China,Yibin,urban
+26.5783,101.7578,"Panzhihua, southern Sichuan, steel, tropical",China,Panzhihua,mountain
+28.7694,102.2578,"Liangshan, southwestern Sichuan, Yi culture",China,Liangshan,mountain
+31.8639,102.2578,"Aba, northwestern Sichuan, Tibetan, Jiuzhaigou",China,Aba,mountain
+30.0503,102.2578,"Ganzi, western Sichuan, Tibetan, high altitude",China,Ganzi,mountain
+36.0611,103.8343,"Lanzhou Yellow River, Silk Road, beef noodles",China,Lanzhou,urban
+38.9262,100.4550,"Jiayuguan, western Gansu, Great Wall end",China,Jiayuguan,desert
+39.7447,98.2811,"Jiuquan, northwestern Gansu, space launch",China,Jiuquan,desert
+38.9262,99.8110,"Zhangye, Gansu, Danxia landform, colorful mountains",China,Zhangye,desert
+35.5817,103.8343,"Tianshui, southeastern Gansu, Maijishan Grottoes",China,Tianshui,mountain
+34.5817,105.7240,"Pingliang, eastern Gansu, Kongtong Mountain",China,Pingliang,mountain
+35.7447,107.6380,"Qingyang, eastern Gansu, loess plateau",China,Qingyang,mountain
+33.3917,104.9290,"Longnan, southern Gansu, mountains",China,Longnan,mountain
+35.5817,102.8343,"Linxia, southwestern Gansu, Hui culture, mosques",China,Linxia,mountain
+34.9917,102.9110,"Gannan, southern Gansu, Tibetan, Labrang Monastery",China,Gannan,mountain
+37.4638,104.8289,"Yinchuan Ningxia capital, Yellow River, Helan Mountains",China,Yinchuan,desert
+38.4680,106.2730,"Shizuishan, northern Ningxia, coal",China,Shizuishan,desert
+37.9845,106.2730,"Wuzhong, central Ningxia, Yellow River",China,Wuzhong,desert
+36.0045,106.2730,"Guyuan, southern Ningxia, Liupan Mountain",China,Guyuan,mountain
+37.9845,105.1890,"Zhongwei, western Ningxia, Shapotou, desert",China,Zhongwei,desert
+43.8256,87.6168,"Urumqi Xinjiang capital, Heavenly Lake, Silk Road",China,Urumqi,mountain
+44.3332,87.9236,"Karamay, northwestern Xinjiang, oil city",China,Karamay,desert
+43.9236,81.3179,"Yining, western Xinjiang, Ili Valley, Kazakh",China,Yining,mountain
+39.4677,75.9892,"Kashgar, southwestern Xinjiang, Silk Road, Uyghur",China,Kashgar,desert
+37.1101,79.9245,"Hotan, southern Xinjiang, jade, Silk Road",China,Hotan,desert
+42.9236,87.6236,"Turpan, eastern Xinjiang, Flaming Mountains, grapes, hot",China,Turpan,desert
+44.3332,86.0500,"Hami, eastern Xinjiang, melons, Gobi Desert",China,Hami,desert
+41.7677,82.9892,"Korla, central Xinjiang, pears, Tarim Basin",China,Korla,desert
+40.6236,89.1892,"Aksu, northwestern Xinjiang, oasis, Tianshan",China,Aksu,desert
+39.4677,76.1892,"Artux, southwestern Xinjiang, Kizil Caves",China,Artux,desert
+43.9236,88.1892,"Bortala, northwestern Xinjiang, Kazakh, Alashankou",China,Bortala,mountain
+47.3486,88.0850,"Altay, northern Xinjiang, mountains, Kazakh",China,Altay,mountain
+45.6236,82.9892,"Tacheng, northwestern Xinjiang, border, grasslands",China,Tacheng,mountain
+29.6027,91.1172,"Lhasa, Tibet, Potala Palace, high altitude, Buddhist",China,Lhasa,mountain
+29.2500,88.8833,"Shigatse, Tibet, Tashilhunpo Monastery, Everest gateway",China,Shigatse,mountain
+31.1367,97.1780,"Chamdo, eastern Tibet, Kham, trade hub",China,Chamdo,mountain
+29.6500,91.7667,"Shannan, southern Tibet, Yarlung Valley, Tibetan kings",China,Shannan,mountain
+31.4833,92.0667,"Nagqu, northern Tibet, high altitude, nomads",China,Nagqu,mountain
+32.0833,80.1000,"Ngari, western Tibet, Mount Kailash, sacred",China,Ngari,mountain
+30.4833,94.3667,"Nyingchi, southeastern Tibet, forests, lower altitude",China,Nyingchi,mountain
+40.8414,111.7519,"Hohhot Inner Mongolia capital, grasslands, Mongolian",China,Hohhot,urban
+49.2000,119.7000,"Hulunbuir, northeastern Inner Mongolia, grasslands, lakes",China,Hulunbuir,wilderness
+43.6536,116.0936,"Chifeng, southeastern Inner Mongolia, grasslands",China,Chifeng,urban
+40.6536,109.8400,"Ordos, southwestern Inner Mongolia, coal, desert",China,Ordos,desert
+41.0022,113.1140,"Baotou, central Inner Mongolia, steel, Yellow River",China,Baotou,urban
+40.6536,106.8400,"Wuhai, western Inner Mongolia, coal, Yellow River",China,Wuhai,desert
+39.6536,107.4200,"Bayannur, western Inner Mongolia, Yellow River, agriculture",China,Bayannur,urban
+38.4180,106.8400,"Alxa, western Inner Mongolia, Gobi Desert, Badain Jaran",China,Alxa,desert
+46.0833,122.0667,"Hinggan, eastern Inner Mongolia, forests, Mongolian",China,Hinggan,forest
+43.6536,116.0936,"Tongliao, eastern Inner Mongolia, Horqin grasslands",China,Tongliao,urban
+42.2875,118.8870,"Chaoyang, western Liaoning, fossils",China,Chaoyang,urban
+41.8057,123.4315,"Shenyang Liaoning capital, Mukden Palace, industrial",China,Shenyang,urban
+38.9140,121.6147,"Dalian, port city, beaches, seafood, Liaoning",China,Dalian,coastal
+41.1080,122.9950,"Dandong, North Korea border, Yalu River",China,Dandong,urban
+41.1080,121.1350,"Jinzhou, western Liaoning, Bohai Sea",China,Jinzhou,coastal
+41.8057,121.1350,"Yingkou, southern Liaoning, port, hot springs",China,Yingkou,coastal
+40.6536,122.2350,"Panjin, southwestern Liaoning, Red Beach, wetlands",China,Panjin,coastal
+41.8057,120.8350,"Huludao, southwestern Liaoning, beaches",China,Huludao,coastal
+42.2875,123.1850,"Tieling, northern Liaoning, comedy",China,Tieling,urban
+41.8057,123.8350,"Fushun, eastern Liaoning, coal, Lei Feng",China,Fushun,urban
+41.8057,124.3850,"Benxi, eastern Liaoning, steel, water caves",China,Benxi,mountain
+40.6536,123.1850,"Liaoyang, central Liaoning, ancient city",China,Liaoyang,urban
+41.2875,122.9850,"Anshan, central Liaoning, steel, jade",China,Anshan,urban
+43.8171,125.3235,"Changchun Jilin capital, automotive, film studio",China,Changchun,urban
+43.8378,126.5494,"Jilin City, eastern Jilin, Songhua River, rime",China,Jilin,urban
+42.9236,129.5050,"Yanji, eastern Jilin, Korean culture, Changbai Mountain",China,Yanji,mountain
+43.1667,124.3667,"Siping, western Jilin, plains",China,Siping,urban
+42.9236,125.9350,"Liaoyuan, southern Jilin, coal",China,Liaoyuan,urban
+41.7333,125.9350,"Tonghua, southern Jilin, wine, ginseng",China,Tonghua,mountain
+42.9236,126.5350,"Baishan, southeastern Jilin, Changbai Mountain",China,Baishan,mountain
+45.2667,124.8167,"Songyuan, northwestern Jilin, oil, Chagan Lake",China,Songyuan,urban
+44.1500,124.3667,"Baicheng, northwestern Jilin, grasslands",China,Baicheng,urban
+45.7560,126.6425,"Harbin ice city, Russian architecture, winter festival",China,Harbin,urban
+46.5833,124.8167,"Qiqihar, western Heilongjiang, cranes",China,Qiqihar,urban
+47.3500,123.9167,"Daqing, western Heilongjiang, oil city",China,Daqing,urban
+45.7560,130.3667,"Jiamusi, eastern Heilongjiang, Songhua River",China,Jiamusi,urban
+47.3500,129.4667,"Hegang, northeastern Heilongjiang, coal",China,Hegang,urban
+46.6333,130.3000,"Shuangyashan, eastern Heilongjiang, coal",China,Shuangyashan,urban
+45.7560,131.0167,"Jixi, southeastern Heilongjiang, coal, Russia border",China,Jixi,urban
+44.5833,129.6333,"Mudanjiang, southeastern Heilongjiang, Jingpo Lake",China,Mudanjiang,urban
+48.3833,135.0500,"Heihe, northern Heilongjiang, Russia border, Amur River",China,Heihe,urban
+50.2500,127.5000,"Mohe, northernmost China, Arctic Village, aurora",China,Mohe,wilderness
+47.7333,128.9000,"Yichun, northern Heilongjiang, forests, logging",China,Yichun,forest
+46.6333,124.8167,"Suihua, central Heilongjiang, agriculture",China,Suihua,urban
+52.3333,124.8167,"Daxing'anling, northern Heilongjiang, forests, taiga",China,Daxing'anling,forest
+45.4642,9.1900,"Milan fashion, Duomo cathedral, Galleria, northern Italy",Italy,Milan,urban
+45.0703,7.6869,"Turin, Alps, automotive, Piedmont, northern Italy",Italy,Turin,mountain
+44.4056,8.9463,"Genoa, port city, Liguria, pesto, Christopher Columbus",Italy,Genoa,coastal
+43.7696,11.2558,"Florence Renaissance, Uffizi, Duomo, Tuscany, art",Italy,Florence,urban
+43.3188,11.3308,"Siena, medieval, Palio, Tuscany, Gothic",Italy,Siena,urban
+43.7228,10.4017,"Pisa, Leaning Tower, Tuscany, Arno River",Italy,Pisa,urban
+43.9333,12.4667,"Rimini, Adriatic beaches, Roman, Emilia-Romagna",Italy,Rimini,coastal
+44.4949,11.3426,"Bologna, medieval towers, food, university, Emilia-Romagna",Italy,Bologna,urban
+44.8015,10.3279,"Parma, ham, cheese, opera, Emilia-Romagna",Italy,Parma,urban
+45.4384,10.9916,"Verona, Romeo and Juliet, Roman arena, Veneto",Italy,Verona,urban
+45.6495,13.7768,"Trieste, Adriatic, Austro-Hungarian, coffee, Friuli",Italy,Trieste,coastal
+46.0664,11.1257,"Trento, Alps, Dolomites, Trentino, mountains",Italy,Trento,mountain
+46.4983,11.3548,"Bolzano, South Tyrol, German-speaking, Alps, Dolomites",Italy,Bolzano,mountain
+43.6158,13.5189,"Ancona, Adriatic port, Marche, Roman arch",Italy,Ancona,coastal
+42.3515,13.3995,"L'Aquila, Abruzzo, mountains, medieval, earthquake",Italy,L'Aquila,mountain
+41.4618,12.9038,"Tivoli, Villa d'Este, Hadrian's Villa, Lazio, fountains",Italy,Tivoli,urban
+41.7754,12.6738,"Viterbo, medieval, Lazio, papal city, thermal baths",Italy,Viterbo,urban
+42.3515,14.2681,"Pescara, Adriatic beaches, Abruzzo, resort",Italy,Pescara,coastal
+41.1171,16.8719,"Bari, Puglia, Adriatic port, old town, southern Italy",Italy,Bari,coastal
+40.6401,17.9463,"Brindisi, Puglia, Adriatic port, Roman column",Italy,Brindisi,coastal
+40.3515,18.1750,"Lecce, Puglia, Baroque, southern Italy, Salento",Italy,Lecce,urban
+40.9270,14.7719,"Salerno, Amalfi Coast, Campania, southern Italy",Italy,Salerno,coastal
+40.6824,14.7681,"Amalfi, coastal cliffs, lemon groves, Campania, UNESCO",Italy,Amalfi,coastal
+40.7506,14.4926,"Pompeii, ancient Roman, Vesuvius, archaeological, ruins",Italy,Pompeii,urban
+38.1157,13.3615,"Palermo, Sicily, Norman, Arab, Baroque, street food",Italy,Palermo,coastal
+37.5079,15.0830,"Catania, Sicily, Mount Etna, Baroque, fish market",Italy,Catania,coastal
+37.0679,15.2866,"Syracuse, Sicily, ancient Greek, Ortygia, UNESCO",Italy,Syracuse,coastal
+38.1938,15.5540,"Messina, Sicily, Strait, ferry, northern Sicily",Italy,Messina,coastal
+39.2238,9.1217,"Cagliari, Sardinia, beaches, Phoenician, capital",Italy,Cagliari,coastal
+40.7264,8.5594,"Sassari, Sardinia, northern, Catalan, university",Italy,Sassari,urban
+40.8359,14.2489,"Caserta, Royal Palace, Campania, Baroque gardens",Italy,Caserta,urban
+43.7711,11.2486,"Prato, Tuscany, textiles, medieval, near Florence",Italy,Prato,urban
+43.8777,10.8050,"Lucca, Tuscany, city walls, medieval, towers",Italy,Lucca,urban
+43.4632,11.8796,"Arezzo, Tuscany, medieval, Piero della Francesca",Italy,Arezzo,urban
+42.3515,13.5705,"Rieti, Lazio, Apennines, Sabina, central Italy",Italy,Rieti,mountain
+41.5454,13.8473,"Cassino, Lazio, Monte Cassino, abbey, WWII",Italy,Cassino,mountain
+41.4618,15.5540,"Foggia, Puglia, plains, Tavoliere, southern Italy",Italy,Foggia,urban
+40.4668,17.2468,"Taranto, Puglia, Ionian Sea, naval base, mussels",Italy,Taranto,coastal
+40.3515,16.2468,"Matera, Basilicata, Sassi, cave dwellings, UNESCO",Italy,Matera,urban
+39.3083,16.2500,"Cosenza, Calabria, mountains, southern Italy",Italy,Cosenza,mountain
+38.8906,16.5987,"Catanzaro, Calabria, Ionian Sea, southern Italy",Italy,Catanzaro,coastal
+38.1938,15.6500,"Reggio Calabria, toe of Italy, Strait of Messina",Italy,Reggio Calabria,coastal
+40.0679,18.5000,"Lecce Baroque, Salento, southern Puglia, limestone",Italy,Lecce,urban
+42.4602,14.2147,"Chieti, Abruzzo, mountains, Majella, central Italy",Italy,Chieti,mountain
+42.3515,13.5000,"Teramo, Abruzzo, Gran Sasso, mountains, central Italy",Italy,Teramo,mountain
+41.4618,13.3000,"Frosinone, Lazio, Ciociaria, central Italy",Italy,Frosinone,urban
+41.4618,13.8000,"Latina, Lazio, Pontine Marshes, coastal plain",Italy,Latina,urban
+42.3515,12.1000,"Viterbo medieval, Lazio, papal city, thermal springs",Italy,Viterbo,urban
+43.1107,12.3908,"Perugia, Umbria, medieval, chocolate, university",Italy,Perugia,urban
+42.5653,12.6433,"Terni, Umbria, waterfalls, steel, central Italy",Italy,Terni,urban
+43.0629,12.6089,"Spoleto, Umbria, medieval, festival, Duomo",Italy,Spoleto,urban
+42.9382,12.4473,"Assisi, Umbria, St. Francis, basilica, medieval, UNESCO",Italy,Assisi,urban
+43.4632,12.1000,"Gubbio, Umbria, medieval, Palazzo dei Consoli",Italy,Gubbio,urban
+42.8382,13.5705,"Ascoli Piceno, Marche, travertine, medieval, olives",Italy,Ascoli Piceno,urban
+43.6158,13.5000,"Macerata, Marche, opera, medieval, central Italy",Italy,Macerata,urban
+43.9333,12.9000,"Pesaro, Marche, Adriatic, Rossini, beaches",Italy,Pesaro,coastal
+43.7272,12.6367,"Urbino, Marche, Renaissance, Raphael, UNESCO",Italy,Urbino,urban
+44.1391,12.2431,"Ravenna, Emilia-Romagna, mosaics, Byzantine, UNESCO",Italy,Ravenna,urban
+44.8184,11.6197,"Ferrara, Emilia-Romagna, Renaissance, Este, bicycles",Italy,Ferrara,urban
+44.6989,10.6297,"Modena, Emilia-Romagna, balsamic vinegar, Ferrari, Pavarotti",Italy,Modena,urban
+44.8015,10.0500,"Reggio Emilia, Emilia-Romagna, tricolor flag, food",Italy,Reggio Emilia,urban
+44.8949,10.9197,"Mantua, Lombardy, Renaissance, Gonzaga, lakes",Italy,Mantua,urban
+45.5416,10.2118,"Brescia, Lombardy, Roman ruins, Alps foothills",Italy,Brescia,urban
+45.6983,9.6773,"Bergamo, Lombardy, medieval upper town, Venetian walls",Italy,Bergamo,urban
+45.8521,9.2889,"Como, Lombardy, lake, Alps, silk, villas",Italy,Como,mountain
+45.8166,8.8278,"Varese, Lombardy, lakes, Alps, gardens",Italy,Varese,mountain
+45.6983,8.6278,"Novara, Piedmont, rice, basilica, northern Italy",Italy,Novara,urban
+45.4428,8.9197,"Vercelli, Piedmont, rice, Gothic cathedral",Italy,Vercelli,urban
+44.9333,8.2056,"Asti, Piedmont, wine, medieval, Palio",Italy,Asti,urban
+44.6989,7.6500,"Cuneo, Piedmont, Alps, southern Piedmont",Italy,Cuneo,mountain
+44.0679,7.6869,"Alessandria, Piedmont, citadel, southern Piedmont",Italy,Alessandria,urban
+44.9333,7.3000,"Aosta, Valle d'Aosta, Alps, Roman ruins, French-speaking",Italy,Aosta,mountain
+45.8166,8.8000,"Verbania, Piedmont, Lake Maggiore, Alps, gardens",Italy,Verbania,mountain
+44.0679,8.2056,"Savona, Liguria, port, beaches, Riviera di Ponente",Italy,Savona,coastal
+44.3083,8.4806,"Imperia, Liguria, olive oil, flowers, western Riviera",Italy,Imperia,coastal
+44.1107,9.8278,"La Spezia, Liguria, naval base, Cinque Terre gateway",Italy,La Spezia,coastal
+44.1107,9.7000,"Cinque Terre, Liguria, colorful villages, cliffs, UNESCO",Italy,Cinque Terre,coastal
+43.5486,10.3106,"Livorno, Tuscany, port, seafood, Venetian canals",Italy,Livorno,coastal
+42.7711,10.9197,"Grosseto, Tuscany, Maremma, beaches, southern Tuscany",Italy,Grosseto,coastal
+42.8382,11.1000,"Piombino, Tuscany, port, Elba ferry, steel",Italy,Piombino,coastal
+42.8166,10.3000,"Elba Island, Tuscany, Napoleon, beaches, hiking",Italy,Elba,coastal
+43.0629,10.5000,"Volterra, Tuscany, Etruscan, alabaster, medieval",Italy,Volterra,urban
+43.3188,11.7000,"Montepulciano, Tuscany, wine, Renaissance, hilltop",Italy,Montepulciano,urban
+43.0679,11.8000,"Montalcino, Tuscany, Brunello wine, medieval, hilltop",Italy,Montalcino,urban
+43.4632,11.1000,"San Gimignano, Tuscany, medieval towers, UNESCO, hilltop",Italy,San Gimignano,urban
+43.7711,11.6000,"Pistoia, Tuscany, medieval, Romanesque, northern Tuscany",Italy,Pistoia,urban
+43.8777,11.1000,"Massa, Tuscany, Apuan Alps, marble, beaches",Italy,Massa,coastal
+44.0679,10.1000,"Carrara, Tuscany, marble, Apuan Alps, Michelangelo",Italy,Carrara,mountain
+53.3498,-6.2603,"Dublin, Temple Bar, Guinness, Georgian, Irish pubs",Ireland,Dublin,urban
+51.8969,-8.4863,"Cork, southern Ireland, English Market, rebel city",Ireland,Cork,coastal
+53.2707,-9.0568,"Galway, western Ireland, Claddagh, Irish culture, Atlantic",Ireland,Galway,coastal
+52.6638,-8.6267,"Limerick, Shannon River, King John's Castle, midwest",Ireland,Limerick,urban
+54.5973,-5.9301,"Belfast, Northern Ireland, Titanic, murals, shipyard",United Kingdom,Belfast,coastal
+54.9966,-7.3086,"Londonderry, Northern Ireland, walled city, Derry",United Kingdom,Londonderry,urban
+52.4862,-1.8904,"Birmingham, industrial, canals, Bullring, Midlands",United Kingdom,Birmingham,urban
+53.4808,-2.2426,"Manchester, industrial, music, football, northern England",United Kingdom,Manchester,urban
+53.8008,-1.5491,"Leeds, Yorkshire, Victorian arcades, northern England",United Kingdom,Leeds,urban
+53.4084,-2.9916,"Liverpool, Beatles, port, football, Merseyside",United Kingdom,Liverpool,coastal
+54.9783,-1.6178,"Newcastle, Tyne bridges, Geordie, northeastern England",United Kingdom,Newcastle,urban
+53.9600,-1.0873,"York, medieval walls, Minster, Viking, Yorkshire",United Kingdom,York,urban
+52.2053,0.1218,"Cambridge, university, colleges, punting, East Anglia",United Kingdom,Cambridge,urban
+51.7520,-1.2577,"Oxford, university, colleges, dreaming spires, Thames",United Kingdom,Oxford,urban
+51.4545,-2.5879,"Bristol, port, Clifton Bridge, southwestern England",United Kingdom,Bristol,coastal
+50.8225,-0.1372,"Brighton, seaside, pier, Regency, southern England",United Kingdom,Brighton,coastal
+51.3811,-2.3590,"Bath, Roman baths, Georgian, UNESCO, Somerset",United Kingdom,Bath,urban
+50.3755,-4.1427,"Plymouth, naval base, Mayflower, Devon, southwestern",United Kingdom,Plymouth,coastal
+50.7184,-1.8804,"Bournemouth, beaches, Victorian, southern England",United Kingdom,Bournemouth,coastal
+51.5074,-0.1278,"London Westminster, Big Ben, Parliament, Thames, royal",United Kingdom,London,urban
+51.5155,-0.0922,"City of London, financial, St Paul's, Tower",United Kingdom,London,urban
+51.5007,-0.1246,"South Bank, Thames, London Eye, cultural",United Kingdom,London,urban
+51.5074,-0.1915,"Paddington, station, canal, Little Venice, London",United Kingdom,London,urban
+51.5155,-0.0728,"Shoreditch, hipster, street art, tech, East London",United Kingdom,London,urban
+51.5074,-0.1278,"Covent Garden, market, opera, theaters, West End",United Kingdom,London,urban
+51.5074,-0.1467,"Soho, entertainment, restaurants, nightlife, central London",United Kingdom,London,urban
+51.5074,-0.1915,"Notting Hill, carnival, Portobello, colorful houses",United Kingdom,London,urban
+51.5155,-0.0728,"Camden, markets, punk, music, canal, North London",United Kingdom,London,urban
+51.5310,-0.1238,"King's Cross, station, regeneration, canal, North London",United Kingdom,London,urban
+56.4907,-4.2026,"Glasgow, Victorian, industrial, Clyde, Scottish",United Kingdom,Glasgow,urban
+55.9533,-3.1883,"Edinburgh castle, Royal Mile, festival, Scottish capital",United Kingdom,Edinburgh,urban
+57.1497,-2.0943,"Aberdeen, granite city, oil, northeastern Scotland",United Kingdom,Aberdeen,coastal
+56.4620,-2.9707,"Dundee, Tay, jute, jam, journalism, eastern Scotland",United Kingdom,Dundee,coastal
+56.1165,-3.9369,"Stirling, castle, Wallace, Scottish battles, central",United Kingdom,Stirling,urban
+57.4778,-4.2247,"Inverness, Highlands, Loch Ness, Scottish capital north",United Kingdom,Inverness,urban
+58.9699,-2.9603,"Orkney Islands, Neolithic, Viking, northern Scotland",United Kingdom,Orkney,coastal
+58.2097,-6.3850,"Isle of Skye, mountains, cliffs, Scottish Highlands",United Kingdom,Skye,mountain
+57.0500,-5.5000,"Isle of Mull, wildlife, Tobermory, Inner Hebrides",United Kingdom,Mull,coastal
+56.4120,-5.4713,"Oban, seafood, ferries, western Scotland gateway",United Kingdom,Oban,coastal
+55.9486,-3.1999,"Leith, port, Edinburgh, waterfront, restaurants",United Kingdom,Leith,coastal
+51.4816,-3.1791,"Cardiff, Welsh capital, castle, Millennium Stadium, bay",United Kingdom,Cardiff,urban
+51.6214,-3.9436,"Swansea, coastal, Dylan Thomas, Gower, southern Wales",United Kingdom,Swansea,coastal
+53.1907,-2.8900,"Wrexham, northeastern Wales, football, industrial",United Kingdom,Wrexham,urban
+52.4162,-4.0822,"Aberystwyth, coastal, university, Victorian, mid Wales",United Kingdom,Aberystwyth,coastal
+53.2280,-4.1280,"Bangor, northwestern Wales, university, Menai Strait",United Kingdom,Bangor,coastal
+52.9290,-4.0770,"Snowdonia, mountains, national park, Welsh peaks",United Kingdom,Snowdonia,mountain
+52.6754,-3.8433,"Machynlleth, mid Wales, Owain Glyndŵr, market town",United Kingdom,Machynlleth,urban
+51.6823,-3.3761,"Merthyr Tydfil, valleys, industrial heritage, South Wales",United Kingdom,Merthyr Tydfil,urban
+51.5816,-2.9988,"Newport, South Wales, Transporter Bridge, Roman",United Kingdom,Newport,urban
+52.1307,-3.7837,"Brecon, Beacons, national park, market town, mid Wales",United Kingdom,Brecon,mountain
+52.9548,-1.1581,"Nottingham, Robin Hood, lace, caves, East Midlands",United Kingdom,Nottingham,urban
+52.6369,-1.1398,"Leicester, multicultural, Richard III, East Midlands",United Kingdom,Leicester,urban
+52.9225,-1.4746,"Derby, industrial, Rolls-Royce, East Midlands",United Kingdom,Derby,urban
+53.0000,-1.0000,"Sherwood Forest, Robin Hood, ancient oaks, Nottinghamshire",United Kingdom,Sherwood Forest,forest
+52.4862,-1.8904,"Coventry, cathedral, Blitz, automotive, West Midlands",United Kingdom,Coventry,urban
+52.5833,-2.0000,"Wolverhampton, industrial, Black Country, West Midlands",United Kingdom,Wolverhampton,urban
+52.6833,-1.8333,"Walsall, Black Country, leather, West Midlands",United Kingdom,Walsall,urban
+52.5833,-1.9833,"Dudley, Black Country, castle, zoo, West Midlands",United Kingdom,Dudley,urban
+52.4500,-1.9300,"Solihull, affluent, West Midlands, near Birmingham",United Kingdom,Solihull,urban
+52.4081,-1.5106,"Warwick, castle, medieval, Shakespeare country",United Kingdom,Warwick,urban
+52.1918,-2.2206,"Stratford-upon-Avon, Shakespeare, Tudor, River Avon",United Kingdom,Stratford-upon-Avon,urban
+52.0406,-0.7594,"Milton Keynes, new town, roundabouts, concrete cows",United Kingdom,Milton Keynes,urban
+51.7520,-1.2577,"Oxford university, Bodleian, Christ Church, dreaming spires",United Kingdom,Oxford,urban
+51.4545,-0.9781,"Reading, Thames, tech, university, southeastern England",United Kingdom,Reading,urban
+51.2787,-0.5217,"Guildford, Surrey, cathedral, university, commuter town",United Kingdom,Guildford,urban
+51.3148,-0.5600,"Woking, Surrey, commuter, mosque, H.G. Wells",United Kingdom,Woking,urban
+51.2362,-0.5704,"Farnborough, Hampshire, airshow, aerospace",United Kingdom,Farnborough,urban
+51.2382,-0.7498,"Aldershot, Hampshire, military, garrison town",United Kingdom,Aldershot,urban
+51.0882,-1.7945,"Salisbury, cathedral, Stonehenge, medieval, Wiltshire",United Kingdom,Salisbury,urban
+51.1789,-1.8262,"Stonehenge, prehistoric, megaliths, Wiltshire, UNESCO",United Kingdom,Stonehenge,urban
+50.9097,-1.4044,"Southampton, port, Titanic, cruise ships, Hampshire",United Kingdom,Southampton,coastal
+50.8198,-1.0879,"Portsmouth, naval, HMS Victory, Spinnaker Tower, Hampshire",United Kingdom,Portsmouth,coastal
+50.8429,-0.1313,"Lewes, Sussex, castle, bonfire, South Downs",United Kingdom,Lewes,urban
+50.8225,-0.1372,"Brighton Lanes, pier, Pavilion, seaside, bohemian",United Kingdom,Brighton,coastal
+50.8279,-0.1406,"Hove, adjacent Brighton, Victorian, seafront, Sussex",United Kingdom,Hove,coastal
+51.0704,1.3080,"Canterbury, cathedral, pilgrimage, medieval, Kent, UNESCO",United Kingdom,Canterbury,urban
+51.2787,1.0789,"Dover, white cliffs, castle, ferry port, Kent",United Kingdom,Dover,coastal
+51.3813,1.3986,"Margate, seaside, Turner, beaches, Kent",United Kingdom,Margate,coastal
+51.3560,1.4172,"Ramsgate, port, Victorian, beaches, Kent",United Kingdom,Ramsgate,coastal
+51.1789,0.5217,"Maidstone, Kent county town, River Medway",United Kingdom,Maidstone,urban
+51.3704,0.5085,"Chatham, naval dockyard, Medway, Kent",United Kingdom,Chatham,urban
+51.4429,0.7159,"Gillingham, Medway, Kent, commuter town",United Kingdom,Gillingham,urban
+51.3813,0.5217,"Rochester, cathedral, castle, Dickens, Medway, Kent",United Kingdom,Rochester,urban
+51.4545,0.0000,"Greenwich, meridian, maritime, observatory, London",United Kingdom,Greenwich,urban
+51.4893,-0.0883,"Deptford, South London, maritime history, regeneration",United Kingdom,Deptford,urban
+51.4700,-0.1000,"Peckham, South London, multicultural, markets, art",United Kingdom,Peckham,urban
+51.4545,-0.0728,"Lewisham, South London, market, multicultural",United Kingdom,Lewisham,urban
+51.4700,-0.1915,"Brixton, South London, Caribbean, market, music",United Kingdom,Brixton,urban
+51.4893,-0.1915,"Clapham, South London, common, Victorian, nightlife",United Kingdom,Clapham,urban
+51.4621,-0.1147,"Dulwich, South London, gallery, park, village",United Kingdom,Dulwich,urban
+51.4429,-0.2147,"Wimbledon, South London, tennis, common, village",United Kingdom,Wimbledon,urban
+51.5310,-0.1050,"Islington, North London, Georgian, Angel, restaurants",United Kingdom,Islington,urban
+51.5621,-0.1050,"Highbury, North London, Arsenal, Victorian",United Kingdom,Highbury,urban
+51.5621,-0.1467,"Hampstead, North London, heath, literary, affluent",United Kingdom,Hampstead,urban
+51.5621,-0.1915,"St John's Wood, North London, Abbey Road, cricket",United Kingdom,St John's Wood,urban
+51.5310,-0.2147,"Maida Vale, West London, canal, Victorian, BBC",United Kingdom,Maida Vale,urban
+51.5155,-0.2563,"Shepherd's Bush, West London, market, BBC, Westfield",United Kingdom,Shepherd's Bush,urban
+51.5074,-0.3000,"Ealing, West London, studios, common, suburban",United Kingdom,Ealing,urban
+51.4893,-0.3000,"Chiswick, West London, riverside, Georgian, affluent",United Kingdom,Chiswick,urban
+51.4621,-0.2147,"Putney, Southwest London, rowing, riverside, bridge",United Kingdom,Putney,urban
+51.4429,-0.2563,"Wandsworth, Southwest London, common, riverside",United Kingdom,Wandsworth,urban
+51.4621,-0.3000,"Richmond, Southwest London, park, Thames, deer, Georgian",United Kingdom,Richmond,urban
+51.4429,-0.3416,"Kingston, Southwest London, market, Thames, university",United Kingdom,Kingston,urban
+51.4155,-0.3000,"Surbiton, Southwest London, suburban, commuter",United Kingdom,Surbiton,urban
+51.3813,-0.3416,"Epsom, Surrey, racecourse, Derby, commuter",United Kingdom,Epsom,urban
+51.3148,-0.2563,"Sutton, South London, suburban, market town",United Kingdom,Sutton,urban
+51.3813,-0.1467,"Croydon, South London, office towers, trams, airport",United Kingdom,Croydon,urban
+51.3148,-0.0728,"Bromley, Southeast London, market, suburban",United Kingdom,Bromley,urban
+51.4045,0.0186,"Bexley, Southeast London, suburban, Kent border",United Kingdom,Bexley,urban
+51.4429,0.0728,"Dartford, Kent, Thames crossing, commuter",United Kingdom,Dartford,urban
+51.4700,0.1050,"Gravesend, Kent, Thames, Pocahontas, port",United Kingdom,Gravesend,coastal
+51.3813,0.5217,"Medway Towns, Kent, naval heritage, River Medway",United Kingdom,Medway,urban
+51.2787,0.5217,"Tonbridge, Kent, castle, River Medway, commuter",United Kingdom,Tonbridge,urban
+51.1789,0.2563,"Tunbridge Wells, Kent, spa, Pantiles, affluent",United Kingdom,Tunbridge Wells,urban
+51.1307,0.2563,"Sevenoaks, Kent, affluent, commuter, Knole House",United Kingdom,Sevenoaks,urban
+51.2787,0.0728,"Orpington, Southeast London, suburban, Kent border",United Kingdom,Orpington,urban
+51.3813,-0.0728,"Beckenham, Southeast London, suburban, parks",United Kingdom,Beckenham,urban
+51.4045,-0.0186,"Catford, Southeast London, town center, cat statue",United Kingdom,Catford,urban
+51.4429,-0.0186,"New Cross, Southeast London, Goldsmiths, regeneration",United Kingdom,New Cross,urban
+51.4700,0.0000,"Blackheath, Southeast London, heath, village, Georgian",United Kingdom,Blackheath,urban
+51.4893,0.0186,"Woolwich, Southeast London, Arsenal, ferry, riverside",United Kingdom,Woolwich,urban
+51.5074,0.0728,"Plumstead, Southeast London, common, residential",United Kingdom,Plumstead,urban
+51.5155,0.1050,"Abbey Wood, Southeast London, Crossrail, residential",United Kingdom,Abbey Wood,urban
+51.4893,0.1467,"Erith, Southeast London, Thames, industrial, Kent border",United Kingdom,Erith,coastal
+51.4700,0.2147,"Belvedere, Southeast London, industrial, Thames",United Kingdom,Belvedere,urban
+51.5074,0.1467,"Thamesmead, Southeast London, brutalist, lakes, new town",United Kingdom,Thamesmead,urban
+51.4429,0.0186,"Eltham, Southeast London, palace, suburban",United Kingdom,Eltham,urban
+51.4155,0.0728,"Sidcup, Southeast London, suburban, Kent border",United Kingdom,Sidcup,urban
+51.3813,0.1050,"Bexleyheath, Southeast London, shopping, clock tower",United Kingdom,Bexleyheath,urban
+51.4429,0.1467,"Welling, Southeast London, residential, Kent border",United Kingdom,Welling,urban
+51.5155,0.0186,"Charlton, Southeast London, football, Thames Barrier",United Kingdom,Charlton,urban
+51.4893,-0.0186,"Blackheath Village, Southeast London, Georgian, heath",United Kingdom,Blackheath,urban
+51.4700,-0.0186,"Forest Hill, Southeast London, Horniman Museum, Victorian",United Kingdom,Forest Hill,urban
+51.4429,-0.0728,"Sydenham, Southeast London, Crystal Palace, Victorian",United Kingdom,Sydenham,urban
+51.4155,-0.0728,"Norwood, South London, Victorian, multicultural",United Kingdom,Norwood,urban
+51.3813,-0.1050,"Thornton Heath, South London, residential, multicultural",United Kingdom,Thornton Heath,urban
+51.3813,-0.1467,"Mitcham, South London, common, cricket, trams",United Kingdom,Mitcham,urban
+51.4045,-0.1915,"Tooting, South London, market, curry, common",United Kingdom,Tooting,urban
+51.4155,-0.1915,"Balham, South London, residential, tube, restaurants",United Kingdom,Balham,urban
+51.4429,-0.1467,"Streatham, South London, high street, common, ice rink",United Kingdom,Streatham,urban
+51.4155,-0.1050,"West Norwood, South London, cemetery, Victorian",United Kingdom,West Norwood,urban
+51.4429,-0.1050,"Herne Hill, South London, velodrome, Victorian, village",United Kingdom,Herne Hill,urban
+51.4700,-0.0728,"East Dulwich, South London, Victorian, village, restaurants",United Kingdom,East Dulwich,urban
+51.4700,-0.0186,"Nunhead, South London, cemetery, Victorian, residential",United Kingdom,Nunhead,urban
+51.4893,-0.0728,"Camberwell, South London, art college, market, Georgian",United Kingdom,Camberwell,urban
+51.5074,-0.0728,"Walworth, South London, Elephant and Castle, regeneration",United Kingdom,Walworth,urban
+51.5074,-0.1050,"Kennington, South London, Oval cricket, Georgian",United Kingdom,Kennington,urban
+51.4893,-0.1467,"Stockwell, South London, Portuguese, tube, residential",United Kingdom,Stockwell,urban
+51.4700,-0.1467,"Clapham North, South London, residential, tube",United Kingdom,Clapham,urban
+51.4621,-0.1467,"Clapham South, South London, common, residential",United Kingdom,Clapham,urban
+51.4429,-0.1915,"Balham Hill, South London, residential, Victorian",United Kingdom,Balham,urban
+51.4155,-0.2147,"Tooting Bec, South London, common, lido, residential",United Kingdom,Tooting,urban
+51.4045,-0.2147,"Tooting Broadway, South London, market, curry, tube",United Kingdom,Tooting,urban
+51.3813,-0.1915,"Colliers Wood, South London, tube, residential, Wandle",United Kingdom,Colliers Wood,urban
+51.3813,-0.2147,"Merton, South London, abbey, Wimbledon, residential",United Kingdom,Merton,urban
+51.4045,-0.2563,"Wimbledon Park, South London, park, tennis, residential",United Kingdom,Wimbledon,urban
+51.4155,-0.2563,"Southfields, South London, residential, tube, All England Club",United Kingdom,Southfields,urban
+51.4429,-0.2147,"Earlsfield, South London, residential, Wandle, Victorian",United Kingdom,Earlsfield,urban
+51.4545,-0.1915,"Clapham Junction, South London, station, shopping, busy",United Kingdom,Clapham Junction,urban
+51.4621,-0.1915,"Battersea, South London, park, power station, riverside",United Kingdom,Battersea,urban
+51.4700,-0.1915,"Nine Elms, South London, regeneration, embassy, Battersea",United Kingdom,Nine Elms,urban
+51.4893,-0.1915,"Vauxhall, South London, bridge, MI6, gay scene",United Kingdom,Vauxhall,urban
+51.4893,-0.1467,"Oval, South London, cricket, Kennington, tube",United Kingdom,Oval,urban
+51.5074,-0.1147,"Elephant and Castle, South London, shopping, regeneration, roundabout",United Kingdom,Elephant and Castle,urban
+51.5074,-0.0728,"Borough, South London, market, Shard, Southwark Cathedral",United Kingdom,Borough,urban
+51.5074,-0.0186,"Bermondsey, South London, antiques, riverside, regeneration",United Kingdom,Bermondsey,urban
+51.5074,0.0000,"Rotherhithe, South London, Thames Tunnel, maritime, Surrey Docks",United Kingdom,Rotherhithe,urban
+51.4893,0.0186,"Deptford Creek, South London, tidal, art, regeneration",United Kingdom,Deptford,urban
+51.4700,0.0186,"New Cross Gate, South London, Goldsmiths, residential",United Kingdom,New Cross,urban
+51.4700,0.0000,"Telegraph Hill, South London, park, views, residential",United Kingdom,Telegraph Hill,urban
+51.4621,0.0000,"Brockley, South London, residential, Victorian, market",United Kingdom,Brockley,urban
+51.4545,-0.0186,"Honor Oak, South London, cemetery, park, residential",United Kingdom,Honor Oak,urban
+51.4429,-0.0186,"Crofton Park, South London, residential, Victorian",United Kingdom,Crofton Park,urban
+51.4429,-0.0728,"Catford Bridge, Southeast London, greyhound, residential",United Kingdom,Catford,urban
+51.4155,-0.0728,"Bellingham, South London, residential, Ravensbourne",United Kingdom,Bellingham,urban
+51.4045,-0.0728,"Downham, South London, estate, residential",United Kingdom,Downham,urban
+51.3813,-0.0728,"Bromley South, Southeast London, shopping, residential",United Kingdom,Bromley,urban
+51.3813,-0.0186,"Bromley North, Southeast London, market, residential",United Kingdom,Bromley,urban
+51.4045,-0.0186,"Sundridge, Southeast London, park, residential",United Kingdom,Sundridge,urban
+51.4155,-0.0186,"Grove Park, Southeast London, residential, Victorian",United Kingdom,Grove Park,urban
+51.4155,0.0000,"Chinbrook, Southeast London, residential, Mottingham",United Kingdom,Chinbrook,urban
+51.4155,0.0186,"Mottingham, Southeast London, residential, Kent border",United Kingdom,Mottingham,urban
+51.4045,0.0186,"New Eltham, Southeast London, residential, suburban",United Kingdom,New Eltham,urban
+51.4155,0.0728,"Chislehurst, Southeast London, caves, common, affluent",United Kingdom,Chislehurst,urban
+51.4045,0.1050,"Petts Wood, Southeast London, residential, National Trust",United Kingdom,Petts Wood,urban
+51.3813,0.1050,"Orpington Station, Southeast London, shopping, commuter",United Kingdom,Orpington,urban
+51.3813,0.0728,"Farnborough, Southeast London, residential, Kent",United Kingdom,Farnborough,urban
+51.3813,0.0186,"Hayes, Southeast London, common, residential",United Kingdom,Hayes,urban
+51.3813,0.0000,"West Wickham, Southeast London, residential, Kent border",United Kingdom,West Wickham,urban
+51.3813,-0.0186,"Shirley, South London, residential, Croydon",United Kingdom,Shirley,urban
+51.3813,-0.0728,"Addiscombe, South London, residential, trams, Croydon",United Kingdom,Addiscombe,urban
+51.3813,-0.1050,"South Croydon, South London, residential, suburban",United Kingdom,South Croydon,urban
+51.3813,-0.1467,"Purley, South London, residential, affluent, Surrey border",United Kingdom,Purley,urban
+51.3813,-0.1915,"Coulsdon, South London, residential, Surrey, commuter",United Kingdom,Coulsdon,urban
+51.3148,-0.1915,"Caterham, Surrey, residential, North Downs, commuter",United Kingdom,Caterham,urban
+51.3148,-0.1467,"Whyteleafe, Surrey, residential, North Downs",United Kingdom,Whyteleafe,urban
+51.3148,-0.1050,"Warlingham, Surrey, residential, North Downs, village",United Kingdom,Warlingham,urban
+51.3148,-0.0728,"Woldingham, Surrey, North Downs, village, affluent",United Kingdom,Woldingham,mountain
+51.2787,-0.0728,"Oxted, Surrey, North Downs, market town, commuter",United Kingdom,Oxted,urban
+51.2787,-0.0186,"Limpsfield, Surrey, North Downs, village, chart",United Kingdom,Limpsfield,urban
+51.2787,0.0000,"Edenbridge, Kent, market town, River Eden, commuter",United Kingdom,Edenbridge,urban
+51.2787,0.0728,"Westerham, Kent, village, Churchill, Chartwell",United Kingdom,Westerham,urban
+51.2787,0.1467,"Sevenoaks Weald, Kent, village, affluent, commuter",United Kingdom,Sevenoaks,urban
+51.2787,0.2147,"Borough Green, Kent, village, commuter, North Downs",United Kingdom,Borough Green,urban
+51.2787,0.2563,"Ightham, Kent, village, Mote, medieval",United Kingdom,Ightham,urban
+51.2787,0.3000,"Plaxtol, Kent, village, rural, orchards",United Kingdom,Plaxtol,urban
+51.2787,0.3416,"Shipbourne, Kent, village, rural, Kent Downs",United Kingdom,Shipbourne,urban
+51.2787,0.3833,"Hadlow, Kent, village, tower, rural",United Kingdom,Hadlow,urban
+51.2787,0.4250,"East Peckham, Kent, village, hops, rural",United Kingdom,East Peckham,urban
+51.2787,0.4667,"Yalding, Kent, village, Medway, floods",United Kingdom,Yalding,urban
+51.2787,0.5085,"Wateringbury, Kent, village, Medway, station",United Kingdom,Wateringbury,urban
+51.2787,0.5500,"Teston, Kent, village, Medway, bridge",United Kingdom,Teston,urban
+51.2787,0.5917,"Barming, Kent, village, Maidstone, residential",United Kingdom,Barming,urban
+51.2787,0.6333,"Maidstone East, Kent, station, town center",United Kingdom,Maidstone,urban
+51.2787,0.6750,"Maidstone West, Kent, station, shopping",United Kingdom,Maidstone,urban
+51.2787,0.7167,"Bearsted, Kent, village, Maidstone, affluent",United Kingdom,Bearsted,urban
+51.2787,0.7583,"Hollingbourne, Kent, village, North Downs, Pilgrims Way",United Kingdom,Hollingbourne,urban
+51.2787,0.8000,"Harrietsham, Kent, village, North Downs, station",United Kingdom,Harrietsham,urban
+51.2787,0.8417,"Lenham, Kent, village, market square, North Downs",United Kingdom,Lenham,urban
+51.2787,0.8833,"Charing, Kent, village, historic, Archbishop's Palace",United Kingdom,Charing,urban
+51.2787,0.9250,"Westwell, Kent, village, rural, North Downs",United Kingdom,Westwell,urban
+51.2787,0.9667,"Eastwell, Kent, village, park, ruins",United Kingdom,Eastwell,urban
+51.2787,1.0083,"Boughton Aluph, Kent, village, rural, North Downs",United Kingdom,Boughton Aluph,urban
+51.2787,1.0500,"Wye, Kent, village, agricultural college, North Downs",United Kingdom,Wye,urban
+51.2787,1.0917,"Brook, Kent, village, rural, Romney Marsh",United Kingdom,Brook,urban
+51.2787,1.1333,"Hastingleigh, Kent, village, rural, North Downs",United Kingdom,Hastingleigh,urban
+51.2787,1.1750,"Elmsted, Kent, village, rural, North Downs",United Kingdom,Elmsted,urban
+51.2787,1.2167,"Stowting, Kent, village, rural, North Downs",United Kingdom,Stowting,urban
+51.2787,1.2583,"Monks Horton, Kent, village, rural, North Downs",United Kingdom,Monks Horton,urban
+51.2787,1.3000,"Sellindge, Kent, village, Channel Tunnel, station",United Kingdom,Sellindge,urban
+51.2787,1.3417,"Stanford, Kent, village, rural, military ranges",United Kingdom,Stanford,urban
+51.2787,1.3833,"Saltwood, Kent, village, castle, Hythe",United Kingdom,Saltwood,urban
+51.2787,1.4250,"Sandgate, Kent, coastal, Folkestone, Martello towers",United Kingdom,Sandgate,coastal
+51.2787,1.4667,"Folkestone Harbour, Kent, port, regeneration, Creative Quarter",United Kingdom,Folkestone,coastal
+51.2787,1.5083,"Folkestone Central, Kent, station, shopping, town center",United Kingdom,Folkestone,coastal
+51.2787,1.5500,"Folkestone West, Kent, residential, clifftop",United Kingdom,Folkestone,coastal
+51.2787,1.5917,"Capel-le-Ferne, Kent, village, Battle of Britain Memorial",United Kingdom,Capel-le-Ferne,coastal
+51.2787,1.6333,"St Margaret's at Cliffe, Kent, village, white cliffs, coastal",United Kingdom,St Margaret's,coastal
+51.2787,1.6750,"Dover Priory, Kent, station, town center, port",United Kingdom,Dover,coastal
+51.2787,1.7167,"Dover Eastern Docks, Kent, ferry terminal, port",United Kingdom,Dover,coastal
+51.2787,1.7583,"Dover Western Heights, Kent, fortifications, clifftop",United Kingdom,Dover,coastal
+51.2787,1.8000,"Whitfield, Kent, village, Dover, residential",United Kingdom,Whitfield,urban
+51.2787,1.8417,"Eythorne, Kent, village, former mining, rural",United Kingdom,Eythorne,urban
+51.2787,1.8833,"Shepherdswell, Kent, village, station, rural",United Kingdom,Shepherdswell,urban
+51.2787,1.9250,"Barham, Kent, village, rural, downs",United Kingdom,Barham,urban
+51.2787,1.9667,"Kingston, Kent, village, rural, near Canterbury",United Kingdom,Kingston,urban
+51.2787,2.0083,"Bridge, Kent, village, rural, near Canterbury",United Kingdom,Bridge,urban
+51.2787,2.0500,"Bekesbourne, Kent, village, station, rural",United Kingdom,Bekesbourne,urban
+51.2787,2.0917,"Littlebourne, Kent, village, rural, near Canterbury",United Kingdom,Littlebourne,urban
+51.2787,2.1333,"Wickhambreaux, Kent, village, rural, River Stour",United Kingdom,Wickhambreaux,urban
+51.2787,2.1750,"Wingham, Kent, village, market town, rural",United Kingdom,Wingham,urban
+51.2787,2.2167,"Ash, Kent, village, rural, near Sandwich",United Kingdom,Ash,urban
+51.2787,2.2583,"Sandwich, Kent, historic port, Cinque Port, medieval",United Kingdom,Sandwich,coastal
+51.2787,2.3000,"Richborough, Kent, Roman fort, ruins, coastal",United Kingdom,Richborough,coastal
+51.2787,2.3417,"Pegwell Bay, Kent, coastal, Viking ship, nature reserve",United Kingdom,Pegwell Bay,coastal
+51.2787,2.3833,"Ramsgate Royal Harbour, Kent, marina, Victorian, seaside",United Kingdom,Ramsgate,coastal
+51.2787,2.4250,"Broadstairs, Kent, seaside, Dickens, Viking Bay",United Kingdom,Broadstairs,coastal
+51.2787,2.4667,"Margate Main Sands, Kent, beach, Turner, seaside",United Kingdom,Margate,coastal
+51.2787,2.5083,"Westgate-on-Sea, Kent, seaside, Victorian, beaches",United Kingdom,Westgate-on-Sea,coastal
+51.2787,2.5500,"Birchington, Kent, coastal, village, Quex Park",United Kingdom,Birchington,coastal
+51.2787,2.5917,"Minnis Bay, Kent, beach, coastal, Birchington",United Kingdom,Minnis Bay,coastal
+51.2787,2.6333,"Reculver, Kent, Roman fort, towers, coastal erosion",United Kingdom,Reculver,coastal
+51.2787,2.6750,"Herne Bay, Kent, seaside, pier, Victorian",United Kingdom,Herne Bay,coastal
+51.2787,2.7167,"Whitstable, Kent, oysters, harbour, beach huts, bohemian",United Kingdom,Whitstable,coastal
+51.2787,2.7583,"Seasalter, Kent, coastal, beach, oysters",United Kingdom,Seasalter,coastal
+51.2787,2.8000,"Faversham, Kent, market town, creek, brewing, historic",United Kingdom,Faversham,coastal
+51.2787,2.8417,"Oare, Kent, village, marshes, creek, rural",United Kingdom,Oare,coastal
+51.2787,2.8833,"Luddenham, Kent, village, marshes, rural",United Kingdom,Luddenham,coastal
+51.2787,2.9250,"Nagden, Kent, marshes, rural, remote",United Kingdom,Nagden,coastal
+51.2787,2.9667,"Conyer, Kent, creek, marshes, sailing",United Kingdom,Conyer,coastal
+51.2787,3.0083,"Teynham, Kent, village, fruit growing, station",United Kingdom,Teynham,urban
+51.2787,3.0500,"Lynsted, Kent, village, rural, orchards",United Kingdom,Lynsted,urban
+51.2787,3.0917,"Doddington, Kent, village, rural, North Downs",United Kingdom,Doddington,urban
+51.2787,3.1333,"Newnham, Kent, village, rural, North Downs",United Kingdom,Newnham,urban
+51.2787,3.1750,"Eastling, Kent, village, rural, North Downs",United Kingdom,Eastling,urban
+51.2787,3.2167,"Throwley, Kent, village, rural, North Downs",United Kingdom,Throwley,urban
+51.2787,3.2583,"Sheldwich, Kent, village, rural, North Downs",United Kingdom,Sheldwich,urban
+51.2787,3.3000,"Chilham, Kent, village, castle, square, medieval",United Kingdom,Chilham,urban
+51.2787,3.3417,"Chartham, Kent, village, River Stour, paper mill",United Kingdom,Chartham,urban
+51.2787,3.3833,"Chartham Hatch, Kent, village, rural, near Canterbury",United Kingdom,Chartham Hatch,urban
+51.2787,3.4250,"Harbledown, Kent, village, Canterbury, historic",United Kingdom,Harbledown,urban
+51.2787,3.4667,"Rough Common, Kent, village, Canterbury, residential",United Kingdom,Rough Common,urban
+51.2787,3.5083,"Canterbury West, Kent, station, city center, cathedral",United Kingdom,Canterbury,urban
+51.2787,3.5500,"Canterbury East, Kent, station, residential",United Kingdom,Canterbury,urban
+51.2787,3.5917,"Sturry, Kent, village, River Stour, Canterbury",United Kingdom,Sturry,urban
+51.2787,3.6333,"Fordwich, Kent, smallest town, River Stour, medieval",United Kingdom,Fordwich,urban
+51.2787,3.6750,"Westbere, Kent, village, marshes, River Stour",United Kingdom,Westbere,urban
+51.2787,3.7167,"Grove Ferry, Kent, river crossing, marshes, pub",United Kingdom,Grove Ferry,coastal
+51.2787,3.7583,"Upstreet, Kent, village, marshes, rural",United Kingdom,Upstreet,coastal
+51.2787,3.8000,"Sarre, Kent, village, marshes, former island",United Kingdom,Sarre,coastal
+51.2787,3.8417,"St Nicholas-at-Wade, Kent, village, former island, Thanet",United Kingdom,St Nicholas-at-Wade,coastal
+51.2787,3.8833,"Monkton, Kent, village, Thanet, airport",United Kingdom,Monkton,urban
+51.2787,3.9250,"Minster, Kent, village, abbey, Thanet",United Kingdom,Minster,urban
+51.2787,3.9667,"Cliffsend, Kent, village, coastal, Thanet",United Kingdom,Cliffsend,coastal
+51.2787,4.0083,"Ebbsfleet, Kent, Eurostar station, regeneration, international",United Kingdom,Ebbsfleet,urban
+51.2787,4.0500,"Northfleet, Kent, town, Thames, cement, industrial",United Kingdom,Northfleet,coastal
+51.2787,4.0917,"Gravesend Town Pier, Kent, Thames, ferry, port",United Kingdom,Gravesend,coastal
+51.2787,4.1333,"Tilbury, Essex, port, Thames, ferry, industrial",United Kingdom,Tilbury,coastal
+51.2787,4.1750,"West Tilbury, Essex, village, marshes, Thames",United Kingdom,West Tilbury,coastal
+51.2787,4.2167,"East Tilbury, Essex, village, marshes, Thames",United Kingdom,East Tilbury,coastal
+51.2787,4.2583,"Linford, Essex, village, marshes, Thames",United Kingdom,Linford,coastal
+51.2787,4.3000,"Mucking, Essex, village, marshes, Thames, landfill",United Kingdom,Mucking,coastal
+51.2787,4.3417,"Stanford-le-Hope, Essex, town, Thames, commuter",United Kingdom,Stanford-le-Hope,urban
+51.2787,4.3833,"Corringham, Essex, town, Thames, oil refinery",United Kingdom,Corringham,urban
+51.2787,4.4250,"Canvey Island, Essex, island, Thames, seaside, Dutch",United Kingdom,Canvey Island,coastal
+51.2787,4.4667,"Benfleet, Essex, town, creek, castle, commuter",United Kingdom,Benfleet,coastal
+51.2787,4.5083,"Hadleigh, Essex, town, castle, marshes, Thames",United Kingdom,Hadleigh,coastal
+51.2787,4.5500,"Leigh-on-Sea, Essex, seaside, Old Town, cockles, Thames",United Kingdom,Leigh-on-Sea,coastal
+51.2787,4.5917,"Southend-on-Sea, Essex, seaside, pier, Thames estuary",United Kingdom,Southend-on-Sea,coastal
+51.2787,4.6333,"Westcliff-on-Sea, Essex, seaside, cliffs, Southend",United Kingdom,Westcliff-on-Sea,coastal
+51.2787,4.6750,"Chalkwell, Essex, seaside, beach, Southend",United Kingdom,Chalkwell,coastal
+51.2787,4.7167,"Thorpe Bay, Essex, seaside, affluent, Southend",United Kingdom,Thorpe Bay,coastal
+51.2787,4.7583,"Shoeburyness, Essex, coastal, military, Thames",United Kingdom,Shoeburyness,coastal
+51.2787,4.8000,"Great Wakering, Essex, village, coastal, rural",United Kingdom,Great Wakering,coastal
+51.2787,4.8417,"Foulness Island, Essex, island, remote, military, birds",United Kingdom,Foulness Island,coastal
+51.2787,4.8833,"Burnham-on-Crouch, Essex, sailing, yachting, River Crouch",United Kingdom,Burnham-on-Crouch,coastal
+51.2787,4.9250,"Southminster, Essex, village, Dengie Peninsula, station",United Kingdom,Southminster,coastal
+51.2787,4.9667,"Bradwell-on-Sea, Essex, coastal, nuclear, chapel, remote",United Kingdom,Bradwell-on-Sea,coastal
+51.2787,5.0083,"St Lawrence, Essex, coastal, remote, Dengie Peninsula",United Kingdom,St Lawrence,coastal
+51.2787,5.0500,"Tillingham, Essex, village, marshes, Dengie Peninsula",United Kingdom,Tillingham,coastal
+51.2787,5.0917,"Dengie, Essex, village, peninsula, remote, marshes",United Kingdom,Dengie,coastal
+51.2787,5.1333,"Asheldham, Essex, village, remote, Dengie Peninsula",United Kingdom,Asheldham,coastal
+51.2787,5.1750,"Southend Airport, Essex, airport, Rochford, commuter",United Kingdom,Southend,urban
+51.2787,5.2167,"Rochford, Essex, market town, airport, historic",United Kingdom,Rochford,urban
+51.2787,5.2583,"Hockley, Essex, town, commuter, residential",United Kingdom,Hockley,urban
+51.2787,5.3000,"Rayleigh, Essex, market town, castle, commuter",United Kingdom,Rayleigh,urban
+51.2787,5.3417,"Thundersley, Essex, town, commuter, residential",United Kingdom,Thundersley,urban
+51.2787,5.3833,"Daws Heath, Essex, village, commuter, residential",United Kingdom,Daws Heath,urban
+51.2787,5.4250,"South Benfleet, Essex, town, commuter, residential",United Kingdom,South Benfleet,urban
+51.2787,5.4667,"Pitsea, Essex, town, new town, commuter",United Kingdom,Pitsea,urban
+51.2787,5.5083,"Basildon, Essex, new town, shopping, commuter",United Kingdom,Basildon,urban
+51.2787,5.5500,"Laindon, Essex, town, Basildon, residential",United Kingdom,Laindon,urban
+51.2787,5.5917,"Langdon Hills, Essex, country park, Basildon, views",United Kingdom,Langdon Hills,urban
+51.2787,5.6333,"Dunton, Essex, village, Basildon, rural",United Kingdom,Dunton,urban
+51.2787,5.6750,"West Horndon, Essex, village, station, commuter",United Kingdom,West Horndon,urban
+51.2787,5.7167,"East Horndon, Essex, village, rural, commuter",United Kingdom,East Horndon,urban
+51.2787,5.7583,"Bulphan, Essex, village, rural, remote",United Kingdom,Bulphan,urban
+51.2787,5.8000,"Orsett, Essex, village, rural, historic",United Kingdom,Orsett,urban
+51.2787,5.8417,"Grays, Essex, town, Thames, port, commuter",United Kingdom,Grays,coastal
+51.2787,5.8833,"Little Thurrock, Essex, town, Thames, industrial",United Kingdom,Little Thurrock,coastal
+51.2787,5.9250,"South Ockendon, Essex, town, commuter, residential",United Kingdom,South Ockendon,urban
+51.2787,5.9667,"North Ockendon, Essex, village, rural, London border",United Kingdom,North Ockendon,urban
+51.2787,6.0083,"Upminster, East London, suburban, windmill, commuter",United Kingdom,Upminster,urban
+51.2787,6.0500,"Cranham, East London, suburban, residential, Essex border",United Kingdom,Cranham,urban
+51.2787,6.0917,"Harold Wood, East London, suburban, station, commuter",United Kingdom,Harold Wood,urban
+51.2787,6.1333,"Gidea Park, East London, garden suburb, station, affluent",United Kingdom,Gidea Park,urban
+51.2787,6.1750,"Romford, East London, market, shopping, town center",United Kingdom,Romford,urban
+51.2787,6.2167,"Collier Row, East London, suburban, residential",United Kingdom,Collier Row,urban
+51.2787,6.2583,"Chadwell Heath, East London, suburban, hospital, station",United Kingdom,Chadwell Heath,urban
+51.2787,6.3000,"Goodmayes, East London, suburban, station, residential",United Kingdom,Goodmayes,urban
+51.2787,6.3417,"Seven Kings, East London, suburban, station, multicultural",United Kingdom,Seven Kings,urban
+51.2787,6.3833,"Ilford, East London, town center, shopping, multicultural",United Kingdom,Ilford,urban
+51.2787,6.4250,"Gants Hill, East London, suburban, roundabout, station",United Kingdom,Gants Hill,urban
+51.2787,6.4667,"Redbridge, East London, suburban, station, residential",United Kingdom,Redbridge,urban
+51.2787,6.5083,"Wanstead, East London, suburban, park, village, affluent",United Kingdom,Wanstead,urban
+51.2787,6.5500,"Leytonstone, East London, suburban, station, residential",United Kingdom,Leytonstone,urban
+51.2787,6.5917,"Leyton, East London, suburban, Orient football, residential",United Kingdom,Leyton,urban
+51.2787,6.6333,"Stratford, East London, Olympic Park, Westfield, regeneration",United Kingdom,Stratford,urban
+51.2787,6.6750,"West Ham, East London, football, industrial, residential",United Kingdom,West Ham,urban
+51.2787,6.7167,"Canning Town, East London, regeneration, Crossrail, docks",United Kingdom,Canning Town,urban
+51.2787,6.7583,"Custom House, East London, ExCeL, docks, airport",United Kingdom,Custom House,urban
+51.2787,6.8000,"Royal Albert, East London, docks, airport, regeneration",United Kingdom,Royal Albert,urban
+51.2787,6.8417,"Beckton, East London, docks, park, residential",United Kingdom,Beckton,urban
+51.2787,6.8833,"Cyprus, East London, DLR station, docks, residential",United Kingdom,Cyprus,urban
+51.2787,6.9250,"Gallions Reach, East London, docks, riverside, regeneration",United Kingdom,Gallions Reach,urban
+51.2787,6.9667,"Woolwich Arsenal, East London, station, Crossrail, riverside",United Kingdom,Woolwich,urban
+52.8734,-117.8897,"Jasper National Park, Rocky Mountains, glaciers, lakes, elk",Canada,Jasper,mountain
+51.4968,-116.1772,"Banff National Park, turquoise lakes, glaciers, peaks, wildlife",Canada,Banff,mountain
+51.2538,-116.8907,"Lake Louise, turquoise water, Victoria Glacier, iconic view",Canada,Lake Louise,mountain
+51.6636,-116.5159,"Moraine Lake, Valley of Ten Peaks, turquoise, Rocky Mountains",Canada,Moraine Lake,mountain
+52.1332,-117.2080,"Columbia Icefield, Athabasca Glacier, ice, alpine",Canada,Columbia Icefield,mountain
+51.1784,-115.5708,"Kananaskis Country, Rocky Mountains, hiking, wilderness",Canada,Kananaskis,mountain
+50.6745,-122.4957,"Whistler, mountains, skiing, alpine, Sea-to-Sky",Canada,Whistler,mountain
+49.6820,-125.2680,"Tofino, rainforest, beaches, Pacific Rim, surfing",Canada,Tofino,coastal
+50.1163,-122.9574,"Squamish, Chief Mountain, climbing, Sea-to-Sky",Canada,Squamish,mountain
+49.3043,-123.1369,"Garibaldi Provincial Park, volcanic, alpine lakes, mountains",Canada,Garibaldi,volcanic
+52.9399,-122.7519,"Mount Robson, highest Rockies peak, glaciers, wilderness",Canada,Mount Robson,mountain
+51.2994,-116.9683,"Yoho National Park, waterfalls, Takakkaw Falls, mountains",Canada,Yoho,mountain
+51.4416,-116.1811,"Takakkaw Falls, 373m waterfall, glacial, Yoho",Canada,Takakkaw Falls,waterfall
+52.2297,-117.4897,"Athabasca Falls, powerful waterfall, Jasper, gorge",Canada,Athabasca Falls,waterfall
+48.9236,-125.5449,"Pacific Rim National Park, rainforest, beaches, wild coast",Canada,Pacific Rim,coastal
+49.7016,-124.5230,"Strathcona Provincial Park, mountains, lakes, Vancouver Island",Canada,Strathcona,mountain
+52.1538,-126.7519,"Bella Coola Valley, fjords, mountains, remote wilderness",Canada,Bella Coola,wilderness
+58.8065,-125.7619,"Nahanni National Park, Virginia Falls, canyons, wilderness",Canada,Nahanni,wilderness
+61.3707,-139.4075,"Kluane National Park, Mount Logan, glaciers, wilderness",Canada,Kluane,mountain
+68.3500,-133.7167,"Ivvavik National Park, Arctic, tundra, caribou, remote",Canada,Ivvavik,wilderness
+63.4167,-123.4333,"Yellowknife area, Great Slave Lake, aurora, boreal forest",Canada,Yellowknife,wilderness
+51.0486,-114.0708,"Waterton Lakes, prairies meet mountains, UNESCO, wildlife",Canada,Waterton Lakes,mountain
+49.2827,-122.9080,"Golden Ears Provincial Park, mountains, lakes, wilderness",Canada,Golden Ears,mountain
+50.6833,-120.8333,"Wells Gray Provincial Park, waterfalls, volcanoes, wilderness",Canada,Wells Gray,wilderness
+51.3500,-120.3333,"Helmcken Falls, 141m waterfall, Wells Gray, volcanic canyon",Canada,Helmcken Falls,waterfall
+48.4167,-123.3833,"Mount Washington, alpine skiing, Vancouver Island, mountains",Canada,Mount Washington,mountain
+52.9167,-118.0833,"Mount Edith Cavell, glaciers, Angel Glacier, Jasper",Canada,Mount Edith Cavell,mountain
+51.1667,-115.3667,"Mount Assiniboine, Matterhorn of Rockies, alpine, wilderness",Canada,Mount Assiniboine,mountain
+-43.5950,170.1418,"Aoraki Mount Cook, highest peak, glaciers, Southern Alps",New Zealand,Mount Cook,mountain
+-44.6980,168.1193,"Mount Aspiring, pyramidal peak, glaciers, wilderness",New Zealand,Mount Aspiring,mountain
+-44.6459,167.9247,"Milford Sound, fjord, waterfalls, Mitre Peak, rainforest",New Zealand,Milford Sound,waterfall
+-44.6721,167.9258,"Mitre Peak, iconic mountain, Milford Sound, 1692m",New Zealand,Mitre Peak,mountain
+-44.9167,168.2500,"Sutherland Falls, 580m waterfall, Milford Track, three tiers",New Zealand,Sutherland Falls,waterfall
+-45.4167,167.7167,"Doubtful Sound, fjord, deep, remote, wilderness, dolphins",New Zealand,Doubtful Sound,coastal
+-45.0312,168.6626,"Queenstown Alps, Remarkables, skiing, adventure, mountains",New Zealand,Queenstown,mountain
+-44.8333,168.9167,"Wanaka, alpine lake, mountains, skiing, Southern Alps",New Zealand,Wanaka,mountain
+-43.9500,170.4667,"Lake Tekapo, turquoise, lupins, Mount Cook views, stargazing",New Zealand,Lake Tekapo,mountain
+-44.0024,170.4829,"Lake Pukaki, turquoise, glacial, Mount Cook gateway",New Zealand,Lake Pukaki,mountain
+-43.3500,170.0833,"Franz Josef Glacier, ice, rainforest, West Coast, accessible",New Zealand,Franz Josef,mountain
+-43.4667,170.1833,"Fox Glacier, ice, rainforest, West Coast, terminal lake",New Zealand,Fox Glacier,mountain
+-42.4167,171.2500,"Paparoa National Park, limestone, pancake rocks, blowholes",New Zealand,Paparoa,coastal
+-41.2500,172.8333,"Abel Tasman, golden beaches, coastal track, turquoise water",New Zealand,Abel Tasman,coastal
+-39.2833,175.5667,"Mount Ruapehu, active volcano, skiing, Tongariro, crater lake",New Zealand,Mount Ruapehu,volcanic
+-39.1333,175.6333,"Mount Ngauruhoe, volcanic cone, Tongariro Crossing, Mordor",New Zealand,Mount Ngauruhoe,volcanic
+-39.1500,175.6167,"Tongariro Alpine Crossing, volcanic, emerald lakes, craters",New Zealand,Tongariro,volcanic
+-38.2619,176.5019,"Mount Tarawera, volcano, 1886 eruption, rift valley",New Zealand,Mount Tarawera,volcanic
+-38.2667,176.1667,"Rotorua geothermal, geysers, mud pools, Maori, sulfur",New Zealand,Rotorua,volcanic
+-38.2611,176.1944,"Wai-O-Tapu, geothermal, Champagne Pool, colorful, volcanic",New Zealand,Wai-O-Tapu,volcanic
+-37.8167,175.0167,"Waitomo Caves, glowworms, limestone, underground rivers",New Zealand,Waitomo,urban
+-35.2333,174.1167,"Bay of Islands, islands, beaches, dolphins, subtropical",New Zealand,Bay of Islands,coastal
+-46.6167,168.6333,"Fiordland, fjords, rainforest, wilderness, remote, UNESCO",New Zealand,Fiordland,wilderness
+-44.0000,169.5000,"Mount Cook Village, alpine, glaciers, Hooker Valley, hiking",New Zealand,Mount Cook Village,mountain
+-43.7333,172.6333,"Arthur's Pass, Southern Alps, alpine, passes, mountains",New Zealand,Arthur's Pass,mountain
+-42.0833,173.5500,"Punakaiki, pancake rocks, blowholes, West Coast, limestone",New Zealand,Punakaiki,coastal
+-37.5208,143.7847,"Grampians, sandstone peaks, Aboriginal art, Victoria, hiking",Australia,Grampians,mountain
+-31.9505,141.4628,"Mungo National Park, desert, dunes, ancient, outback, dry lake",Australia,Mungo,desert
+-25.3444,131.0369,"Uluru, Ayers Rock, red monolith, sacred, outback, sunset",Australia,Uluru,desert
+-25.3000,130.7333,"Kata Tjuta, Olgas, red domes, desert, Aboriginal, sacred",Australia,Kata Tjuta,desert
+-12.6611,132.8264,"Kakadu, wetlands, escarpments, Aboriginal art, crocodiles",Australia,Kakadu,wilderness
+-13.2833,132.5500,"Nourlangie Rock, Aboriginal art, Kakadu, escarpment",Australia,Nourlangie,wilderness
+-13.1667,132.7500,"Jim Jim Falls, 200m waterfall, Kakadu, wet season, plunge pool",Australia,Jim Jim Falls,waterfall
+-13.2667,132.7667,"Twin Falls, gorge, waterfall, Kakadu, swimming, wilderness",Australia,Twin Falls,waterfall
+-17.3000,145.4167,"Barron Falls, 260m waterfall, Cairns, rainforest, gorge",Australia,Barron Falls,waterfall
+-16.9186,145.6906,"Daintree Rainforest, ancient, tropical, reef meets rainforest",Australia,Daintree,jungle
+-20.7256,149.2497,"Whitsunday Islands, white sand, turquoise, Great Barrier Reef",Australia,Whitsundays,coastal
+-20.0083,148.2647,"Airlie Beach, Whitsundays gateway, tropical, sailing",Australia,Airlie Beach,coastal
+-16.9203,145.7781,"Cape Tribulation, rainforest meets reef, Daintree, remote",Australia,Cape Tribulation,jungle
+-25.6953,152.9594,"Fraser Island, sand island, rainforest, dingoes, lakes",Australia,Fraser Island,coastal
+-28.6333,153.5667,"Lamington National Park, rainforest, waterfalls, subtropical",Australia,Lamington,jungle
+-36.4500,148.2667,"Kosciuszko, highest peak, alpine, Snowy Mountains, skiing",Australia,Kosciuszko,mountain
+-36.3667,148.4167,"Thredbo, skiing, alpine, Snowy Mountains, summer hiking",Australia,Thredbo,mountain
+-42.8821,147.2644,"Mount Wellington, Hobart views, alpine, dolerite, Tasmania",Australia,Mount Wellington,mountain
+-41.6833,145.9500,"Cradle Mountain, alpine, lakes, Tasmania, wilderness, wombats",Australia,Cradle Mountain,mountain
+-42.0667,146.4167,"Lake St Clair, deepest Australian lake, Tasmania, wilderness",Australia,Lake St Clair,mountain
+-43.0333,146.4167,"Southwest Tasmania, wilderness, remote, World Heritage, pristine",Australia,Southwest Tasmania,wilderness
+-41.9333,145.5833,"Franklin River, wild river, rafting, Tasmania, wilderness",Australia,Franklin River,wilderness
+-42.6833,146.8167,"Freycinet Peninsula, Wineglass Bay, pink granite, beaches",Australia,Freycinet,coastal
+-42.5333,147.3333,"Tasman Peninsula, sea cliffs, blowholes, Port Arthur",Australia,Tasman Peninsula,coastal
+-31.8833,152.5000,"Barrington Tops, rainforest, alpine, wilderness, NSW",Australia,Barrington Tops,mountain
+-30.5167,152.7833,"Dorrigo, rainforest, waterfalls, escarpment, NSW",Australia,Dorrigo,jungle
+-28.2167,153.2500,"Mount Warning, volcanic plug, rainforest, sunrise, NSW",Australia,Mount Warning,volcanic
+-33.7167,150.3667,"Blue Mountains, eucalyptus, Three Sisters, cliffs, canyons",Australia,Blue Mountains,mountain
+-33.7297,150.3119,"Three Sisters, rock formation, Blue Mountains, Aboriginal legend",Australia,Three Sisters,mountain
+-34.8833,150.6667,"Royal National Park, coastal, heath, Sydney, oldest national park",Australia,Royal National Park,coastal
+64.9631,-19.0208,"Iceland Reykjavik, geothermal, colorful houses, Hallgrímskirkja",Iceland,Reykjavik,urban
+64.2577,-15.2139,"Vatnajökull, largest glacier, ice caves, Europe's biggest",Iceland,Vatnajökull,mountain
+64.0167,-16.9833,"Jökulsárlón, glacier lagoon, icebergs, seals, black sand",Iceland,Jökulsárlón,coastal
+63.5320,-19.0111,"Skógafoss, 60m waterfall, rainbow, South Coast, powerful",Iceland,Skógafoss,waterfall
+63.5319,-19.5128,"Seljalandsfoss, 60m waterfall, walk behind, South Coast",Iceland,Seljalandsfoss,waterfall
+64.3271,-20.1205,"Gullfoss, golden waterfall, two tiers, glacial, powerful",Iceland,Gullfoss,waterfall
+64.3100,-20.3000,"Geysir, geothermal, Strokkur erupts, hot springs, Golden Circle",Iceland,Geysir,volcanic
+64.2558,-21.1306,"Þingvellir, tectonic plates, rift valley, UNESCO, historic",Iceland,Þingvellir,mountain
+63.9880,-22.0071,"Blue Lagoon, geothermal spa, milky blue, lava field, silica",Iceland,Blue Lagoon,volcanic
+65.6042,-16.9919,"Dettifoss, most powerful European waterfall, 45m, canyon",Iceland,Dettifoss,waterfall
+65.6833,-16.3833,"Ásbyrgi, horseshoe canyon, cliffs, forest, mythology",Iceland,Ásbyrgi,mountain
+65.8667,-23.9333,"Snæfellsjökull, glacier volcano, Jules Verne, peninsula",Iceland,Snæfellsjökull,volcanic
+64.8667,-23.7833,"Kirkjufell, iconic mountain, waterfalls, Snæfellsnes, pointed",Iceland,Kirkjufell,mountain
+66.0833,-17.3333,"Mývatn, volcanic lake, pseudo-craters, geothermal, lava",Iceland,Mývatn,volcanic
+65.6333,-16.8667,"Hverir, geothermal, mud pots, fumaroles, sulfur, colorful",Iceland,Hverir,volcanic
+64.0000,-21.0000,"Eyjafjallajökull, glacier volcano, 2010 eruption, ice cap",Iceland,Eyjafjallajökull,volcanic
+63.6300,-19.6167,"Katla, subglacial volcano, Mýrdalsjökull, powerful, historic",Iceland,Katla,volcanic
+64.4167,-21.9333,"Snæfellsnes Peninsula, diverse, lava fields, mountains, coast",Iceland,Snæfellsnes,coastal
+66.5500,-15.2167,"Askja, volcanic caldera, Öskjuvatn lake, remote, highlands",Iceland,Askja,volcanic
+64.8667,-18.2167,"Landmannalaugar, rhyolite mountains, colorful, hot springs, hiking",Iceland,Landmannalaugar,volcanic
+64.0667,-16.9667,"Skaftafell, glaciers, waterfalls, Vatnajökull, hiking",Iceland,Skaftafell,mountain
+63.4167,-18.9167,"Þórsmörk, valley, glaciers, mountains, hiking, remote",Iceland,Þórsmörk,mountain
+65.6833,-18.0833,"Goðafoss, waterfall of gods, 12m, horseshoe, North Iceland",Iceland,Goðafoss,waterfall
+64.8667,-13.9833,"Seyðisfjörður, fjord, colorful houses, East Iceland, remote",Iceland,Seyðisfjörður,coastal
+66.0500,-17.3500,"Krafla, volcanic area, lava fields, Víti crater, geothermal",Iceland,Krafla,volcanic
+63.9833,-22.6000,"Reykjanes Peninsula, lava fields, geothermal, lighthouse, rugged",Iceland,Reykjanes,volcanic
+64.1500,-21.9500,"Fagradalsfjall, 2021 eruption, new lava, accessible volcano",Iceland,Fagradalsfjall,volcanic
+61.0666,6.7818,"Geirangerfjord, steep fjord, waterfalls, Seven Sisters, UNESCO",Norway,Geirangerfjord,waterfall
+61.0972,6.8000,"Seven Sisters Waterfall, seven streams, Geirangerfjord, 250m",Norway,Seven Sisters,waterfall
+61.1000,6.7500,"Bridal Veil Falls, Geirangerfjord, 300m, single drop",Norway,Bridal Veil,waterfall
+61.6833,6.8000,"Trollstigen, serpentine road, mountains, waterfalls, hairpins",Norway,Trollstigen,mountain
+62.1000,7.2000,"Romsdalseggen, ridge hike, views, Romsdal Alps, dramatic",Norway,Romsdalseggen,mountain
+61.4667,8.3167,"Jotunheimen, highest mountains, glaciers, hiking, peaks",Norway,Jotunheimen,mountain
+61.6367,8.3128,"Galdhøpiggen, highest Nordic peak, 2469m, glacier, summer ski",Norway,Galdhøpiggen,mountain
+61.5500,8.4667,"Besseggen, ridge hike, two lakes, iconic, Jotunheimen",Norway,Besseggen,mountain
+67.8833,13.0167,"Lofoten Islands, peaks, beaches, fishing villages, Arctic",Norway,Lofoten,coastal
+68.2333,13.5667,"Trollfjord, narrow fjord, steep, Lofoten, dramatic",Norway,Trollfjord,coastal
+67.2833,14.3667,"Saltstraumen, strongest tidal current, maelstrom, whirlpools",Norway,Saltstraumen,coastal
+70.6633,23.6819,"North Cape, northernmost point, midnight sun, Arctic Ocean",Norway,North Cape,coastal
+61.0583,7.2000,"Preikestolen, Pulpit Rock, 604m cliff, Lysefjord, flat top",Norway,Preikestolen,mountain
+59.0500,6.1833,"Kjeragbolten, boulder wedged, 1000m drop, Lysefjord, daring",Norway,Kjeragbolten,mountain
+60.5833,6.5833,"Hardangerfjord, fruit trees, waterfalls, fjord, scenic",Norway,Hardangerfjord,coastal
+60.5500,7.1667,"Vøringsfossen, 182m waterfall, Hardangervidda, gorge, powerful",Norway,Vøringsfossen,waterfall
+60.5000,7.5000,"Hardangervidda, largest plateau, tundra, reindeer, barren",Norway,Hardangervidda,wilderness
+61.0500,5.0500,"Sognefjord, longest fjord, 200km, deep, branches, dramatic",Norway,Sognefjord,coastal
+61.0833,7.2500,"Nærøyfjord, narrow fjord, UNESCO, steep, dramatic, branch",Norway,Nærøyfjord,coastal
+60.8833,6.9833,"Flåm Railway, steep railway, waterfalls, mountains, scenic",Norway,Flåm,mountain
+69.6492,18.9553,"Tromsø, Arctic, northern lights, midnight sun, Sami culture",Norway,Tromsø,urban
+78.2232,15.6267,"Svalbard, Arctic archipelago, polar bears, glaciers, remote",Norway,Svalbard,wilderness
+45.9237,6.8694,"Mont Blanc, highest Alps, 4808m, glaciers, mountaineering",France,Mont Blanc,mountain
+45.8326,6.8652,"Chamonix, Mont Blanc base, skiing, mountaineering, Aiguille",France,Chamonix,mountain
+45.9167,6.9333,"Aiguille du Midi, cable car, 3842m, Mont Blanc views, glaciers",France,Aiguille du Midi,mountain
+45.8833,6.8833,"Mer de Glace, glacier, ice cave, Chamonix, shrinking",France,Mer de Glace,mountain
+44.9167,6.6333,"Vanoise National Park, alpine, ibex, glaciers, first French park",France,Vanoise,mountain
+45.0667,6.4000,"Les Trois Vallées, largest ski area, Courchevel, Méribel, Val Thorens",France,Trois Vallées,mountain
+44.0833,7.2667,"Mercantour National Park, alpine, wolves, lakes, Italian border",France,Mercantour,mountain
+42.8333,0.1500,"Cirque de Gavarnie, amphitheater, 1500m walls, waterfall, Pyrenees",France,Gavarnie,mountain
+42.7333,0.1333,"Gavarnie Falls, 422m waterfall, highest French, Cirque, frozen winter",France,Gavarnie Falls,waterfall
+42.9167,1.7333,"Ariège Pyrenees, caves, mountains, hiking, rural, French Pyrenees",France,Ariège,mountain
+43.0833,0.0000,"Pic du Midi, observatory, 2877m, Pyrenees, stargazing, views",France,Pic du Midi,mountain
+44.5000,6.9333,"Écrins National Park, glaciers, peaks, alpine, La Meije, hiking",France,Écrins,mountain
+45.0500,6.0667,"Vercors, limestone plateau, cliffs, caves, resistance, alpine",France,Vercors,mountain
+44.1167,7.5167,"Verdon Gorge, deepest canyon, turquoise river, limestone, 700m",France,Verdon,mountain
+43.8333,4.6333,"Cévennes, mountains, schist, Protestant history, rural, UNESCO",France,Cévennes,mountain
+45.0333,2.6500,"Puy de Dôme, volcanic, Auvergne, 1465m, extinct, views",France,Puy de Dôme,volcanic
+45.7750,2.9667,"Auvergne Volcanoes, chain of volcanoes, extinct, crater lakes, hiking",France,Auvergne,volcanic
+48.0000,-4.0000,"Crozon Peninsula, cliffs, beaches, Brittany, rugged, coastal",France,Crozon,coastal
+48.7667,-3.5167,"Pink Granite Coast, unusual rocks, Brittany, beaches, Ploumanac'h",France,Pink Granite,coastal
+43.3000,5.3667,"Calanques, limestone cliffs, turquoise coves, Marseille, hiking",France,Calanques,coastal
+42.5000,9.0000,"Corsica mountains, GR20 trail, peaks, maquis, rugged, island",France,Corsica,mountain
+41.9167,8.7333,"Bonifacio, cliffs, citadel, southern Corsica, limestone, Sardinia views",France,Bonifacio,coastal
