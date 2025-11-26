@@ -29,6 +29,7 @@ class MetadataEditor(QDialog):
         self.filepaths = filepaths
         self.exiftool_service = exiftool_service
         self.metadata = {}
+        self.all_metadata_rows = []  # Store all rows for filtering
         
         self.setWindowTitle("Edit Metadata")
         self.setMinimumSize(700, 500)
@@ -50,6 +51,19 @@ class MetadataEditor(QDialog):
         header_label = QLabel(header_text)
         header_label.setStyleSheet("font-weight: bold; font-size: 12pt; padding: 10px;")
         layout.addWidget(header_label)
+        
+        # Filter field
+        filter_layout = QHBoxLayout()
+        filter_label = QLabel("Filter:")
+        filter_layout.addWidget(filter_label)
+        
+        self.filter_field = QLineEdit()
+        self.filter_field.setPlaceholderText("Type to filter metadata tags...")
+        self.filter_field.textChanged.connect(self.filter_metadata)
+        self.filter_field.setClearButtonEnabled(True)
+        filter_layout.addWidget(self.filter_field)
+        
+        layout.addLayout(filter_layout)
         
         # Info label for multiple images
         if len(self.filepaths) > 1:
@@ -133,9 +147,17 @@ class MetadataEditor(QDialog):
             if not any(k.startswith(prefix) for prefix in excluded_prefixes)
         }
         
-        self.table.setRowCount(len(filtered_metadata))
+        # Store all metadata rows for filtering
+        self.all_metadata_rows = sorted(filtered_metadata.items())
         
-        for row, (tag, value) in enumerate(sorted(filtered_metadata.items())):
+        # Display all rows initially
+        self.display_filtered_rows(self.all_metadata_rows)
+    
+    def display_filtered_rows(self, rows_to_display):
+        """Display the given rows in the table"""
+        self.table.setRowCount(len(rows_to_display))
+        
+        for row, (tag, value) in enumerate(rows_to_display):
             # Tag name (read-only)
             tag_item = QTableWidgetItem(tag)
             tag_item.setFlags(tag_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
@@ -145,6 +167,20 @@ class MetadataEditor(QDialog):
             value_str = str(value) if value is not None else ""
             value_item = QTableWidgetItem(value_str)
             self.table.setItem(row, 1, value_item)
+    
+    def filter_metadata(self, filter_text: str):
+        """Filter metadata tags based on the filter text"""
+        if not filter_text:
+            # No filter - show all rows
+            self.display_filtered_rows(self.all_metadata_rows)
+        else:
+            # Filter rows where tag name or value contains the filter text (case-insensitive)
+            filter_lower = filter_text.lower()
+            filtered_rows = [
+                (tag, value) for tag, value in self.all_metadata_rows
+                if filter_lower in tag.lower() or filter_lower in str(value).lower()
+            ]
+            self.display_filtered_rows(filtered_rows)
     
     def eventFilter(self, obj, event):
         """Event filter to handle Delete key in table"""
