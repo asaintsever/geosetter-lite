@@ -110,7 +110,7 @@ pip install -e .
 Simply run the application without arguments to open a file picker:
 
 ```bash
-python main.py
+uv run python main.py
 ```
 
 ### Launch with Command-Line Argument
@@ -118,7 +118,7 @@ python main.py
 Provide a path to an image file:
 
 ```bash
-python main.py /path/to/your/image.jpg
+uv run python main.py /path/to/your/image.jpg
 ```
 
 The application will display all images in the same directory as the provided file.

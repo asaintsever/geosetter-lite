@@ -430,8 +430,9 @@ class MainWindow(QMainWindow):
             self.map_panel.enable_set_taken_date_action(needs_taken_date)
             self.map_panel.enable_set_gps_date_action(needs_gps_date)
             
-            # Disable update GPS button if no images selected (even if active marker exists)
-            # It will be re-enabled by map click or set marker action
+            # Enable update GPS button if active marker exists and images are selected
+            active_marker = self.map_panel.map_widget.get_active_marker()
+            self.map_panel.enable_update_coords_action(active_marker is not None)
         else:
             # Still show all images on map, just none selected
             self.update_all_images_on_map()
