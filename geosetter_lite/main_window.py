@@ -574,27 +574,13 @@ class MainWindow(QMainWindow):
             # Determine which field was edited and save to file
             metadata = {}
             field_name = None
+            gps_date_updated = False
             
             if col == 2:  # TZ Offset
                 field_name = 'tz_offset'
-                # TZ Offset should be in "+HH:MM" format
-                # Write to multiple offset tags with proper formats
-                if new_value:
-                    try:
-                        # Parse "+05:00" or "-04:30" format
-                        sign = 1 if new_value[0] == '+' else -1
-                        hours = int(new_value[1:3])
-                        minutes = int(new_value[4:6])
-                        # TimeZoneOffset is in hours (can be fractional)
-                        tz_offset_hours = sign * (hours + minutes / 60.0)
-                        
-                        metadata['EXIF:TimeZoneOffset'] = str(tz_offset_hours)
-                        metadata['EXIF:OffsetTime'] = new_value
-                        metadata['EXIF:OffsetTimeOriginal'] = new_value
-                        metadata['EXIF:OffsetTimeDigitized'] = new_value
-                    except (ValueError, IndexError):
-                        # If parsing fails, don't write anything
-                        return
+                metadata = self.update_image_field(image, field_name, new_value)
+                if '_gps_date_updated' in metadata:
+                    gps_date_updated = metadata.pop('_gps_date_updated')
             elif col == 3:  # GPS Coordinates
                 # Parse GPS coordinates in various formats or empty to clear
                 if new_value.strip():
@@ -672,33 +658,19 @@ class MainWindow(QMainWindow):
                 return  # GPS coordinates handled separately
             elif col == 4:  # City
                 field_name = 'city'
-                metadata['IPTC:City'] = new_value
-                metadata['XMP-photoshop:City'] = new_value
+                metadata = self.update_image_field(image, field_name, new_value)
             elif col == 5:  # Sublocation
                 field_name = 'sublocation'
-                metadata['IPTC:Sub-location'] = new_value
-                metadata['XMP-iptcCore:Location'] = new_value
+                metadata = self.update_image_field(image, field_name, new_value)
             elif col == 6:  # Headline
                 field_name = 'headline'
-                metadata['IPTC:Headline'] = new_value
-                metadata['XMP-photoshop:Headline'] = new_value
+                metadata = self.update_image_field(image, field_name, new_value)
             elif col == 7:  # Camera Model
                 field_name = 'camera_model'
-                metadata['EXIF:Model'] = new_value
+                metadata = self.update_image_field(image, field_name, new_value)
             elif col == 11:  # Keywords
                 field_name = 'keywords'
-                # Parse semicolon-separated keywords (display format)
-                keywords_list = [k.strip() for k in new_value.split(';') if k.strip()]
-                # Write as string with * separator (storage format)
-                # If empty, write empty string to clear the keywords
-                if keywords_list:
-                    keywords_str = '*'.join(keywords_list)
-                    metadata['IPTC:Keywords'] = keywords_str
-                    metadata['XMP-dc:Subject'] = keywords_str
-                else:
-                    # Clear keywords by writing empty string
-                    metadata['IPTC:Keywords'] = ''
-                    metadata['XMP-dc:Subject'] = ''
+                metadata = self.update_image_field(image, field_name, new_value)
             else:
                 # Other columns are handled by delegates (dates, country) or are not editable
                 return
@@ -706,22 +678,29 @@ class MainWindow(QMainWindow):
             # Write to file
             try:
                 self.exiftool_service.write_metadata([image.filepath], metadata)
-                # Update image model
-                if field_name == 'keywords':
-                    # For keywords, store as list
-                    image.keywords = keywords_list
-                else:
-                    setattr(image, field_name, new_value if new_value else None)
                 
+                # Update image metadata cache
                 if not image.metadata:
                     image.metadata = {}
                 for tag, value in metadata.items():
                     image.metadata[tag] = value
+                
+                # If GPS date was updated, refresh the GPS date column display
+                if gps_date_updated:
+                    gps_date_col = self._get_column_for_field('gps_date')
+                    if gps_date_col is not None:
+                        gps_item = self.table.item(row, gps_date_col)
+                        if gps_item and image.gps_date:
+                            gps_item.setText(image.gps_date.strftime('%Y-%m-%d %H:%M:%S'))
+                
                 self.statusBar().showMessage(f"Updated {field_name.replace('_', ' ')} for {image.filename}")
             except Exception as e:
                 self.statusBar().showMessage(f"Error updating {field_name}: {e}")
                 # Revert the change in the UI
-                old_value = getattr(image, field_name, "")
+                if field_name == 'keywords':
+                    old_value = '; '.join(image.keywords) if image.keywords else ""
+                else:
+                    old_value = getattr(image, field_name, "")
                 item.setText(old_value or "")
         
         finally:
@@ -831,6 +810,127 @@ class MainWindow(QMainWindow):
         if result == QDialog.DialogCode.Accepted:
             self.reload_images()
     
+    def update_image_field(self, image: ImageModel, field_name: str, new_value: str) -> dict:
+        """
+        Update a single field for an image and return the metadata dict to write.
+        This centralizes all field update logic in one place.
+        
+        Args:
+            image: The image to update
+            field_name: Field name ('tz_offset', 'country', 'city', 'headline', 'sublocation', 'camera_model', 'keywords')
+            new_value: New value for the field
+            
+        Returns:
+            Dictionary of metadata tags to write to file
+            Special key '_country_info' contains country name/code for keyword updates
+            Special key '_gps_date_updated' indicates GPS date was recalculated
+        """
+        metadata = {}
+        
+        if field_name == 'tz_offset':
+            if new_value:
+                try:
+                    # Parse "+05:00" or "-04:30" format
+                    sign = 1 if new_value[0] == '+' else -1
+                    hours = int(new_value[1:3])
+                    minutes = int(new_value[4:6])
+                    tz_offset_hours = sign * (hours + minutes / 60.0)
+                    
+                    metadata['EXIF:TimeZoneOffset'] = str(tz_offset_hours)
+                    metadata['EXIF:OffsetTime'] = new_value
+                    metadata['EXIF:OffsetTimeOriginal'] = new_value
+                    metadata['EXIF:OffsetTimeDigitized'] = new_value
+                    
+                    # Update XMP date tags with timezone offset
+                    if image.taken_date:
+                        taken_date_str = image.taken_date.strftime('%Y:%m:%d %H:%M:%S')
+                        metadata['XMP-exif:DateTimeOriginal'] = taken_date_str + new_value
+                    
+                    if image.created_date:
+                        created_date_str = image.created_date.strftime('%Y:%m:%d %H:%M:%S')
+                        metadata['XMP-exif:DateTimeDigitized'] = created_date_str + new_value
+                    
+                    # Recalculate GPS Date to UTC if both taken_date and gps_date exist
+                    if image.taken_date and image.gps_date:
+                        from datetime import timedelta
+                        offset_seconds = sign * (hours * 3600 + minutes * 60)
+                        gps_utc = image.taken_date - timedelta(seconds=offset_seconds)
+                        
+                        metadata['EXIF:GPSDateStamp'] = gps_utc.strftime('%Y:%m:%d')
+                        metadata['EXIF:GPSTimeStamp'] = gps_utc.strftime('%H:%M:%S')
+                        metadata['_gps_date_updated'] = True  # Flag for special handling
+                        image.gps_date = gps_utc
+                    
+                    image.tz_offset = new_value
+                except (ValueError, IndexError):
+                    pass
+        
+        elif field_name == 'country':
+            if new_value:
+                from .table_delegates import CountryDelegate
+                country_name = None
+                for code, name in CountryDelegate.COUNTRY_LIST:
+                    if code == new_value:
+                        country_name = name
+                        break
+                
+                if country_name:
+                    metadata['XMP-photoshop:Country'] = country_name
+                    metadata['IPTC:Country-PrimaryLocationName'] = country_name
+                    metadata['XMP-iptcCore:CountryCode'] = new_value
+                    metadata['IPTC:Country-PrimaryLocationCode'] = new_value
+                    image.country = new_value
+                    
+                    # Return country info for keyword updates
+                    metadata['_country_info'] = {'name': country_name, 'code': new_value}
+        
+        elif field_name == 'city':
+            metadata['IPTC:City'] = new_value
+            metadata['XMP-photoshop:City'] = new_value
+            image.city = new_value if new_value else None
+        
+        elif field_name == 'sublocation':
+            metadata['IPTC:Sub-location'] = new_value
+            metadata['XMP-iptcCore:Location'] = new_value
+            image.sublocation = new_value if new_value else None
+        
+        elif field_name == 'headline':
+            metadata['IPTC:Headline'] = new_value
+            metadata['XMP-photoshop:Headline'] = new_value
+            image.headline = new_value if new_value else None
+        
+        elif field_name == 'camera_model':
+            metadata['EXIF:Model'] = new_value
+            image.camera_model = new_value if new_value else None
+        
+        elif field_name == 'keywords':
+            # Parse semicolon-separated keywords (display format)
+            keywords_list = [k.strip() for k in new_value.split(';') if k.strip()] if new_value else []
+            if keywords_list:
+                keywords_str = '*'.join(keywords_list)
+                metadata['IPTC:Keywords'] = keywords_str
+                metadata['XMP-dc:Subject'] = keywords_str
+            else:
+                metadata['IPTC:Keywords'] = ''
+                metadata['XMP-dc:Subject'] = ''
+            image.keywords = keywords_list
+        
+        return metadata
+    
+    def _get_column_for_field(self, field_name: str) -> Optional[int]:
+        """Get column index for a field name"""
+        field_to_column = {
+            'tz_offset': 2,
+            'country': 10,
+            'city': 4,
+            'sublocation': 5,
+            'headline': 6,
+            'camera_model': 7,
+            'keywords': 11,
+            'gps_date': 9
+        }
+        return field_to_column.get(field_name)
+    
     def batch_edit_metadata(self):
         """Open batch editor for selected images"""
         selected_rows = self.table.selectionModel().selectedRows()
@@ -863,132 +963,43 @@ class MainWindow(QMainWindow):
             # Get values from dialog
             values = dialog.get_values()
             
-            # Prepare metadata updates
-            metadata = {}
+            # Filter out empty values
+            fields_to_update = {
+                'tz_offset': values.get('tz_offset', '').strip(),
+                'country': values.get('country', '').strip(),
+                'city': values.get('city', '').strip(),
+                'headline': values.get('headline', '').strip()
+            }
+            fields_to_update = {k: v for k, v in fields_to_update.items() if v}
             
-            # TZ Offset
-            tz_offset = values.get('tz_offset', '').strip()
-            if tz_offset:
-                try:
-                    # Parse "+05:00" or "-04:30" format
-                    sign = 1 if tz_offset[0] == '+' else -1
-                    hours = int(tz_offset[1:3])
-                    minutes = int(tz_offset[4:6])
-                    # TimeZoneOffset is in hours (can be fractional)
-                    tz_offset_hours = sign * (hours + minutes / 60.0)
-                    
-                    metadata['EXIF:TimeZoneOffset'] = str(tz_offset_hours)
-                    metadata['EXIF:OffsetTime'] = tz_offset
-                    metadata['EXIF:OffsetTimeOriginal'] = tz_offset
-                    metadata['EXIF:OffsetTimeDigitized'] = tz_offset
-                except (ValueError, IndexError):
-                    pass
-            
-            # Country
-            country = values.get('country', '').strip()
-            country_name = None
-            if country:
-                # Assuming country is ISO code, need to get country name
-                from .table_delegates import CountryDelegate
-                for code, name in CountryDelegate.COUNTRY_LIST:
-                    if code == country:
-                        country_name = name
-                        break
-                
-                if country_name:
-                    metadata['XMP-photoshop:Country'] = country_name
-                    metadata['IPTC:Country-PrimaryLocationName'] = country_name
-                    metadata['XMP-iptcCore:CountryCode'] = country
-                    metadata['IPTC:Country-PrimaryLocationCode'] = country
-            
-            # City
-            city = values.get('city', '').strip()
-            if city:
-                metadata['IPTC:City'] = city
-                metadata['XMP-photoshop:City'] = city
-            
-            # Headline
-            headline = values.get('headline', '').strip()
-            if headline:
-                metadata['IPTC:Headline'] = headline
-                metadata['XMP-photoshop:Headline'] = headline
-            
-            if not metadata:
+            if not fields_to_update:
                 return
             
             try:
-                # If TZ Offset is being updated, we need to handle each image individually
-                # to recalculate GPS Date and update XMP date tags
-                if tz_offset:
-                    for row, image in selected_images:
-                        # Start with base metadata
-                        image_metadata = {}
+                # Update each image using centralized logic
+                for row, image in selected_images:
+                    all_metadata = {}
+                    country_info = None
+                    gps_date_updated = False
+                    
+                    # Process each field using centralized update logic
+                    for field_name, field_value in fields_to_update.items():
+                        metadata = self.update_image_field(image, field_name, field_value)
                         
-                        # Add TZ Offset metadata
-                        try:
-                            sign = 1 if tz_offset[0] == '+' else -1
-                            hours = int(tz_offset[1:3])
-                            minutes = int(tz_offset[4:6])
-                            tz_offset_hours = sign * (hours + minutes / 60.0)
-                            
-                            image_metadata['EXIF:TimeZoneOffset'] = str(tz_offset_hours)
-                            image_metadata['EXIF:OffsetTime'] = tz_offset
-                            image_metadata['EXIF:OffsetTimeOriginal'] = tz_offset
-                            image_metadata['EXIF:OffsetTimeDigitized'] = tz_offset
-                        except (ValueError, IndexError):
-                            pass
+                        # Extract special flags
+                        if '_country_info' in metadata:
+                            country_info = metadata.pop('_country_info')
+                        if '_gps_date_updated' in metadata:
+                            gps_date_updated = metadata.pop('_gps_date_updated')
                         
-                        # Update XMP date tags with timezone offset
-                        if image.taken_date:
-                            taken_date_str = image.taken_date.strftime('%Y:%m:%d %H:%M:%S')
-                            image_metadata['XMP-exif:DateTimeOriginal'] = taken_date_str + tz_offset
+                        all_metadata.update(metadata)
+                    
+                    # Write metadata for this image
+                    if all_metadata:
+                        self.exiftool_service.write_metadata([image.filepath], all_metadata)
                         
-                        if image.created_date:
-                            created_date_str = image.created_date.strftime('%Y:%m:%d %H:%M:%S')
-                            image_metadata['XMP-exif:DateTimeDigitized'] = created_date_str + tz_offset
-                        
-                        # Recalculate GPS Date in UTC ONLY if both taken_date and gps_date already exist
-                        if image.taken_date and image.gps_date:
-                            try:
-                                from datetime import timedelta
-                                sign = 1 if tz_offset[0] == '+' else -1
-                                hours = int(tz_offset[1:3])
-                                minutes = int(tz_offset[4:6])
-                                offset_seconds = sign * (hours * 3600 + minutes * 60)
-                                
-                                # Convert to UTC by subtracting the offset
-                                gps_utc = image.taken_date - timedelta(seconds=offset_seconds)
-                                
-                                gps_date_str = gps_utc.strftime('%Y:%m:%d')
-                                gps_time_str = gps_utc.strftime('%H:%M:%S')
-                                image_metadata['EXIF:GPSDateStamp'] = gps_date_str
-                                image_metadata['EXIF:GPSTimeStamp'] = gps_time_str
-                                
-                                # Update image model
-                                image.gps_date = gps_utc
-                            except (ValueError, IndexError):
-                                pass
-                        
-                        # Add other metadata (country, city, headline)
-                        if country_name:
-                            image_metadata['XMP-photoshop:Country'] = country_name
-                            image_metadata['IPTC:Country-PrimaryLocationName'] = country_name
-                            image_metadata['XMP-iptcCore:CountryCode'] = country
-                            image_metadata['IPTC:Country-PrimaryLocationCode'] = country
-                        
-                        if city:
-                            image_metadata['IPTC:City'] = city
-                            image_metadata['XMP-photoshop:City'] = city
-                        
-                        if headline:
-                            image_metadata['IPTC:Headline'] = headline
-                            image_metadata['XMP-photoshop:Headline'] = headline
-                        
-                        # Write metadata for this image
-                        self.exiftool_service.write_metadata([image.filepath], image_metadata)
-                        
-                        # Read Composite:GPSDateTime and write to XMP-exif:GPSDateTime if GPS date was updated
-                        if image.taken_date and image.gps_date:
+                        # Handle Composite:GPSDateTime if GPS date was updated
+                        if gps_date_updated:
                             try:
                                 file_metadata = self.exiftool_service.read_metadata(image.filepath)
                                 composite_gps = file_metadata.get('Composite:GPSDateTime')
@@ -999,52 +1010,31 @@ class MainWindow(QMainWindow):
                                     )
                             except Exception:
                                 pass
-                else:
-                    # No TZ Offset update, write all metadata at once
-                    filepaths = [img.filepath for _, img in selected_images]
-                    self.exiftool_service.write_metadata(filepaths, metadata)
+                        
+                        # Update keywords with country if country was set
+                        if country_info:
+                            self.update_keywords_with_country(
+                                row,
+                                country_info['name'],
+                                country_info['code']
+                            )
                 
                 # Update UI
                 self.table.blockSignals(True)
                 for row, image in selected_images:
-                    # Update TZ Offset
-                    if tz_offset:
-                        image.tz_offset = tz_offset
-                        item = self.table.item(row, 2)
-                        if item:
-                            item.setText(tz_offset)
-                        
-                        # Update GPS Date display if it was recalculated
-                        if image.gps_date:
-                            gps_date_item = self.table.item(row, 9)
-                            if gps_date_item:
-                                from .utils import format_date
-                                gps_date_item.setText(format_date(image.gps_date))
+                    for field_name, field_value in fields_to_update.items():
+                        col = self._get_column_for_field(field_name)
+                        if col is not None:
+                            item = self.table.item(row, col)
+                            if item:
+                                item.setText(field_value)
                     
-                    # Update Country
-                    if country:
-                        image.country = country
-                        item = self.table.item(row, 10)
-                        if item:
-                            item.setText(country)
-                        
-                        # Update keywords with country info if country_name exists
-                        if country_name:
-                            self.update_keywords_with_country(row, country_name, country)
-                    
-                    # Update City
-                    if city:
-                        image.city = city
-                        item = self.table.item(row, 4)
-                        if item:
-                            item.setText(city)
-                    
-                    # Update Headline
-                    if headline:
-                        image.headline = headline
-                        item = self.table.item(row, 6)
-                        if item:
-                            item.setText(headline)
+                    # Update GPS Date display if it was recalculated
+                    if 'tz_offset' in fields_to_update and image.gps_date:
+                        gps_date_col = self._get_column_for_field('gps_date')
+                        gps_date_item = self.table.item(row, gps_date_col)
+                        if gps_date_item:
+                            gps_date_item.setText(format_date(image.gps_date))
                 
                 self.table.blockSignals(False)
                 
