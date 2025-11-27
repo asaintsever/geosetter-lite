@@ -27,6 +27,7 @@ from .ai_service import AIService
 from .similarity_dialog import SimilarityDialog
 from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
+from .batch_edit_dialog import BatchEditDialog
 
 
 class MainWindow(QMainWindow):
@@ -204,6 +205,7 @@ class MainWindow(QMainWindow):
         # Connect map panel signals
         self.map_panel.update_coordinates_requested.connect(self.update_selected_images_gps)
         self.map_panel.set_marker_from_selection_requested.connect(self.set_marker_from_selected_image)
+        self.map_panel.batch_edit_requested.connect(self.batch_edit_metadata)
         self.map_panel.repair_metadata_requested.connect(self.repair_selected_images_metadata)
         self.map_panel.set_taken_date_from_creation_requested.connect(self.set_taken_date_from_creation)
         self.map_panel.set_gps_date_from_taken_requested.connect(self.set_gps_date_from_taken)
@@ -430,6 +432,9 @@ class MainWindow(QMainWindow):
             self.map_panel.enable_set_taken_date_action(needs_taken_date)
             self.map_panel.enable_set_gps_date_action(needs_gps_date)
             
+            # Enable batch edit only when more than one image is selected
+            self.map_panel.enable_batch_edit_action(len(selected_rows) > 1)
+            
             # Enable update GPS button if active marker exists and images are selected
             active_marker = self.map_panel.map_widget.get_active_marker()
             self.map_panel.enable_update_coords_action(active_marker is not None)
@@ -438,6 +443,7 @@ class MainWindow(QMainWindow):
             self.update_all_images_on_map()
             self.map_panel.enable_set_marker_action(False)
             self.map_panel.enable_repair_action(False)
+            self.map_panel.enable_batch_edit_action(False)
             self.map_panel.enable_set_taken_date_action(False)
             self.map_panel.enable_set_gps_date_action(False)
             # Disable update GPS button when no selection
@@ -824,6 +830,240 @@ class MainWindow(QMainWindow):
         # Reload images if changes were applied
         if result == QDialog.DialogCode.Accepted:
             self.reload_images()
+    
+    def batch_edit_metadata(self):
+        """Open batch editor for selected images"""
+        selected_rows = self.table.selectionModel().selectedRows()
+        
+        if len(selected_rows) < 2:
+            QMessageBox.information(
+                self,
+                "Selection Required",
+                "Please select at least 2 images for batch editing."
+            )
+            return
+        
+        # Get selected images
+        selected_images = []
+        for row in selected_rows:
+            item = self.table.item(row.row(), 0)
+            if item:
+                image = item.data(Qt.ItemDataRole.UserRole)
+                if image:
+                    selected_images.append((row.row(), image))
+        
+        if not selected_images:
+            return
+        
+        # Open batch edit dialog
+        dialog = BatchEditDialog(len(selected_images), self)
+        result = dialog.exec()
+        
+        if result == QDialog.DialogCode.Accepted:
+            # Get values from dialog
+            values = dialog.get_values()
+            
+            # Prepare metadata updates
+            metadata = {}
+            
+            # TZ Offset
+            tz_offset = values.get('tz_offset', '').strip()
+            if tz_offset:
+                try:
+                    # Parse "+05:00" or "-04:30" format
+                    sign = 1 if tz_offset[0] == '+' else -1
+                    hours = int(tz_offset[1:3])
+                    minutes = int(tz_offset[4:6])
+                    # TimeZoneOffset is in hours (can be fractional)
+                    tz_offset_hours = sign * (hours + minutes / 60.0)
+                    
+                    metadata['EXIF:TimeZoneOffset'] = str(tz_offset_hours)
+                    metadata['EXIF:OffsetTime'] = tz_offset
+                    metadata['EXIF:OffsetTimeOriginal'] = tz_offset
+                    metadata['EXIF:OffsetTimeDigitized'] = tz_offset
+                except (ValueError, IndexError):
+                    pass
+            
+            # Country
+            country = values.get('country', '').strip()
+            country_name = None
+            if country:
+                # Assuming country is ISO code, need to get country name
+                from .table_delegates import CountryDelegate
+                for code, name in CountryDelegate.COUNTRY_LIST:
+                    if code == country:
+                        country_name = name
+                        break
+                
+                if country_name:
+                    metadata['XMP-photoshop:Country'] = country_name
+                    metadata['IPTC:Country-PrimaryLocationName'] = country_name
+                    metadata['XMP-iptcCore:CountryCode'] = country
+                    metadata['IPTC:Country-PrimaryLocationCode'] = country
+            
+            # City
+            city = values.get('city', '').strip()
+            if city:
+                metadata['IPTC:City'] = city
+                metadata['XMP-photoshop:City'] = city
+            
+            # Headline
+            headline = values.get('headline', '').strip()
+            if headline:
+                metadata['IPTC:Headline'] = headline
+                metadata['XMP-photoshop:Headline'] = headline
+            
+            if not metadata:
+                return
+            
+            try:
+                # If TZ Offset is being updated, we need to handle each image individually
+                # to recalculate GPS Date and update XMP date tags
+                if tz_offset:
+                    for row, image in selected_images:
+                        # Start with base metadata
+                        image_metadata = {}
+                        
+                        # Add TZ Offset metadata
+                        try:
+                            sign = 1 if tz_offset[0] == '+' else -1
+                            hours = int(tz_offset[1:3])
+                            minutes = int(tz_offset[4:6])
+                            tz_offset_hours = sign * (hours + minutes / 60.0)
+                            
+                            image_metadata['EXIF:TimeZoneOffset'] = str(tz_offset_hours)
+                            image_metadata['EXIF:OffsetTime'] = tz_offset
+                            image_metadata['EXIF:OffsetTimeOriginal'] = tz_offset
+                            image_metadata['EXIF:OffsetTimeDigitized'] = tz_offset
+                        except (ValueError, IndexError):
+                            pass
+                        
+                        # Update XMP date tags with timezone offset
+                        if image.taken_date:
+                            taken_date_str = image.taken_date.strftime('%Y:%m:%d %H:%M:%S')
+                            image_metadata['XMP-exif:DateTimeOriginal'] = taken_date_str + tz_offset
+                        
+                        if image.created_date:
+                            created_date_str = image.created_date.strftime('%Y:%m:%d %H:%M:%S')
+                            image_metadata['XMP-exif:DateTimeDigitized'] = created_date_str + tz_offset
+                        
+                        # Recalculate GPS Date in UTC if both taken_date and gps_date exist
+                        if image.taken_date:
+                            try:
+                                from datetime import timedelta
+                                sign = 1 if tz_offset[0] == '+' else -1
+                                hours = int(tz_offset[1:3])
+                                minutes = int(tz_offset[4:6])
+                                offset_seconds = sign * (hours * 3600 + minutes * 60)
+                                
+                                # Convert to UTC by subtracting the offset
+                                gps_utc = image.taken_date - timedelta(seconds=offset_seconds)
+                                
+                                gps_date_str = gps_utc.strftime('%Y:%m:%d')
+                                gps_time_str = gps_utc.strftime('%H:%M:%S')
+                                image_metadata['EXIF:GPSDateStamp'] = gps_date_str
+                                image_metadata['EXIF:GPSTimeStamp'] = gps_time_str
+                                
+                                # Update image model
+                                image.gps_date = gps_utc
+                            except (ValueError, IndexError):
+                                pass
+                        
+                        # Add other metadata (country, city, headline)
+                        if country_name:
+                            image_metadata['XMP-photoshop:Country'] = country_name
+                            image_metadata['IPTC:Country-PrimaryLocationName'] = country_name
+                            image_metadata['XMP-iptcCore:CountryCode'] = country
+                            image_metadata['IPTC:Country-PrimaryLocationCode'] = country
+                        
+                        if city:
+                            image_metadata['IPTC:City'] = city
+                            image_metadata['XMP-photoshop:City'] = city
+                        
+                        if headline:
+                            image_metadata['IPTC:Headline'] = headline
+                            image_metadata['XMP-photoshop:Headline'] = headline
+                        
+                        # Write metadata for this image
+                        self.exiftool_service.write_metadata([image.filepath], image_metadata)
+                        
+                        # Read Composite:GPSDateTime and write to XMP-exif:GPSDateTime if GPS date was updated
+                        if image.taken_date:
+                            try:
+                                file_metadata = self.exiftool_service.read_metadata(image.filepath)
+                                composite_gps = file_metadata.get('Composite:GPSDateTime')
+                                if composite_gps:
+                                    self.exiftool_service.write_metadata(
+                                        [image.filepath],
+                                        {'XMP-exif:GPSDateTime': composite_gps}
+                                    )
+                            except Exception:
+                                pass
+                else:
+                    # No TZ Offset update, write all metadata at once
+                    filepaths = [img.filepath for _, img in selected_images]
+                    self.exiftool_service.write_metadata(filepaths, metadata)
+                
+                # Update UI
+                self.table.blockSignals(True)
+                for row, image in selected_images:
+                    # Update TZ Offset
+                    if tz_offset:
+                        image.tz_offset = tz_offset
+                        item = self.table.item(row, 2)
+                        if item:
+                            item.setText(tz_offset)
+                        
+                        # Update GPS Date display if it was recalculated
+                        if image.gps_date:
+                            gps_date_item = self.table.item(row, 9)
+                            if gps_date_item:
+                                from .utils import format_date
+                                gps_date_item.setText(format_date(image.gps_date))
+                    
+                    # Update Country
+                    if country:
+                        image.country = country
+                        item = self.table.item(row, 10)
+                        if item:
+                            item.setText(country)
+                        
+                        # Update keywords with country info if country_name exists
+                        if country_name:
+                            self.update_keywords_with_country(row, country_name, country)
+                    
+                    # Update City
+                    if city:
+                        image.city = city
+                        item = self.table.item(row, 4)
+                        if item:
+                            item.setText(city)
+                    
+                    # Update Headline
+                    if headline:
+                        image.headline = headline
+                        item = self.table.item(row, 6)
+                        if item:
+                            item.setText(headline)
+                
+                self.table.blockSignals(False)
+                
+                QMessageBox.information(
+                    self,
+                    "Success",
+                    f"Metadata updated for {len(selected_images)} image(s)."
+                )
+                
+                self.statusBar().showMessage(
+                    f"Batch updated metadata for {len(selected_images)} image(s)"
+                )
+                
+            except Exception as e:
+                QMessageBox.critical(
+                    self,
+                    "Error",
+                    f"Failed to update metadata: {str(e)}"
+                )
     
     def update_all_images_on_map(self):
         """Update map with markers for all images, highlighting selected ones"""
