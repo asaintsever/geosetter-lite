@@ -947,8 +947,8 @@ class MainWindow(QMainWindow):
                             created_date_str = image.created_date.strftime('%Y:%m:%d %H:%M:%S')
                             image_metadata['XMP-exif:DateTimeDigitized'] = created_date_str + tz_offset
                         
-                        # Recalculate GPS Date in UTC if both taken_date and gps_date exist
-                        if image.taken_date:
+                        # Recalculate GPS Date in UTC ONLY if both taken_date and gps_date already exist
+                        if image.taken_date and image.gps_date:
                             try:
                                 from datetime import timedelta
                                 sign = 1 if tz_offset[0] == '+' else -1
@@ -988,7 +988,7 @@ class MainWindow(QMainWindow):
                         self.exiftool_service.write_metadata([image.filepath], image_metadata)
                         
                         # Read Composite:GPSDateTime and write to XMP-exif:GPSDateTime if GPS date was updated
-                        if image.taken_date:
+                        if image.taken_date and image.gps_date:
                             try:
                                 file_metadata = self.exiftool_service.read_metadata(image.filepath)
                                 composite_gps = file_metadata.get('Composite:GPSDateTime')
