@@ -49,6 +49,28 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
   - To rebuild database: delete `locations.db` and restart app
   - To add locations: edit `world_locations.csv` directly
 
+## Screenshots
+
+### Main Window - Image Metadata Viewer
+![Main Window](_img/GeoSetterLite-ImageMetadataViewer.png)
+*3-pane layout with image list, image viewer, and interactive map*
+
+### Metadata Editor
+![Metadata Editor](_img/GeoSetterLite-MetadataEditor.png)
+*Edit EXIF/IPTC/XMP metadata with filtering and tag management*
+
+### AI-Powered Photo Similarity Detection
+![Photo Similarity](_img/GeoSetterLite-PhotoSimilarity.png)
+*Find and manage duplicate or similar photos*
+
+### AI-Powered Geolocation Prediction
+![Geolocation Prediction](_img/GeoSetterLite-GeolocPredict.png)
+*Predict GPS coordinates for photos without location data*
+
+### Settings & Preferences
+![Preferences](_img/GeoSetterLite-Preferences.png)
+*Configure AI features and model cache*
+
 ## Requirements
 
 - Python 3.12.9 or higher
