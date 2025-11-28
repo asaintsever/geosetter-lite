@@ -355,6 +355,56 @@ The application writes to multiple metadata standards for maximum compatibility:
   - Urban scenes with visible signs or buildings
   - May not work well for abstract or indoor photos
 
+## Distribution
+
+### Building packages
+
+Build a distributable package of the application:
+
+```bash
+make package
+```
+
+This will create the following types of packages in the `dist/` directory:
+- Python wheel
+- macOS App Bundle *(via PyInstaller)*
+
+The wheel includes:
+- All source code from the `geosetter_lite` package
+- Data files from the `data/` directory (world_locations.csv)
+- Entry point script: `geosetter-lite`
+
+The app bundle includes:
+- All Python dependencies (PySide6, PyTorch, etc.)
+- Data files (world_locations.csv)
+- AI models (downloaded on first run)
+- Self-contained Python runtime
+
+### Installing from Wheel
+
+```bash
+# Install the wheel
+pip install dist/geosetter_lite-0.1.0-py3-none-any.whl
+
+# Run the application
+geosetter-lite /path/to/image.jpg
+```
+
+### macOS App Bundle
+
+Run directly: Double-click `dist/GeoSetter Lite.app`
+
+**Customizing the build**: Edit `geosetter_lite.spec` to:
+- Add an application icon (set `icon` parameter)
+- Include additional data files
+- Configure hidden imports
+- Adjust bundle settings
+
+**Note**: The app requires ExifTool to be installed separately on the system:
+```bash
+brew install exiftool
+```
+
 ## License
 
 This project is licensed under the Apache License 2.0.

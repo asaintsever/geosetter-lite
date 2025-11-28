@@ -98,7 +98,7 @@ wheels = [
 [[package]]
 name = "geosetter-lite"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "pillow" },
     { name = "pyside6" },

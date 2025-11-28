@@ -17,22 +17,67 @@ class ExifToolError(Exception):
 class ExifToolService:
     """Service for interacting with ExifTool"""
     
-    @staticmethod
-    def check_availability() -> bool:
-        """Check if ExifTool is available on the system"""
-        try:
-            result = subprocess.run(
-                ['exiftool', '-ver'],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-            return result.returncode == 0
-        except (subprocess.SubprocessError, FileNotFoundError):
-            return False
+    _exiftool_path: Optional[str] = None
     
     @staticmethod
-    def read_metadata(filepath: Path) -> Dict[str, Any]:
+    def _find_exiftool() -> Optional[str]:
+        """
+        Find ExifTool executable, checking common installation paths
+        
+        Returns:
+            Path to ExifTool executable or None if not found
+        """
+        # Common paths where ExifTool might be installed
+        common_paths = [
+            'exiftool',  # In PATH
+            '/usr/local/bin/exiftool',  # Homebrew Intel Mac
+            '/opt/homebrew/bin/exiftool',  # Homebrew Apple Silicon Mac
+            '/usr/bin/exiftool',  # Linux system install
+        ]
+        
+        for path in common_paths:
+            try:
+                result = subprocess.run(
+                    [path, '-ver'],
+                    capture_output=True,
+                    text=True,
+                    timeout=5
+                )
+                if result.returncode == 0:
+                    return path
+            except (subprocess.SubprocessError, FileNotFoundError):
+                continue
+        
+        return None
+    
+    @classmethod
+    def check_availability(cls) -> bool:
+        """Check if ExifTool is available on the system"""
+        if cls._exiftool_path is None:
+            cls._exiftool_path = cls._find_exiftool()
+        return cls._exiftool_path is not None
+    
+    @classmethod
+    def get_exiftool_path(cls) -> str:
+        """
+        Get the path to ExifTool executable
+        
+        Returns:
+            Path to ExifTool
+            
+        Raises:
+            ExifToolError: If ExifTool is not found
+        """
+        if cls._exiftool_path is None:
+            cls._exiftool_path = cls._find_exiftool()
+        
+        if cls._exiftool_path is None:
+            raise ExifToolError("ExifTool not found on system")
+        
+        return cls._exiftool_path
+    
+    @classmethod
+    def read_metadata(cls, filepath: Path) -> Dict[str, Any]:
         """
         Read all EXIF/XMP metadata from an image file
         
@@ -46,8 +91,9 @@ class ExifToolService:
             ExifToolError: If reading metadata fails
         """
         try:
+            exiftool = cls.get_exiftool_path()
             result = subprocess.run(
-                ['exiftool', '-j', '-G', '-n', str(filepath)],
+                [exiftool, '-j', '-G', '-n', str(filepath)],
                 capture_output=True,
                 text=True,
                 timeout=10
@@ -72,8 +118,8 @@ class ExifToolService:
         except Exception as e:
             raise ExifToolError(f"Error reading metadata: {e}")
     
-    @staticmethod
-    def _preserve_file_times(filepaths: List[Path]) -> Dict[Path, tuple]:
+    @classmethod
+    def _preserve_file_times(cls, filepaths: List[Path]) -> Dict[Path, tuple]:
         """
         Get file creation and modification times before metadata write
         
@@ -95,8 +141,8 @@ class ExifToolService:
             times[filepath] = (creation_time, modification_time)
         return times
     
-    @staticmethod
-    def _restore_file_times(times: Dict[Path, tuple]):
+    @classmethod
+    def _restore_file_times(cls, times: Dict[Path, tuple]):
         """
         Restore file creation and modification times after metadata write
         
@@ -128,8 +174,9 @@ class ExifToolService:
             except Exception:
                 pass  # If it fails, at least we tried to preserve times
     
-    @staticmethod
+    @classmethod
     def write_metadata(
+        cls,
         filepaths: List[Path],
         metadata: Dict[str, Any],
         overwrite: bool = True,
@@ -157,11 +204,12 @@ class ExifToolService:
         # Save original file times if requested
         original_times = None
         if preserve_file_dates:
-            original_times = ExifToolService._preserve_file_times(filepaths)
+            original_times = cls._preserve_file_times(filepaths)
         
         try:
             # Build ExifTool command
-            cmd = ['exiftool']
+            exiftool = cls.get_exiftool_path()
+            cmd = [exiftool]
             
             # Add each metadata tag
             for tag, value in metadata.items():
@@ -193,7 +241,7 @@ class ExifToolService:
             
             # Restore original file times if requested
             if preserve_file_dates and original_times:
-                ExifToolService._restore_file_times(original_times)
+                cls._restore_file_times(original_times)
             
             return True
             
@@ -205,8 +253,8 @@ class ExifToolService:
         except Exception as e:
             raise ExifToolError(f"Error writing metadata: {e}")
     
-    @staticmethod
-    def get_all_tags(filepath: Path) -> Dict[str, Any]:
+    @classmethod
+    def get_all_tags(cls, filepath: Path) -> Dict[str, Any]:
         """
         Get all available EXIF/XMP tags with their values
         
@@ -216,10 +264,10 @@ class ExifToolService:
         Returns:
             Dictionary of all metadata tags
         """
-        return ExifToolService.read_metadata(filepath)
+        return cls.read_metadata(filepath)
     
-    @staticmethod
-    def delete_tag(filepaths: List[Path], tag: str, preserve_file_dates: bool = True) -> bool:
+    @classmethod
+    def delete_tag(cls, filepaths: List[Path], tag: str, preserve_file_dates: bool = True) -> bool:
         """
         Delete a specific metadata tag from one or more files
         
@@ -240,10 +288,11 @@ class ExifToolService:
         # Save original file times if requested
         original_times = None
         if preserve_file_dates:
-            original_times = ExifToolService._preserve_file_times(filepaths)
+            original_times = cls._preserve_file_times(filepaths)
         
         try:
-            cmd = ['exiftool', f'-{tag}=']
+            exiftool = cls.get_exiftool_path()
+            cmd = [exiftool, f'-{tag}=']
             cmd.extend([str(fp) for fp in filepaths])
             
             result = subprocess.run(
@@ -258,7 +307,7 @@ class ExifToolService:
             
             # Restore original file times if requested
             if preserve_file_dates and original_times:
-                ExifToolService._restore_file_times(original_times)
+                cls._restore_file_times(original_times)
             
             return True
             
@@ -270,8 +319,8 @@ class ExifToolService:
         except Exception as e:
             raise ExifToolError(f"Error deleting tag: {e}")
     
-    @staticmethod
-    def repair_metadata(filepaths: List[Path], preserve_file_dates: bool = True) -> bool:
+    @classmethod
+    def repair_metadata(cls, filepaths: List[Path], preserve_file_dates: bool = True) -> bool:
         """
         Repair/fix metadata by removing all metadata and copying it back from the original
         This fixes corrupted metadata structures while preserving the actual data
@@ -294,11 +343,12 @@ class ExifToolService:
         # Save original file times if requested
         original_times = None
         if preserve_file_dates:
-            original_times = ExifToolService._preserve_file_times(filepaths)
+            original_times = cls._preserve_file_times(filepaths)
         
         try:
+            exiftool = cls.get_exiftool_path()
             cmd = [
-                'exiftool',
+                exiftool,
                 '-all=',  # Remove all metadata
                 '-tagsfromfile', '@',  # Copy from original
                 '-all:all',  # Copy all tags
@@ -319,7 +369,7 @@ class ExifToolService:
             
             # Restore original file times if requested
             if preserve_file_dates and original_times:
-                ExifToolService._restore_file_times(original_times)
+                cls._restore_file_times(original_times)
             
             return True
             
