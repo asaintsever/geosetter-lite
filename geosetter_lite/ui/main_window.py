@@ -2033,7 +2033,7 @@ class MainWindow(QMainWindow):
             # Reload AI service with new settings
             ai_settings = Config.get_ai_settings()
             self.ai_service = AIService(ai_settings['model_cache_dir'])
-            self.statusBar().showMessage("AI settings updated")
+            self.statusBar().showMessage("Settings updated")
     
     def _on_images_deleted(self, deleted_paths):
         """Handle images deleted from similarity dialog"""

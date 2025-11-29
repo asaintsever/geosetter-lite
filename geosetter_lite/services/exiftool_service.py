@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional
 import json
 import platform
+from ..core.config import Config
 
 
 class ExifToolError(Exception):
@@ -211,6 +212,11 @@ class ExifToolService:
             exiftool = cls.get_exiftool_path()
             cmd = [exiftool]
             
+            # Check if backups are disabled
+            app_settings = Config.get_app_settings()
+            if not app_settings.get('exiftool_create_backups', True):
+                cmd.append('-overwrite_original')
+            
             # Add each metadata tag
             for tag, value in metadata.items():
                 if value is not None and value != "":
@@ -292,7 +298,14 @@ class ExifToolService:
         
         try:
             exiftool = cls.get_exiftool_path()
-            cmd = [exiftool, f'-{tag}=']
+            cmd = [exiftool]
+            
+            # Check if backups are disabled
+            app_settings = Config.get_app_settings()
+            if not app_settings.get('exiftool_create_backups', True):
+                cmd.append('-overwrite_original')
+            
+            cmd.append(f'-{tag}=')
             cmd.extend([str(fp) for fp in filepaths])
             
             result = subprocess.run(
@@ -347,14 +360,20 @@ class ExifToolService:
         
         try:
             exiftool = cls.get_exiftool_path()
-            cmd = [
-                exiftool,
+            cmd = [exiftool]
+            
+            # Check if backups are disabled
+            app_settings = Config.get_app_settings()
+            if not app_settings.get('exiftool_create_backups', True):
+                cmd.append('-overwrite_original')
+            
+            cmd.extend([
                 '-all=',  # Remove all metadata
                 '-tagsfromfile', '@',  # Copy from original
                 '-all:all',  # Copy all tags
                 '-unsafe',  # Allow unsafe tags
                 '-icc_profile'  # Preserve ICC profile
-            ]
+            ])
             cmd.extend([str(fp) for fp in filepaths])
             
             result = subprocess.run(
