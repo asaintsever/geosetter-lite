@@ -28,6 +28,7 @@ from .similarity_dialog import SimilarityDialog
 from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
 from .batch_edit_dialog import BatchEditDialog
+from .rename_dialog import RenameDialog
 
 
 class MainWindow(QMainWindow):
@@ -228,6 +229,14 @@ class MainWindow(QMainWindow):
         """Create the application menu bar"""
         menubar = self.menuBar()
         
+        # File menu
+        file_menu = menubar.addMenu("File")
+        
+        # Rename Photos
+        rename_action = QAction("Rename Photos...", self)
+        rename_action.triggered.connect(self._rename_photos)
+        file_menu.addAction(rename_action)
+        
         # AI Tools menu
         ai_menu = menubar.addMenu("AI Tools")
         
@@ -282,6 +291,26 @@ class MainWindow(QMainWindow):
         
         QMessageBox.about(self, "About GeoSetter Lite", about_text)
     
+    def _rename_photos(self):
+        """Show the rename photos dialog"""
+        if not self.images:
+            QMessageBox.information(
+                self,
+                "No Images",
+                "No images loaded. Please open a directory with images first."
+            )
+            return
+        
+        # Create and show rename dialog
+        dialog = RenameDialog(self.images, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            # Refresh the table to show updated filenames
+            self.load_images()
+            self.statusBar().showMessage(
+                f"Successfully renamed files",
+                3000
+            )
+    
     def load_images(self):
         """Load images from the directory"""
         self.statusBar().showMessage("Loading images...")
@@ -309,10 +338,10 @@ class MainWindow(QMainWindow):
         self.table.blockSignals(True)
         
         for row, image in enumerate(self.images):
-            # Filename (0)
+            # Filename (0) - read-only, can only be changed via Rename dialog
             filename_item = QTableWidgetItem(image.filename)
             filename_item.setData(Qt.ItemDataRole.UserRole, image)
-            filename_item.setFlags(filename_item.flags() | Qt.ItemFlag.ItemIsEditable)
+            filename_item.setFlags(filename_item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Read-only
             self.table.setItem(row, 0, filename_item)
             
             # Taken Date (1) - editable with date picker
@@ -353,8 +382,9 @@ class MainWindow(QMainWindow):
             camera_item.setFlags(camera_item.flags() | Qt.ItemFlag.ItemIsEditable)
             self.table.setItem(row, 7, camera_item)
             
-            # Size (8)
+            # Size (8) - read-only
             size_item = QTableWidgetItem(format_file_size(image.size))
+            size_item.setFlags(size_item.flags() & ~Qt.ItemFlag.ItemIsEditable)  # Read-only
             self.table.setItem(row, 8, size_item)
             
             # GPS Date (9) - editable with date picker
