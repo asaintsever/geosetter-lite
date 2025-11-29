@@ -12,18 +12,18 @@ from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint
 from PySide6.QtGui import QPixmap, QAction, QImage, QKeyEvent, QIcon, QPainter, QColor, QPen
 from PIL import Image
 import io
-from .image_model import ImageModel
-from .file_scanner import FileScanner
-from .exiftool_service import ExifToolService
+from ..models.image_model import ImageModel
+from ..services.file_scanner import FileScanner
+from ..services.exiftool_service import ExifToolService
 from .metadata_editor import MetadataEditor
 from .map_panel import MapPanel
 from .table_delegates import CountryDelegate, DateTimeDelegate, TZOffsetDelegate
-from .utils import format_date, format_file_size, format_gps_coordinates
-from .reverse_geocoding_service import ReverseGeocodingService
+from ..core.utils import format_date, format_file_size, format_gps_coordinates
+from ..services.reverse_geocoding_service import ReverseGeocodingService
 from .geocoding_dialog import GeocodingDialog
-from .config import Config
+from ..core.config import Config
 from .settings_dialog import SettingsDialog
-from .ai_service import AIService
+from ..services.ai_service import AIService
 from .similarity_dialog import SimilarityDialog
 from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog

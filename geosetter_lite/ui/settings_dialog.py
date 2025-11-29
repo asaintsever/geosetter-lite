@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 
-from .config import Config
+from ..core.config import Config
 
 
 class SettingsDialog(QDialog):

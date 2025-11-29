@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, QEvent
 from PySide6.QtGui import QKeyEvent
-from .exiftool_service import ExifToolService, ExifToolError
+from ..services.exiftool_service import ExifToolService, ExifToolError
 from .table_delegates import CountryDelegate
 
 
