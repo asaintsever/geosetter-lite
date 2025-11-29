@@ -332,6 +332,13 @@ class RenameDialog(QDialog):
                     # Rename file
                     if old_path.exists() and old_path != new_path:
                         old_path.rename(new_path)
+                        
+                        # Also rename ExifTool backup file if it exists
+                        old_backup = Path(str(old_path) + "_original")
+                        new_backup = Path(str(new_path) + "_original")
+                        if old_backup.exists():
+                            old_backup.rename(new_backup)
+                        
                         # Update image model
                         image.filepath = new_path
                         image.filename = new_name
