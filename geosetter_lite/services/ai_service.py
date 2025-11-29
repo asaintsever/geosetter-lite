@@ -1,5 +1,9 @@
 """AI service for photo similarity and geolocation"""
 
+import os
+# Disable tokenizers parallelism warning
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import torch
 import torchvision.models as models
 import torchvision.transforms as transforms

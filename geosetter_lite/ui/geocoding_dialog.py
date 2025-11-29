@@ -14,7 +14,7 @@ class GeocodingDialog(QDialog):
     """Dialog to display and edit reverse geocoding results"""
     
     def __init__(self, country: Optional[str], city: Optional[str], 
-                 num_images: int, parent=None):
+                 num_images: int, country_code: Optional[str] = None, parent=None):
         """
         Initialize the geocoding dialog
         
@@ -22,11 +22,13 @@ class GeocodingDialog(QDialog):
             country: Country name from reverse geocoding
             city: City name from reverse geocoding
             num_images: Number of images being updated
+            country_code: 3-letter ISO country code (alpha-3) from reverse geocoding
             parent: Parent widget
         """
         super().__init__(parent)
         
         self.country = country
+        self.country_code = country_code
         self.city = city
         self.num_images = num_images
         
@@ -64,8 +66,16 @@ class GeocodingDialog(QDialog):
         )
         self.country_combo.completer().setFilterMode(Qt.MatchFlag.MatchContains)
         
-        # Try to set the current country if provided
-        if self.country:
+        # Try to set the current country - prioritize country_code over country name
+        if self.country_code:
+            # Match by country code (most reliable)
+            for i in range(self.country_combo.count()):
+                code, name = self.country_combo.itemData(i)
+                if code == self.country_code:
+                    self.country_combo.setCurrentIndex(i)
+                    break
+        elif self.country:
+            # Fallback: match by country name
             for i in range(self.country_combo.count()):
                 code, name = self.country_combo.itemData(i)
                 if name == self.country:

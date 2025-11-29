@@ -117,13 +117,14 @@ class ImageModel:
         
         # GPS Coordinates
         # Use explicit None checks to handle 0 coordinates (equator/prime meridian)
-        gps_lat = metadata.get('EXIF:GPSLatitude')
+        # Prefer Composite GPS values as they include sign from Ref tags when using -n flag
+        gps_lat = metadata.get('Composite:GPSLatitude')
         if gps_lat is None:
-            gps_lat = metadata.get('Composite:GPSLatitude')
+            gps_lat = metadata.get('EXIF:GPSLatitude')
         
-        gps_lon = metadata.get('EXIF:GPSLongitude')
+        gps_lon = metadata.get('Composite:GPSLongitude')
         if gps_lon is None:
-            gps_lon = metadata.get('Composite:GPSLongitude')
+            gps_lon = metadata.get('EXIF:GPSLongitude')
         
         # Always update GPS coordinates (set to None if not present)
         if gps_lat is not None:
