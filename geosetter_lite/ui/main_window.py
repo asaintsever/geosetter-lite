@@ -451,52 +451,42 @@ class MainWindow(QMainWindow):
     
     def update_keywords_with_country(self, row: int, country_name: str, country_code: str):
         """
-        Update keywords to include country name and country code
+        Update keywords to include country name and country code (for table delegate calls).
+        This is called after the country delegate has already written the country metadata.
         
         Args:
             row: Row index in the table
             country_name: Country name to add
             country_code: Country code to add
         """
-        # Get current keywords
-        keywords_item = self.table.item(row, 11)  # Keywords column is now at index 11
-        if not keywords_item:
+        # Get the image
+        filename_item = self.table.item(row, 0)
+        if not filename_item:
             return
         
-        current_keywords_str = keywords_item.text().strip()
-        # Parse semicolon-separated keywords (display format)
-        keywords_list = [k.strip() for k in current_keywords_str.split(';') if k.strip()] if current_keywords_str else []
+        image = filename_item.data(Qt.ItemDataRole.UserRole)
+        if not image:
+            return
         
-        # Add country code and country name if not already present
-        if country_code and country_code not in keywords_list:
-            keywords_list.append(country_code)
-        if country_name and country_name not in keywords_list:
-            keywords_list.append(country_name)
-        
-        # Update the keywords column (display with semicolon separator)
-        new_keywords_str = "; ".join(keywords_list)
-        keywords_item.setText(new_keywords_str)
-        
-        # Get the image and update metadata
-        filename_item = self.table.item(row, 0)
-        if filename_item:
-            image = filename_item.data(Qt.ItemDataRole.UserRole)
-            if image:
-                try:
-                    # Write as string with * separator (storage format)
-                    keywords_storage_str = '*'.join(keywords_list)
-                    metadata = {
-                        'IPTC:Keywords': keywords_storage_str,
-                        'XMP-dc:Subject': keywords_storage_str
-                    }
-                    self.exiftool_service.write_metadata([image.filepath], metadata)
-                    image.keywords = keywords_list
-                    if not image.metadata:
-                        image.metadata = {}
-                    image.metadata['IPTC:Keywords'] = keywords_storage_str
-                    image.metadata['XMP-dc:Subject'] = keywords_storage_str
-                except Exception as e:
-                    self.statusBar().showMessage(f"Error updating keywords: {e}")
+        try:
+            # Use centralized update_image_field to get keywords metadata
+            metadata = self.update_image_field(image, 'country', country_code)
+            
+            # Write only keywords metadata (country was already written by delegate)
+            if 'IPTC:Keywords' in metadata:
+                keywords_metadata = {
+                    'IPTC:Keywords': metadata['IPTC:Keywords'],
+                    'XMP-dc:Subject': metadata['XMP-dc:Subject']
+                }
+                self.exiftool_service.write_metadata([image.filepath], keywords_metadata)
+            
+            # Update the keywords column display
+            keywords_item = self.table.item(row, 11)
+            if keywords_item:
+                new_keywords_str = "; ".join(image.keywords) if image.keywords else ""
+                keywords_item.setText(new_keywords_str)
+        except Exception as e:
+            self.statusBar().showMessage(f"Error updating keywords: {e}")
     
     def on_item_changed(self, item: QTableWidgetItem):
         """Handle changes to editable table items"""
@@ -879,9 +869,23 @@ class MainWindow(QMainWindow):
                     metadata['IPTC:Country-PrimaryLocationName'] = country_name
                     metadata['XMP-iptcCore:CountryCode'] = new_value
                     metadata['IPTC:Country-PrimaryLocationCode'] = new_value
-                    image.country = new_value
+                    image.country = country_name  # Store country name, not code
                     
-                    # Return country info for keyword updates
+                    # Add country to keywords
+                    keywords_list = list(image.keywords) if image.keywords else []
+                    if new_value and new_value not in keywords_list:
+                        keywords_list.append(new_value)
+                    if country_name and country_name not in keywords_list:
+                        keywords_list.append(country_name)
+                    
+                    # Update keywords in metadata
+                    if keywords_list:
+                        keywords_str = '*'.join(keywords_list)
+                        metadata['IPTC:Keywords'] = keywords_str
+                        metadata['XMP-dc:Subject'] = keywords_str
+                        image.keywords = keywords_list
+                    
+                    # Return country info for backward compatibility
                     metadata['_country_info'] = {'name': country_name, 'code': new_value}
         
         elif field_name == 'city':
@@ -1177,10 +1181,12 @@ class MainWindow(QMainWindow):
         if result != QMessageBox.StandardButton.Yes:
             return
         
-        # Prepare GPS metadata
+        # Prepare GPS metadata with absolute values and explicit Ref tags
         metadata = {
-            'EXIF:GPSLatitude': str(lat),
-            'EXIF:GPSLongitude': str(lon)
+            'GPSLatitude': str(abs(lat)),
+            'GPSLatitudeRef': 'N' if lat >= 0 else 'S',
+            'GPSLongitude': str(abs(lon)),
+            'GPSLongitudeRef': 'E' if lon >= 0 else 'W',
         }
         
         # Initialize geocoding info as None
@@ -1198,7 +1204,8 @@ class MainWindow(QMainWindow):
                     geocoding_result.country,
                     geocoding_result.city,
                     len(selected_images),
-                    self
+                    country_code=geocoding_result.country_code,  # Pass 3-letter ISO code
+                    parent=self
                 )
                 
                 if dialog.exec() == QDialog.DialogCode.Accepted:
@@ -1255,21 +1262,11 @@ class MainWindow(QMainWindow):
                     image_metadata = metadata.copy()
                     
                     # Add keywords with country information if country data exists
-                    if country or country_code:
-                        # Get current keywords for this image
-                        keywords_list = list(image.keywords) if image.keywords else []
-                        
-                        # Add country code and country name if not already present
-                        if country_code and country_code not in keywords_list:
-                            keywords_list.append(country_code)
-                        if country and country not in keywords_list:
-                            keywords_list.append(country)
-                        
-                        # Add keywords to metadata
-                        if keywords_list:
-                            keywords_str = '*'.join(keywords_list)
-                            image_metadata['IPTC:Keywords'] = keywords_str
-                            image_metadata['XMP-dc:Subject'] = keywords_str
+                    if country and country_code:
+                        # Use centralized update logic
+                        country_metadata = self.update_image_field(image, 'country', country_code)
+                        # Merge country metadata into image_metadata
+                        image_metadata.update({k: v for k, v in country_metadata.items() if not k.startswith('_')})
                     
                     # Write metadata for this image
                     self.exiftool_service.write_metadata([image.filepath], image_metadata)
@@ -2022,24 +2019,63 @@ class MainWindow(QMainWindow):
         self.statusBar().showMessage(f"Deleted {len(deleted_paths)} image(s)")
     
     def _on_locations_applied(self, locations_dict):
-        """Handle locations applied from geolocation dialog"""
+        """Handle locations applied from geolocation dialog
+        
+        Args:
+            locations_dict: Dict of {image_path: {'lat': lat, 'lon': lon, 'country': country, 'city': city}}
+        """
         count = 0
-        for image_path, (lat, lon) in locations_dict.items():
+        for image_path_str, location_data in locations_dict.items():
+            image_path = Path(image_path_str)
+            lat = location_data['lat']
+            lon = location_data['lon']
+            country_name = location_data.get('country')
+            city_name = location_data.get('city')
+            
             # Find the image in our list
             for image in self.images:
                 if image.filepath == image_path:
-                    # Write GPS coordinates to metadata
-                    self.exiftool_service.write_metadata(
-                        image_path,
-                        {
-                            'EXIF:GPSLatitude': abs(lat),
-                            'EXIF:GPSLatitudeRef': 'N' if lat >= 0 else 'S',
-                            'EXIF:GPSLongitude': abs(lon),
-                            'EXIF:GPSLongitudeRef': 'E' if lon >= 0 else 'W',
-                        }
-                    )
+                    # Prepare GPS metadata with absolute values and explicit Ref tags
+                    metadata = {
+                        'GPSLatitude': str(abs(lat)),
+                        'GPSLatitudeRef': 'N' if lat >= 0 else 'S',
+                        'GPSLongitude': str(abs(lon)),
+                        'GPSLongitudeRef': 'E' if lon >= 0 else 'W',
+                    }
                     
-                    # Update image model
+                    # Add country info if available
+                    if country_name:
+                        # Use country code from reverse geocoding if available (more reliable)
+                        country_code = location_data.get('country_code')
+                        
+                        if not country_code:
+                            # Fallback: try to match by country name
+                            from .table_delegates import CountryDelegate
+                            normalized_country = self.reverse_geocoding_service.normalize_country_name(country_name)
+                            for code, name in CountryDelegate.COUNTRY_LIST:
+                                if name.lower() == normalized_country.lower():
+                                    country_code = code
+                                    break
+                        
+                        # If we found a matching country code, use centralized update logic
+                        if country_code:
+                            country_metadata = self.update_image_field(image, 'country', country_code)
+                            # Merge country metadata into main metadata dict
+                            metadata.update({k: v for k, v in country_metadata.items() if not k.startswith('_')})
+                        else:
+                            # Debug: country couldn't be matched
+                            print(f"Warning: Could not find country code for '{country_name}'")
+                    
+                    # Add city if available
+                    if city_name:
+                        metadata['IPTC:City'] = city_name
+                        metadata['XMP-photoshop:City'] = city_name
+                        image.city = city_name
+                    
+                    # Write GPS coordinates and location metadata
+                    self.exiftool_service.write_metadata([image.filepath], metadata)
+                    
+                    # Update image model GPS coordinates
                     image.gps_latitude = lat
                     image.gps_longitude = lon
                     count += 1
@@ -2051,5 +2087,5 @@ class MainWindow(QMainWindow):
         # Update map
         self.update_all_images_on_map()
         
-        self.statusBar().showMessage(f"Applied GPS coordinates to {count} image(s)")
+        self.statusBar().showMessage(f"Applied GPS coordinates and location info to {count} image(s)")
 

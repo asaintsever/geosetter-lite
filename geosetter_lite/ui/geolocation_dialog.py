@@ -18,7 +18,7 @@ from ..services.reverse_geocoding_service import ReverseGeocodingService
 class GeolocationDialog(QDialog):
     """Dialog showing geolocation predictions for images"""
     
-    locations_applied = Signal(dict)  # Emits dict of {image_path: (lat, lon)}
+    locations_applied = Signal(dict)  # Emits dict of {image_path: {'lat': lat, 'lon': lon, 'country': country, 'city': city}}
     
     def __init__(
         self, 
@@ -39,6 +39,7 @@ class GeolocationDialog(QDialog):
         self.predictions = predictions
         self.selected_locations: Dict[Path, Tuple[float, float]] = {}
         self.location_names: Dict[Tuple[float, float], str] = {}
+        self.location_info: Dict[Tuple[float, float], Dict[str, Optional[str]]] = {}  # Store full geocoding results
         self.reverse_geocoding = ReverseGeocodingService()
         
         self.init_ui()
@@ -259,9 +260,19 @@ class GeolocationDialog(QDialog):
                     else:
                         name = result.country
                     self.location_names[(lat, lon)] = name
+                    # Store full geocoding info including country_code
+                    self.location_info[(lat, lon)] = {
+                        'country': result.country,
+                        'country_code': result.country_code,  # 3-letter ISO code
+                        'city': result.city
+                    }
+                else:
+                    self.location_names[(lat, lon)] = f"{lat:.4f}, {lon:.4f}"
+                    self.location_info[(lat, lon)] = {'country': None, 'country_code': None, 'city': None}
             except Exception as e:
                 print(f"Error reverse geocoding ({lat}, {lon}): {e}")
                 self.location_names[(lat, lon)] = f"{lat:.4f}, {lon:.4f}"
+                self.location_info[(lat, lon)] = {'country': None, 'city': None}
         
         # Update radio button labels
         self._update_location_labels()
@@ -316,7 +327,18 @@ class GeolocationDialog(QDialog):
         )
         
         if reply == QMessageBox.StandardButton.Yes:
-            # Emit signal with selected locations
-            self.locations_applied.emit(self.selected_locations)
+            # Prepare location data with coordinates and geocoding info
+            locations_data = {}
+            for path, (lat, lon) in self.selected_locations.items():
+                loc_info = self.location_info.get((lat, lon), {'country': None, 'country_code': None, 'city': None})
+                locations_data[str(path)] = {
+                    'lat': lat,
+                    'lon': lon,
+                    'country': loc_info['country'],
+                    'country_code': loc_info['country_code'],  # Include 3-letter ISO code
+                    'city': loc_info['city']
+                }
+            # Emit signal with selected locations and their info
+            self.locations_applied.emit(locations_data)
             self.accept()
 
