@@ -260,7 +260,7 @@ class MainWindow(QMainWindow):
         """Show the About dialog"""
         about_text = """
         <h2>GeoSetter Lite</h2>
-        <p><b>Version:</b> 0.1.0</p>
+        <p><b>Version:</b> 0.2.0</p>
         <p><b>Description:</b> Image Metadata Viewer and Editor</p>
         <br>
         <p>A comprehensive application for viewing and editing EXIF/IPTC/XMP metadata 

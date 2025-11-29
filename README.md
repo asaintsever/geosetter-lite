@@ -384,7 +384,7 @@ The app bundle includes:
 
 ```bash
 # Install the wheel
-pip install dist/geosetter_lite-0.1.0-py3-none-any.whl
+pip install dist/geosetter_lite-0.2.0-py3-none-any.whl
 
 # Run the application
 geosetter-lite /path/to/image.jpg

@@ -95,7 +95,7 @@ app = BUNDLE(
     name='GeoSetter Lite.app',
     icon=None,  # Add icon path if you have one: '_img/icon.icns'
     bundle_identifier='com.asaintsever.geosetter-lite',
-    version='0.1.0',
+    version='0.2.0',
     info_plist={
         'NSPrincipalClass': 'NSApplication',
         'NSHighResolutionCapable': True,
@@ -103,7 +103,7 @@ app = BUNDLE(
         'CFBundleDisplayName': 'GeoSetter Lite',
         'CFBundleGetInfoString': 'Image geotagging and metadata editor',
         'CFBundleName': 'GeoSetter Lite',
-        'CFBundleShortVersionString': '0.1.0',
-        'CFBundleVersion': '0.1.0',
+        'CFBundleShortVersionString': '0.2.0',
+        'CFBundleVersion': '0.2.0',
     },
 )
