@@ -15,6 +15,7 @@ class Config:
         },
         'app_settings': {
             'last_directory': str(Path.home()),
+            'exiftool_create_backups': True,
         }
     }
     
@@ -51,7 +52,8 @@ class Config:
     @classmethod
     def get_default(cls) -> Dict[str, Any]:
         """Return default configuration"""
-        return cls.DEFAULT_CONFIG.copy()
+        import copy
+        return copy.deepcopy(cls.DEFAULT_CONFIG)
     
     @classmethod
     def _merge_with_defaults(cls, config: Dict[str, Any]) -> Dict[str, Any]:
@@ -84,8 +86,9 @@ class Config:
     @classmethod
     def get_app_settings(cls) -> Dict[str, Any]:
         """Get application settings"""
+        import copy
         config = cls.load()
-        return config.get('app_settings', cls.DEFAULT_CONFIG['app_settings'])
+        return copy.deepcopy(config.get('app_settings', cls.DEFAULT_CONFIG['app_settings']))
     
     @classmethod
     def set_app_settings(cls, app_settings: Dict[str, Any]) -> None:

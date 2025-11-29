@@ -4,7 +4,7 @@ from pathlib import Path
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QSlider, 
     QLineEdit, QPushButton, QGroupBox, QFormLayout, QFileDialog,
-    QMessageBox
+    QMessageBox, QCheckBox
 )
 from PySide6.QtCore import Qt
 
@@ -22,6 +22,7 @@ class SettingsDialog(QDialog):
         
         # Load current settings
         self.ai_settings = Config.get_ai_settings()
+        self.app_settings = Config.get_app_settings()
         
         self.init_ui()
     
@@ -92,6 +93,28 @@ class SettingsDialog(QDialog):
         cache_group.setLayout(cache_layout)
         layout.addWidget(cache_group)
         
+        # ExifTool Settings Group
+        exiftool_group = QGroupBox("ExifTool")
+        exiftool_layout = QFormLayout()
+        
+        # Backup files checkbox
+        self.backup_checkbox = QCheckBox("Create backup files (_original)")
+        self.backup_checkbox.setChecked(self.app_settings.get('exiftool_create_backups', True))
+        self.backup_checkbox.stateChanged.connect(self._update_preview)
+        exiftool_layout.addRow(self.backup_checkbox)
+        
+        # Help text
+        backup_help_label = QLabel(
+            "When enabled, ExifTool creates backup files with '_original' suffix.\n"
+            "Disable to save disk space and avoid backup file clutter."
+        )
+        backup_help_label.setWordWrap(True)
+        backup_help_label.setStyleSheet("color: gray; font-size: 10px;")
+        exiftool_layout.addRow("", backup_help_label)
+        
+        exiftool_group.setLayout(exiftool_layout)
+        layout.addWidget(exiftool_group)
+        
         # Current Settings Preview
         preview_group = QGroupBox("Current Settings")
         preview_layout = QVBoxLayout()
@@ -153,35 +176,43 @@ class SettingsDialog(QDialog):
         )
         
         if reply == QMessageBox.StandardButton.Yes:
-            defaults = Config.DEFAULT_CONFIG['ai_settings']
-            self.threshold_slider.setValue(int(defaults['similarity_threshold'] * 100))
-            self.cache_dir_edit.setText(defaults['model_cache_dir'])
+            ai_defaults = Config.DEFAULT_CONFIG['ai_settings']
+            app_defaults = Config.DEFAULT_CONFIG['app_settings']
+            self.threshold_slider.setValue(int(ai_defaults['similarity_threshold'] * 100))
+            self.cache_dir_edit.setText(ai_defaults['model_cache_dir'])
+            self.backup_checkbox.setChecked(app_defaults.get('exiftool_create_backups', True))
             self._update_preview()
     
     def _update_preview(self):
         """Update the preview of current settings"""
         threshold = self.threshold_slider.value() / 100.0
         cache_dir = self.cache_dir_edit.text()
+        backups_enabled = self.backup_checkbox.isChecked()
         
         preview_text = f"""
 <b>Similarity Threshold:</b> {threshold:.2f}<br>
-<b>Cache Directory:</b> {cache_dir}
+<b>Cache Directory:</b> {cache_dir}<br>
+<b>ExifTool Backups:</b> {'Enabled' if backups_enabled else 'Disabled'}
         """
         self.preview_label.setText(preview_text.strip())
     
     def get_settings(self):
         """Get the current settings from the dialog"""
-        return {
+        ai_settings = {
             'similarity_threshold': self.threshold_slider.value() / 100.0,
             'model_cache_dir': self.cache_dir_edit.text()
         }
+        app_settings = {
+            'exiftool_create_backups': self.backup_checkbox.isChecked()
+        }
+        return {'ai_settings': ai_settings, 'app_settings': app_settings}
     
     def accept(self):
         """Save settings and close dialog"""
         settings = self.get_settings()
         
         # Validate cache directory
-        cache_dir = Path(settings['model_cache_dir'])
+        cache_dir = Path(settings['ai_settings']['model_cache_dir'])
         if not cache_dir.exists():
             reply = QMessageBox.question(
                 self,
@@ -205,6 +236,12 @@ class SettingsDialog(QDialog):
                 return
         
         # Save settings
-        Config.set_ai_settings(settings)
+        Config.set_ai_settings(settings['ai_settings'])
+        
+        # Update app settings
+        app_settings = Config.get_app_settings()
+        app_settings['exiftool_create_backups'] = settings['app_settings']['exiftool_create_backups']
+        Config.set_app_settings(app_settings)
+        
         super().accept()
 
