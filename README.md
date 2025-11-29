@@ -19,17 +19,16 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 - **Metadata Editor**: Edit EXIF/IPTC/XMP metadata for single or multiple images with namespace display
 - **Batch Operations**: Apply metadata changes to multiple images at once
 - **Inline Editing**: Edit metadata directly in the table with specialized editors for different field types
+- **File Renaming**: Pattern-based batch file renaming with metadata tokens and counters
 
 ### Advanced Features
+
 - **Reverse Geocoding**: Automatically determine country and city from GPS coordinates using OpenStreetMap Nominatim API
 - **Smart Country Picker**: Searchable dropdown with 195+ countries using 3-letter ISO codes (ISO 3166-1 alpha-3)
 - **Timezone Management**: Automatic timezone offset calculation with DST support
 - **Date/Time Management**: Comprehensive date handling with Taken Date, Created Date, and GPS Date (UTC)
 - **Keywords Auto-Update**: Automatically add country code and country name to keywords
-- **Filename Editing**: Rename files directly from the table (including ExifTool backup files)
 - **Metadata Repair**: Fix/repair corrupted metadata with ExifTool's repair function
-- **File Preservation**: Original file creation dates are preserved; only modification dates are updated
-- **Backup Management**: ExifTool creates backup files with `_original` suffix (can be disabled)
 
 ### AI-Powered Features
 - **Photo Similarity Detection**: Find duplicate or similar photos using ResNet-based deep learning
@@ -130,7 +129,7 @@ The application will display all images in the same directory as the provided fi
 The application features a flexible 3-pane layout with resizable borders:
 
 - **Top-Left Panel**: Table showing all images with the following columns:
-  - **Filename** (editable, resizable) - Click to edit and rename file
+  - **Filename** (read-only, resizable) - Use File → Rename Photos for batch renaming
   - **Taken Date** (editable) - EXIF:DateTimeOriginal, XMP-exif:DateTimeOriginal
   - **TZ Offset** (editable) - Timezone offset with DST support (e.g., "+05:00")
   - **GPS Coordinates** (display only) - Latitude and Longitude
@@ -138,7 +137,7 @@ The application features a flexible 3-pane layout with resizable borders:
   - **Sublocation** (editable) - IPTC:Sub-location, XMP-iptcCore:Location
   - **Headline** (editable) - IPTC:Headline, XMP-photoshop:Headline
   - **Camera Model** (editable) - EXIF:Model
-  - **Size** (display only) - File size in KB/MB
+  - **Size** (read-only) - File size in KB/MB
   - **GPS Date** (editable, UTC) - EXIF:GPSDateStamp + GPSTimeStamp
   - **Country** (dropdown picker) - 3-letter ISO code with searchable country list
   - **Keywords** (editable) - Semicolon-separated display, auto-includes country info
@@ -173,11 +172,13 @@ All three panes can be resized by dragging the borders between them.
 - **Right Click**: Open context menu with "Edit metadata" option
 - **Double-Click Cell**: Edit metadata directly in the table (country uses dropdown picker, dates use date picker)
 - **Delete/Backspace**: Clear cell values (deletes corresponding metadata tags)
-- **Edit Filename**: Click filename cell to rename file (updates actual filename on disk and backup files)
+- **Rename Files**: Use File → Rename Photos for pattern-based batch renaming
 
 **Map:**
-- **Click on Map**: Set an active marker (red) at the clicked location
+- **Click on Map**: Set an active marker (red) at the clicked location. Map viewport (center and zoom) is preserved - no auto-fitting occurs
 - **Click on Marker**: View popup with image thumbnail and filename
+- **Select Image**: Centers map on selected image's marker, preserving current zoom level
+- **Deselect All**: Fits map bounds to show all markers
 - **Update GPS Button**: Update GPS coordinates of selected images with the active marker position
 
 **AI Tools Menu:**
@@ -264,6 +265,7 @@ geotag/
     │   ├── similarity_dialog.py     # Similar photos results dialog
     │   ├── settings_dialog.py       # AI settings configuration dialog
     │   ├── progress_dialog.py       # Progress dialog for long-running operations
+    │   ├── rename_dialog.py         # Pattern-based batch file renaming dialog
     │   └── table_delegates.py       # Custom cell editors (country, date, timezone)
     ├── services/                    # External service integrations
     │   ├── exiftool_service.py      # ExifTool wrapper with backup management
