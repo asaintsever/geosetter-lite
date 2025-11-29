@@ -253,24 +253,29 @@ geotag/
 ├── data/                            # Data files
 │   └── world_locations.csv          # World locations database (1000+ locations)
 └── geosetter_lite/                  # Main package
-    ├── ai_service.py                # AI services (similarity detection, geolocation prediction)
-    ├── config.py                    # Configuration management for AI settings
-    ├── exiftool_service.py          # ExifTool wrapper with backup management
-    ├── file_scanner.py              # Directory scanner with auto-initialization
-    ├── geocoding_dialog.py          # Reverse geocoding results dialog
-    ├── geolocation_dialog.py        # Geolocation prediction results dialog
-    ├── image_model.py               # Image data model with metadata fields
-    ├── location_database.py         # SQLite database for world locations
-    ├── main_window.py               # Main application window (3-pane layout)
-    ├── map_panel.py                 # Map panel with toolbar and icons
-    ├── map_widget.py                # Map widget with Leaflet/OpenStreetMap
-    ├── metadata_editor.py           # Metadata editor dialog with tag deletion and filtering
-    ├── progress_dialog.py           # Progress dialog for long-running operations
-    ├── reverse_geocoding_service.py # Nominatim API integration
-    ├── settings_dialog.py           # AI settings configuration dialog
-    ├── similarity_dialog.py         # Similar photos results dialog
-    ├── table_delegates.py           # Custom cell editors (country, date, timezone)
-    └── utils.py                     # Utility functions (formatting, etc.)
+    ├── ui/                          # User interface components
+    │   ├── main_window.py           # Main application window (3-pane layout)
+    │   ├── map_panel.py             # Map panel with toolbar and icons
+    │   ├── map_widget.py            # Map widget with Leaflet/OpenStreetMap
+    │   ├── metadata_editor.py       # Metadata editor dialog with tag deletion and filtering
+    │   ├── batch_edit_dialog.py     # Batch metadata editing dialog
+    │   ├── geocoding_dialog.py      # Reverse geocoding results dialog
+    │   ├── geolocation_dialog.py    # Geolocation prediction results dialog
+    │   ├── similarity_dialog.py     # Similar photos results dialog
+    │   ├── settings_dialog.py       # AI settings configuration dialog
+    │   ├── progress_dialog.py       # Progress dialog for long-running operations
+    │   └── table_delegates.py       # Custom cell editors (country, date, timezone)
+    ├── services/                    # External service integrations
+    │   ├── exiftool_service.py      # ExifTool wrapper with backup management
+    │   ├── reverse_geocoding_service.py # Nominatim API integration
+    │   ├── ai_service.py            # AI services (similarity detection, geolocation prediction)
+    │   ├── file_scanner.py          # Directory scanner with auto-initialization
+    │   └── location_database.py     # SQLite database for world locations
+    ├── models/                      # Data models
+    │   └── image_model.py           # Image data model with metadata fields
+    └── core/                        # Core utilities
+        ├── config.py                # Configuration management for AI settings
+        └── utils.py                 # Utility functions (formatting, etc.)
 ```
 
 ## Dependencies
@@ -384,7 +389,7 @@ The app bundle includes:
 
 ```bash
 # Install the wheel
-pip install dist/geosetter_lite-0.1.0-py3-none-any.whl
+pip install dist/geosetter_lite-0.2.0-py3-none-any.whl
 
 # Run the application
 geosetter-lite /path/to/image.jpg

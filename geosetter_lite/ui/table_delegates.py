@@ -882,7 +882,7 @@ class TZOffsetDelegate(QStyledItemDelegate):
                 if image.gps_date and image.taken_date:
                     gps_date_item = self.main_window.table.item(row, 9)
                     if gps_date_item:
-                        from .utils import format_date
+                        from ..core.utils import format_date
                         gps_date_item.setText(format_date(image.gps_date) if image.gps_date else "")
                 
                 self.main_window.table.blockSignals(False)

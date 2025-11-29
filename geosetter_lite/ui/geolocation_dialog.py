@@ -12,7 +12,7 @@ from PySide6.QtGui import QPixmap
 from PIL import Image
 import io
 
-from .reverse_geocoding_service import ReverseGeocodingService
+from ..services.reverse_geocoding_service import ReverseGeocodingService
 
 
 class GeolocationDialog(QDialog):

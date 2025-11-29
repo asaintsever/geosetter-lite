@@ -3,7 +3,7 @@ File Scanner - Discover and load images from a directory
 """
 from pathlib import Path
 from typing import List
-from .image_model import ImageModel
+from ..models.image_model import ImageModel
 from .exiftool_service import ExifToolService, ExifToolError
 
 
