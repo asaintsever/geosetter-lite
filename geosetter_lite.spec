@@ -41,6 +41,7 @@ a = Analysis(
         'geosetter_lite.ui.similarity_dialog',
         'geosetter_lite.ui.settings_dialog',
         'geosetter_lite.ui.progress_dialog',
+        'geosetter_lite.ui.rename_dialog',
         'geosetter_lite.ui.table_delegates',
         # Services
         'geosetter_lite.services',
