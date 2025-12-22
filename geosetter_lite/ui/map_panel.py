@@ -47,6 +47,7 @@ class MapPanel(QWidget):
         
         # Create icon for "Reverse Geocoding"
         self.reverse_geocoding_icon = self._create_reverse_geocoding_icon()
+        self.reverse_geocoding_icon_checked = self._create_reverse_geocoding_icon_checked()
     
     def _create_update_gps_icon(self) -> QIcon:
         """Create icon for updating GPS coordinates (marker -> images)"""
@@ -332,6 +333,48 @@ class MapPanel(QWidget):
         painter.end()
         return QIcon(pixmap)
     
+    def _create_reverse_geocoding_icon_checked(self) -> QIcon:
+        """Create icon for reverse geocoding when checked (brighter/enabled state)"""
+        pixmap = QPixmap(48, 48)
+        pixmap.fill(Qt.GlobalColor.transparent)
+        
+        painter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        
+        # Draw globe/earth (left/center) - BRIGHT BLUE/GREEN (more vibrant when checked)
+        painter.setPen(QPen(QColor(30, 120, 255), 3))
+        painter.setBrush(QColor(80, 180, 255, 220))
+        # Globe circle
+        painter.drawEllipse(8, 10, 20, 20)
+        
+        # Draw continents/land masses on globe - BRIGHT GREEN
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(50, 220, 50))
+        # Simplified continent shapes
+        painter.drawEllipse(11, 14, 6, 5)  # Top left landmass
+        painter.drawEllipse(18, 13, 7, 6)  # Top right landmass
+        painter.drawEllipse(13, 21, 8, 5)  # Bottom landmass
+        
+        # Draw magnifying glass (right side) - BRIGHT ORANGE/GOLD
+        painter.setPen(QPen(QColor(255, 150, 0), 3))
+        painter.setBrush(QColor(255, 220, 100, 150))
+        # Magnifying glass lens
+        painter.drawEllipse(26, 18, 12, 12)
+        # Handle
+        painter.setPen(QPen(QColor(200, 120, 0), 3.5))
+        painter.drawLine(35, 27, 40, 32)
+        
+        # Draw small location pin inside magnifying glass - BRIGHT RED
+        painter.setPen(QPen(QColor(255, 30, 30), 2))
+        painter.setBrush(QColor(255, 60, 60))
+        # Pin head (small)
+        painter.drawEllipse(30, 22, 4, 4)
+        # Pin point (small)
+        painter.drawLine(32, 26, 32, 28)
+        
+        painter.end()
+        return QIcon(pixmap)
+    
     def init_ui(self):
         """Initialize the user interface"""
         layout = QVBoxLayout()
@@ -366,6 +409,7 @@ class MapPanel(QWidget):
         self.reverse_geocoding_action.setToolTip("Automatically determine country and city from GPS coordinates")
         self.reverse_geocoding_action.setCheckable(True)
         self.reverse_geocoding_action.setChecked(False)
+        self.reverse_geocoding_action.toggled.connect(self._on_reverse_geocoding_toggled)
         toolbar.addAction(self.reverse_geocoding_action)
         
         toolbar.addSeparator()
@@ -497,4 +541,17 @@ class MapPanel(QWidget):
             True if reverse geocoding action is checked, False otherwise
         """
         return self.reverse_geocoding_action.isChecked()
+    
+    def _on_reverse_geocoding_toggled(self, checked: bool):
+        """
+        Handle reverse geocoding toggle state change
+        
+        Args:
+            checked: True if checked/enabled, False if unchecked/disabled
+        """
+        # Update icon based on checked state
+        if checked:
+            self.reverse_geocoding_action.setIcon(self.reverse_geocoding_icon_checked)
+        else:
+            self.reverse_geocoding_action.setIcon(self.reverse_geocoding_icon)
 
