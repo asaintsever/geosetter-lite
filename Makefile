@@ -17,15 +17,15 @@ run: init ## Run application
 	uv run python main.py
 
 package: clean init ## Generate Python wheel and macOS App bundle
-	@echo "Building Python wheel..."
+	echo "Building Python wheel..."
 	uv build --wheel
-	@echo ""
-	@echo "✓ Wheel created in dist/"
-	@echo ""
-	@echo "Building macOS App Bundle with PyInstaller..."
-	@echo "Installing PyInstaller if needed..."
+	echo ""
+	echo "✓ Wheel created in dist/"
+	echo ""
+	echo "Building macOS App Bundle with PyInstaller..."
+	echo "Installing PyInstaller if needed..."
 	uv pip install pyinstaller
-	@echo "Creating app bundle..."
+	echo "Creating app bundle..."
 	uv run pyinstaller geosetter_lite.spec
-	@echo ""
-	@echo "✓ macOS App Bundle created in dist/GeoSetter Lite.app"
+	echo ""
+	echo "✓ macOS App Bundle created in dist/GeoSetter Lite.app"
