@@ -21,9 +21,19 @@ class LocationDatabase:
         
         # Auto-detect CSV path if not provided
         if csv_path is None:
-            # Look for world_locations.csv in data directory
-            module_dir = Path(__file__).parent.parent
-            self.csv_path = module_dir / "data" / "world_locations.csv"
+            # Look for world_locations.csv in multiple locations
+            module_dir = Path(__file__).parent.parent  # geosetter_lite package dir
+            
+            # Priority 1: Check inside package (for installed/built package)
+            csv_candidate = module_dir / "data" / "world_locations.csv"
+            
+            if not csv_candidate.exists():
+                # Priority 2: Check project root data directory (for development mode)
+                # Go up from geosetter_lite/ to project root
+                project_root = module_dir.parent
+                csv_candidate = project_root / "data" / "world_locations.csv"
+            
+            self.csv_path = csv_candidate
         else:
             self.csv_path = csv_path
         
