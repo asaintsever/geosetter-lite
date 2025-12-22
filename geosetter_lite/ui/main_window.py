@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QTableWidget, QTableWidgetItem, QLabel, QScrollArea, QMenu,
     QHeaderView, QMessageBox, QDialog, QPushButton
 )
-from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint
+from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint, QTimer
 from PySide6.QtGui import QPixmap, QAction, QImage, QKeyEvent, QIcon, QPainter, QColor, QPen
 from PIL import Image
 import io
@@ -50,6 +50,11 @@ class MainWindow(QMainWindow):
         self.current_image: Optional[ImageModel] = None
         self.current_pixmap: Optional[QPixmap] = None  # Store original pixmap for resizing
         self.reverse_geocoding_service = ReverseGeocodingService()
+        
+        # Timer for debouncing resize events
+        self.resize_timer = QTimer()
+        self.resize_timer.setSingleShot(True)
+        self.resize_timer.timeout.connect(self._scale_and_display_image)
         
         # Initialize AI service
         ai_settings = Config.get_ai_settings()
@@ -1676,8 +1681,9 @@ class MainWindow(QMainWindow):
         
         # Handle resize events for the scroll area to rescale the image
         if hasattr(self, 'scroll_area') and obj == self.scroll_area and event.type() == QEvent.Type.Resize:
-            # Rescale the current image to fit the new size
-            self._scale_and_display_image()
+            # Debounce resize events - only rescale after resizing has stopped for 150ms
+            self.resize_timer.stop()
+            self.resize_timer.start(150)
         
         return super().eventFilter(obj, event)
     
