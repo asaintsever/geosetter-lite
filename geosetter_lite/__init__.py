@@ -2,7 +2,7 @@
 GeoSetter Lite - Image Metadata Viewer and Editor
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 # Export main components for convenience
 from .ui import MainWindow
