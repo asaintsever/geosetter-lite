@@ -18,35 +18,29 @@ class LocationDatabase:
         """
         self.db_path = db_path
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         # Auto-detect CSV path if not provided
         if csv_path is None:
             # Look for world_locations.csv in multiple locations
             module_dir = Path(__file__).parent.parent  # geosetter_lite package dir
-            
+
             # Priority 1: Check inside package (for installed/built package)
             csv_candidate = module_dir / "data" / "world_locations.csv"
-            
+
             if not csv_candidate.exists():
                 # Priority 2: Check project root data directory (for development mode)
                 # Go up from geosetter_lite/ to project root
                 project_root = module_dir.parent
                 csv_candidate = project_root / "data" / "world_locations.csv"
-            
-            if not csv_candidate.exists():
-                raise FileNotFoundError(
-                    "Location CSV file 'world_locations.csv' not found in expected locations. "
-                    f"Tried: {module_dir / 'data' / 'world_locations.csv'} and "
-                    f"{module_dir.parent / 'data' / 'world_locations.csv'}"
-                )
+
             self.csv_path = csv_candidate
         else:
             self.csv_path = csv_path
-        
+
         # Initialize database if it doesn't exist
         if not self.db_path.exists():
             self._initialize_database()
-    
+
     def _initialize_database(self):
         """Create and populate the location database"""
         print(f"Initializing location database at {self.db_path}...")
