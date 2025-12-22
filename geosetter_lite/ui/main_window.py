@@ -29,6 +29,7 @@ from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
 from .batch_edit_dialog import BatchEditDialog
 from .rename_dialog import RenameDialog
+from .. import __version__
 
 
 class MainWindow(QMainWindow):
@@ -270,9 +271,9 @@ class MainWindow(QMainWindow):
     
     def _show_about_dialog(self):
         """Show the About dialog"""
-        about_text = """
+        about_text = f"""
         <h2>GeoSetter Lite</h2>
-        <p><b>Version:</b> 0.2.0</p>
+        <p><b>Version:</b> {__version__}</p>
         <p><b>Description:</b> Image Metadata Viewer and Editor</p>
         <br>
         <p>A comprehensive application for viewing and editing EXIF/IPTC/XMP metadata 
