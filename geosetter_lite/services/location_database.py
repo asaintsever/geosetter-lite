@@ -33,6 +33,12 @@ class LocationDatabase:
                 project_root = module_dir.parent
                 csv_candidate = project_root / "data" / "world_locations.csv"
             
+            if not csv_candidate.exists():
+                raise FileNotFoundError(
+                    "Location CSV file 'world_locations.csv' not found in expected locations. "
+                    f"Tried: {module_dir / 'data' / 'world_locations.csv'} and "
+                    f"{module_dir.parent / 'data' / 'world_locations.csv'}"
+                )
             self.csv_path = csv_candidate
         else:
             self.csv_path = csv_path
