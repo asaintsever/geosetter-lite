@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QTableWidget, QTableWidgetItem, QLabel, QScrollArea, QMenu,
     QHeaderView, QMessageBox, QDialog, QPushButton
 )
-from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint
+from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint, QTimer
 from PySide6.QtGui import QPixmap, QAction, QImage, QKeyEvent, QIcon, QPainter, QColor, QPen
 from PIL import Image
 import io
@@ -29,6 +29,7 @@ from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
 from .batch_edit_dialog import BatchEditDialog
 from .rename_dialog import RenameDialog
+from .. import __version__
 
 
 class MainWindow(QMainWindow):
@@ -47,7 +48,13 @@ class MainWindow(QMainWindow):
         self.exiftool_service = exiftool_service
         self.images: List[ImageModel] = []
         self.current_image: Optional[ImageModel] = None
+        self.current_pixmap: Optional[QPixmap] = None  # Store original pixmap for resizing
         self.reverse_geocoding_service = ReverseGeocodingService()
+        
+        # Timer for debouncing resize events
+        self.resize_timer = QTimer()
+        self.resize_timer.setSingleShot(True)
+        self.resize_timer.timeout.connect(self._scale_and_display_image)
         
         # Initialize AI service
         ai_settings = Config.get_ai_settings()
@@ -184,14 +191,16 @@ class MainWindow(QMainWindow):
         self.image_viewer.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.image_viewer.setStyleSheet("background-color: #2b2b2b; color: #888;")
         self.image_viewer.setText("Select an image to view")
+        self.image_viewer.setScaledContents(False)  # We'll handle scaling manually
         
         # Scroll area for image viewer
-        scroll_area = QScrollArea()
-        scroll_area.setWidget(self.image_viewer)
-        scroll_area.setWidgetResizable(True)
-        scroll_area.setMinimumHeight(200)
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidget(self.image_viewer)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setMinimumHeight(200)
+        self.scroll_area.installEventFilter(self)  # Install event filter to catch resize events
         
-        left_splitter.addWidget(scroll_area)
+        left_splitter.addWidget(self.scroll_area)
         
         # Set initial left splitter sizes (60% table, 40% viewer)
         left_splitter.setSizes([400, 300])
@@ -267,9 +276,9 @@ class MainWindow(QMainWindow):
     
     def _show_about_dialog(self):
         """Show the About dialog"""
-        about_text = """
+        about_text = f"""
         <h2>GeoSetter Lite</h2>
-        <p><b>Version:</b> 0.2.0</p>
+        <p><b>Version:</b> {__version__}</p>
         <p><b>Description:</b> Image Metadata Viewer and Editor</p>
         <br>
         <p>A comprehensive application for viewing and editing EXIF/IPTC/XMP metadata 
@@ -743,23 +752,6 @@ class MainWindow(QMainWindow):
             if pil_image.mode != 'RGB':
                 pil_image = pil_image.convert('RGB')
             
-            # Get viewer size
-            viewer_size = self.image_viewer.size()
-            max_width = max(viewer_size.width() - 20, 1)  # Ensure at least 1 pixel
-            max_height = max(viewer_size.height() - 20, 1)  # Ensure at least 1 pixel
-            
-            # Calculate scaled size maintaining aspect ratio
-            img_width, img_height = pil_image.size
-            
-            # Only resize if image dimensions are valid
-            if img_width > 0 and img_height > 0:
-                scale = min(max_width / img_width, max_height / img_height, 1.0)
-                
-                if scale < 1.0:
-                    new_width = max(int(img_width * scale), 1)  # Ensure at least 1 pixel
-                    new_height = max(int(img_height * scale), 1)  # Ensure at least 1 pixel
-                    pil_image = pil_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
-            
             # Convert PIL Image to QPixmap directly (no temp file needed)
             # Convert PIL Image to bytes
             img_byte_array = io.BytesIO()
@@ -768,14 +760,37 @@ class MainWindow(QMainWindow):
             
             # Load into QImage and convert to QPixmap
             qimage = QImage.fromData(img_byte_array.read())
-            pixmap = QPixmap.fromImage(qimage)
+            self.current_pixmap = QPixmap.fromImage(qimage)
             
-            self.image_viewer.setPixmap(pixmap)
+            # Scale and display the pixmap
+            self._scale_and_display_image()
+            
             self.statusBar().showMessage(f"Displaying: {image.filename}")
             
         except Exception as e:
+            self.current_pixmap = None
             self.image_viewer.setText(f"Error loading image:\n{str(e)}")
             self.statusBar().showMessage(f"Error loading {image.filename}")
+    
+    def _scale_and_display_image(self):
+        """Scale the current pixmap to fit the viewer while maintaining aspect ratio"""
+        if not self.current_pixmap or self.current_pixmap.isNull():
+            return
+        
+        # Get available size in the scroll area
+        available_size = self.scroll_area.viewport().size()
+        max_width = max(available_size.width() - 20, 1)
+        max_height = max(available_size.height() - 20, 1)
+        
+        # Scale pixmap to fit while maintaining aspect ratio
+        scaled_pixmap = self.current_pixmap.scaled(
+            max_width,
+            max_height,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation
+        )
+        
+        self.image_viewer.setPixmap(scaled_pixmap)
     
     def show_context_menu(self, position):
         """
@@ -1663,6 +1678,12 @@ class MainWindow(QMainWindow):
                                     self.statusBar().showMessage(f"Error clearing {field_name}: {e}")
                                 
                                 return True  # Event handled
+        
+        # Handle resize events for the scroll area to rescale the image
+        if hasattr(self, 'scroll_area') and obj == self.scroll_area and event.type() == QEvent.Type.Resize:
+            # Debounce resize events - only rescale after resizing has stopped for 150ms
+            self.resize_timer.stop()
+            self.resize_timer.start(150)
         
         return super().eventFilter(obj, event)
     
