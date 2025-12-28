@@ -113,7 +113,7 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='GeoSetter Lite.app',
-    icon=None,  # Add icon path if you have one: '_img/icon.icns'
+    icon='icon/geosetter_lite.icns',
     bundle_identifier='com.asaintsever.geosetter-lite',
     version=VERSION,
     info_plist={

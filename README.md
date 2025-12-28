@@ -1,5 +1,9 @@
 # GeoSetter Lite - Image Metadata Viewer and Editor
 
+[![License](https://img.shields.io/github/license/asaintsever/geosetter-lite?style=for-the-badge)](https://github.com/asaintsever/geosetter-lite/blob/main/LICENSE)
+[![GitHub All Releases](https://img.shields.io/github/downloads/asaintsever/geosetter-lite/total?style=for-the-badge)](https://github.com/asaintsever/geosetter-lite/releases)
+[![Latest release](https://img.shields.io/github/v/release/asaintsever/geosetter-lite?style=for-the-badge)](https://github.com/asaintsever/geosetter-lite/releases)
+
 A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadata of images in a directory, with advanced geotagging capabilities and reverse geocoding.
 
 > [!NOTE]
@@ -342,7 +346,7 @@ The application writes to multiple metadata standards for maximum compatibility:
 - Empty values won't overwrite existing metadata
 
 ### AI Features
-- **First Use**: Models will be downloaded automatically on first use (~500MB total)
+- **First Use**: Models will be downloaded automatically on first use (~1.2GB total)
 - **Model Storage**: Models are cached in `~/.cache/geosetter_lite` by default (configurable in settings)
 - **Location Database**: 
   - Source data: `data/world_locations.csv` (1000+ locations in CSV format)
@@ -384,14 +388,13 @@ The wheel includes:
 The app bundle includes:
 - All Python dependencies (PySide6, PyTorch, etc.)
 - Data files (world_locations.csv)
-- AI models (downloaded on first run)
 - Self-contained Python runtime
 
 ### Installing from Wheel
 
 ```bash
 # Install the wheel
-pip install dist/geosetter_lite-0.2.0-py3-none-any.whl
+pip install dist/geosetter_lite-<VERSION>-py3-none-any.whl
 
 # Run the application
 geosetter-lite /path/to/image.jpg
@@ -402,7 +405,6 @@ geosetter-lite /path/to/image.jpg
 Run directly: Double-click `dist/GeoSetter Lite.app`
 
 **Customizing the build**: Edit `geosetter_lite.spec` to:
-- Add an application icon (set `icon` parameter)
 - Include additional data files
 - Configure hidden imports
 - Adjust bundle settings
