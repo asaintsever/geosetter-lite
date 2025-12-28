@@ -12,6 +12,17 @@ block_cipher = None
 # Get the project root directory
 project_root = os.path.abspath('.')
 
+# Read version from package __init__.py
+def get_version():
+    init_file = Path(project_root) / 'geosetter_lite' / '__init__.py'
+    with open(init_file, 'r') as f:
+        for line in f:
+            if line.startswith('__version__'):
+                return line.split('=')[1].strip().strip('"').strip("'")
+    return '0.0.0'
+
+VERSION = get_version()
+
 # Collect all geosetter_lite package files
 a = Analysis(
     ['main.py'],
@@ -102,9 +113,9 @@ coll = COLLECT(
 app = BUNDLE(
     coll,
     name='GeoSetter Lite.app',
-    icon=None,  # Add icon path if you have one: '_img/icon.icns'
+    icon='icon/geosetter_lite.icns',
     bundle_identifier='com.asaintsever.geosetter-lite',
-    version='0.3.0',
+    version=VERSION,
     info_plist={
         'NSPrincipalClass': 'NSApplication',
         'NSHighResolutionCapable': True,
@@ -112,7 +123,7 @@ app = BUNDLE(
         'CFBundleDisplayName': 'GeoSetter Lite',
         'CFBundleGetInfoString': 'Image geotagging and metadata editor',
         'CFBundleName': 'GeoSetter Lite',
-        'CFBundleShortVersionString': '0.3.0',
-        'CFBundleVersion': '0.3.0',
+        'CFBundleShortVersionString': VERSION,
+        'CFBundleVersion': VERSION,
     },
 )
