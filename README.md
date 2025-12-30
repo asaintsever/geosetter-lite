@@ -39,9 +39,9 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
   - Configurable similarity threshold (0.0-1.0)
   - Groups similar photos with similarity scores
   - Batch deletion of similar photos
-  - Runs locally with lightweight models (~45MB)
+  - Runs locally with lightweight models
 - **Geolocation Prediction**: Predict GPS coordinates for photos without location data
-  - Uses CLIP-based vision-language model (~400MB)
+  - Uses CLIP-based vision-language model
   - SQLite database with 1000+ world locations (cities, landmarks, natural features)
   - Location data loaded from `data/world_locations.csv` (easy to update/extend)
   - Provides top 5 location predictions with confidence scores
