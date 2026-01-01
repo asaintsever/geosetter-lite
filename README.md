@@ -14,7 +14,7 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 ## Features
 
 ### Core Features
-- **Image List View**: Display all JPEG and PNG images from a directory with comprehensive metadata columns
+- **Image List View**: Display all JPEG, PNG, and HEIF/HEIC images from a directory with comprehensive metadata columns
 - **Image Viewer**: View selected images in a resizable panel with thumbnail support
 - **Interactive Map**: Display all images with GPS coordinates on an OpenStreetMap with visual distinction for selected images
 - **Active Marker**: Click anywhere on the map to set an active marker for batch GPS updates
