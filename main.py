@@ -70,7 +70,7 @@ def get_image_file() -> Path | None:
             QMessageBox.critical(
                 None,
                 "Unsupported Format",
-                f"The file is not a supported image format (JPEG/PNG):\n{filepath}"
+                f"The file is not a supported image format (JPEG/PNG/HEIF):\n{filepath}"
             )
             return None
         
@@ -79,7 +79,7 @@ def get_image_file() -> Path | None:
     # Otherwise, show file dialog
     file_dialog = QFileDialog()
     file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
-    file_dialog.setNameFilter("Images (*.jpg *.jpeg *.png *.JPG *.JPEG *.PNG)")
+    file_dialog.setNameFilter("Images (*.jpg *.jpeg *.png *.heif *.heic *.JPG *.JPEG *.PNG *.HEIF *.HEIC)")
     file_dialog.setWindowTitle("Select an Image File")
     
     if file_dialog.exec():

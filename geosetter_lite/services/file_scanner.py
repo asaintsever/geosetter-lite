@@ -11,7 +11,7 @@ class FileScanner:
     """Scanner for discovering image files in a directory"""
     
     # Supported image extensions
-    SUPPORTED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.JPG', '.JPEG', '.PNG'}
+    SUPPORTED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.heif', '.heic', '.JPG', '.JPEG', '.PNG', '.HEIF', '.HEIC'}
     
     def __init__(self, exiftool_service: ExifToolService):
         """
