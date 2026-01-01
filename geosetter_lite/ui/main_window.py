@@ -6,7 +6,7 @@ from typing import List, Optional
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
     QTableWidget, QTableWidgetItem, QLabel, QScrollArea, QMenu,
-    QHeaderView, QMessageBox, QDialog, QPushButton
+    QHeaderView, QMessageBox, QDialog, QPushButton, QApplication
 )
 from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint, QTimer
 from PySide6.QtGui import QPixmap, QAction, QImage, QKeyEvent, QIcon, QPainter, QColor, QPen
@@ -61,7 +61,20 @@ class MainWindow(QMainWindow):
         self.ai_service = AIService(ai_settings['model_cache_dir'])
         
         self.setWindowTitle(f"Image Metadata Viewer - {directory.name}")
-        self.setMinimumSize(1200, 700)
+        self.setMinimumSize(600, 400)
+        
+        # Set initial window size to 80% of screen and center it
+        screen = QApplication.primaryScreen()
+        screen_geometry = screen.availableGeometry()
+        initial_width = int(screen_geometry.width() * 0.80)
+        initial_height = int(screen_geometry.height() * 0.80)
+        self.resize(initial_width, initial_height)
+        
+        # Center the window
+        window_geometry = self.frameGeometry()
+        center_point = screen_geometry.center()
+        window_geometry.moveCenter(center_point)
+        self.move(window_geometry.topLeft())
         
         # Column metadata mapping for clear operations
         self.column_metadata_map = {
