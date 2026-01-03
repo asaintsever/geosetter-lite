@@ -94,7 +94,7 @@ class ExifToolService:
         try:
             exiftool = cls.get_exiftool_path()
             result = subprocess.run(
-                [exiftool, '-j', '-G', '-n', str(filepath)],
+                [exiftool, '-charset', 'iptc=utf8', '-j', '-G', '-n', str(filepath)],
                 capture_output=True,
                 text=True,
                 timeout=10
@@ -212,6 +212,9 @@ class ExifToolService:
             exiftool = cls.get_exiftool_path()
             cmd = [exiftool]
             
+            # Set IPTC charset to UTF-8 for proper Unicode handling
+            cmd.extend(['-charset', 'iptc=utf8'])
+            
             # Check if backups are disabled
             app_settings = Config.get_app_settings()
             if not app_settings.get('exiftool_create_backups', True):
@@ -300,6 +303,9 @@ class ExifToolService:
             exiftool = cls.get_exiftool_path()
             cmd = [exiftool]
             
+            # Set IPTC charset to UTF-8 for proper Unicode handling
+            cmd.extend(['-charset', 'iptc=utf8'])
+            
             # Check if backups are disabled
             app_settings = Config.get_app_settings()
             if not app_settings.get('exiftool_create_backups', True):
@@ -361,6 +367,9 @@ class ExifToolService:
         try:
             exiftool = cls.get_exiftool_path()
             cmd = [exiftool]
+            
+            # Set IPTC charset to UTF-8 for proper Unicode handling
+            cmd.extend(['-charset', 'iptc=utf8'])
             
             # Check if backups are disabled
             app_settings = Config.get_app_settings()
