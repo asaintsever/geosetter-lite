@@ -159,7 +159,7 @@ The application features a flexible 3-pane layout with resizable borders:
     2. **Set Marker** (image → red pin): Set active marker from selected image GPS coordinates
     3. **🌍🔍 Reverse Geocoding** (toggle): Auto-determine country and city from GPS coordinates
     4. **Set Taken Date** (file → calendar): Initialize Taken Date from file creation date
-    5. **Set GPS Date** (calendar → GPS): Initialize GPS Date from Taken Date
+    5. **Set GPS Date** (calendar → GPS): Initialize GPS Date from Taken Date (converted to UTC)
     6. **Repair Metadata** (medical cross): Fix/repair metadata using ExifTool
   - Leaflet-based map with OpenStreetMap tiles
   - Scale control
@@ -173,8 +173,12 @@ All three panes can be resized by dragging the borders between them.
 **Image List:**
 - **Left Click**: Select an image to view it in the bottom-left panel. Selected images are highlighted in blue on the map
 - **Multi-Select**: Use Ctrl/Cmd + Click or Shift + Click to select multiple images. The first image will be displayed in the viewer
-- **Right Click**: Open context menu with "Edit metadata" option
-- **Double-Click Cell**: Edit metadata directly in the table (country uses dropdown picker, dates use date picker)
+- **Right Click**: Open context menu with:
+  - "Edit Metadata" - Opens full metadata editor dialog (works for single or multiple selections)
+  - "Quick Edit (Basic Fields)" - Opens simplified batch editor for common fields (only appears when 2+ images selected)
+- **Double-Click Cell**:
+  - Filename cell: Opens Edit Metadata dialog
+  - other cells: Edit metadata directly in the table (country uses dropdown picker, dates use date picker)
 - **Delete/Backspace**: Clear cell values (deletes corresponding metadata tags)
 - **Rename Files**: Use File → Rename Photos for pattern-based batch renaming
 
@@ -183,7 +187,6 @@ All three panes can be resized by dragging the borders between them.
 - **Click on Marker**: View popup with image thumbnail and filename
 - **Select Image**: Centers map on selected image's marker, preserving current zoom level
 - **Deselect All**: Fits map bounds to show all markers
-- **Update GPS Button**: Update GPS coordinates of selected images with the active marker position
 
 **AI Tools Menu:**
 - **Find Similar Photos**: Analyze all loaded images to find similar/duplicate photos
@@ -201,14 +204,6 @@ All three panes can be resized by dragging the borders between them.
   - Similarity threshold slider (0.0-1.0)
   - Model cache directory selection
   - Reset to defaults option
-  - If reverse geocoding is enabled (🌍🔍 toggled on), automatically lookup country and city
-  - Shows dialog to review/edit location before applying
-  - Updates keywords with country code and country name
-- **Set Marker Button**: Set the active marker from the selected image's GPS coordinates (enabled only when one image with GPS is selected)
-- **Reverse Geocoding Toggle** (🌍🔍): Enable/disable automatic location lookup from coordinates
-- **Set Taken Date Button**: Initialize Taken Date from file creation date for selected images
-- **Set GPS Date Button**: Initialize GPS Date from Taken Date (converted to UTC) for selected images
-- **Repair Metadata Button**: Run ExifTool repair on selected images
 
 **Panes:**
 - **Resize Panes**: Drag the borders between panes to adjust their sizes
@@ -343,6 +338,8 @@ The application writes to multiple metadata standards for maximum compatibility:
 - Select multiple images to apply changes to all at once
 - Use Ctrl/Cmd+Click for non-contiguous selection
 - Use Shift+Click for range selection
+- **Edit Metadata**: Full metadata editor works with multiple images - changes apply to all selected
+- **Quick Edit**: Right-click menu option for batch editing of common fields (TZ Offset, Country, City, Headline) when 2+ images are selected
 - Empty values won't overwrite existing metadata
 
 ### AI Features

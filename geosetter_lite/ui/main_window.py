@@ -27,7 +27,7 @@ from ..services.ai_service import AIService
 from .similarity_dialog import SimilarityDialog
 from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
-from .batch_edit_dialog import BatchEditDialog
+from .quick_edit_dialog import QuickEditDialog
 from .rename_dialog import RenameDialog
 from .. import __version__
 
@@ -154,6 +154,7 @@ class MainWindow(QMainWindow):
         # Connect signals
         self.table.itemSelectionChanged.connect(self.on_selection_changed)
         self.table.customContextMenuRequested.connect(self.show_context_menu)
+        self.table.itemDoubleClicked.connect(self.on_table_double_click)
         self.table.itemChanged.connect(self.on_item_changed)
         
         # Install event filter to handle Delete/Backspace keys
@@ -228,7 +229,6 @@ class MainWindow(QMainWindow):
         # Connect map panel signals
         self.map_panel.update_coordinates_requested.connect(self.update_selected_images_gps)
         self.map_panel.set_marker_from_selection_requested.connect(self.set_marker_from_selected_image)
-        self.map_panel.batch_edit_requested.connect(self.batch_edit_metadata)
         self.map_panel.repair_metadata_requested.connect(self.repair_selected_images_metadata)
         self.map_panel.set_taken_date_from_creation_requested.connect(self.set_taken_date_from_creation)
         self.map_panel.set_gps_date_from_taken_requested.connect(self.set_gps_date_from_taken)
@@ -484,9 +484,6 @@ class MainWindow(QMainWindow):
             self.map_panel.enable_set_taken_date_action(needs_taken_date)
             self.map_panel.enable_set_gps_date_action(needs_gps_date)
             
-            # Enable batch edit only when more than one image is selected
-            self.map_panel.enable_batch_edit_action(len(selected_rows) > 1)
-            
             # Enable update GPS button if active marker exists and images are selected
             active_marker = self.map_panel.map_widget.get_active_marker()
             self.map_panel.enable_update_coords_action(active_marker is not None)
@@ -495,7 +492,6 @@ class MainWindow(QMainWindow):
             self.update_all_images_on_map()
             self.map_panel.enable_set_marker_action(False)
             self.map_panel.enable_repair_action(False)
-            self.map_panel.enable_batch_edit_action(False)
             self.map_panel.enable_set_taken_date_action(False)
             self.map_panel.enable_set_gps_date_action(False)
             # Disable update GPS button when no selection
@@ -821,12 +817,30 @@ class MainWindow(QMainWindow):
         # Create context menu
         menu = QMenu(self)
         
-        edit_action = QAction("Edit metadata", self)
+        edit_action = QAction("Edit Metadata", self)
         edit_action.triggered.connect(self.edit_metadata)
         menu.addAction(edit_action)
         
+        # Add quick edit action for multiple selections
+        if len(selected_rows) >= 2:
+            menu.addSeparator()
+            quick_edit_action = QAction("Quick Edit (Basic Fields)", self)
+            quick_edit_action.triggered.connect(self.quick_edit_metadata)
+            menu.addAction(quick_edit_action)
+        
         # Show menu at cursor position
         menu.exec(self.table.viewport().mapToGlobal(position))
+    
+    def on_table_double_click(self, item: QTableWidgetItem):
+        """
+        Handle double-click on table - open metadata editor only for Filename column
+        
+        Args:
+            item: The clicked table item
+        """
+        # Only open Edit Metadata dialog if double-clicking on Filename column (column 0)
+        if item and item.column() == 0:
+            self.edit_metadata()
     
     def edit_metadata(self):
         """Open metadata editor for selected images"""
@@ -993,15 +1007,15 @@ class MainWindow(QMainWindow):
         }
         return field_to_column.get(field_name)
     
-    def batch_edit_metadata(self):
-        """Open batch editor for selected images"""
+    def quick_edit_metadata(self):
+        """Open quick edit dialog for selected images"""
         selected_rows = self.table.selectionModel().selectedRows()
         
         if len(selected_rows) < 2:
             QMessageBox.information(
                 self,
                 "Selection Required",
-                "Please select at least 2 images for batch editing."
+                "Please select at least 2 images for quick editing."
             )
             return
         
@@ -1017,8 +1031,8 @@ class MainWindow(QMainWindow):
         if not selected_images:
             return
         
-        # Open batch edit dialog
-        dialog = BatchEditDialog(len(selected_images), self)
+        # Open quick edit dialog
+        dialog = QuickEditDialog(len(selected_images), self)
         result = dialog.exec()
         
         if result == QDialog.DialogCode.Accepted:
