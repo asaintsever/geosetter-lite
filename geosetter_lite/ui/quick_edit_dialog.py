@@ -1,5 +1,5 @@
 """
-Batch Metadata Edit Dialog - Edit metadata for multiple images
+Quick Metadata Edit Dialog - Edit metadata for multiple images
 """
 from typing import Dict, Any, Optional
 from datetime import datetime
@@ -81,12 +81,12 @@ class SimpleTZOffsetDelegate(QStyledItemDelegate):
         return "+00:00"
 
 
-class BatchEditDialog(QDialog):
-    """Dialog for batch editing metadata of multiple images"""
+class QuickEditDialog(QDialog):
+    """Dialog for quick editing metadata of multiple images"""
     
     def __init__(self, num_images: int, parent=None):
         """
-        Initialize the batch edit dialog
+        Initialize the quick edit dialog
         
         Args:
             num_images: Number of images to be edited
@@ -95,7 +95,7 @@ class BatchEditDialog(QDialog):
         super().__init__(parent)
         self.num_images = num_images
         
-        self.setWindowTitle("Batch Metadata Edit")
+        self.setWindowTitle("Quick Metadata Edit")
         self.setMinimumSize(600, 400)
         self.setModal(True)
         

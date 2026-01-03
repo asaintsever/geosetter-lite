@@ -13,7 +13,6 @@ class MapPanel(QWidget):
     # Signals
     update_coordinates_requested = Signal()  # Update selected images with active marker coords
     set_marker_from_selection_requested = Signal()  # Set active marker from selected image
-    batch_edit_requested = Signal()  # Batch edit metadata for multiple selected images
     repair_metadata_requested = Signal()  # Repair metadata for selected images
     set_taken_date_from_creation_requested = Signal()  # Set Taken Date from file creation date
     set_gps_date_from_taken_requested = Signal()  # Set GPS Date from Taken Date
@@ -32,9 +31,6 @@ class MapPanel(QWidget):
         
         # Create icon for "Set Marker" (image to marker)
         self.set_marker_icon = self._create_set_marker_icon()
-        
-        # Create icon for "Batch Edit"
-        self.batch_edit_icon = self._create_batch_edit_icon()
         
         # Create icon for "Repair Metadata"
         self.repair_icon = self._create_repair_icon()
@@ -135,49 +131,6 @@ class MapPanel(QWidget):
         painter.drawLine(37, 18, 37, 26)
         painter.drawLine(35, 24, 37, 26)
         painter.drawLine(39, 24, 37, 26)
-        
-        painter.end()
-        return QIcon(pixmap)
-    
-    def _create_batch_edit_icon(self) -> QIcon:
-        """Create icon for batch editing metadata"""
-        pixmap = QPixmap(48, 48)
-        pixmap.fill(Qt.GlobalColor.transparent)
-        
-        painter = QPainter(pixmap)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-        
-        # Draw multiple documents/images stacked
-        painter.setPen(QPen(QColor(50, 100, 200), 2.5))
-        painter.setBrush(QColor(100, 150, 255, 80))
-        
-        # Back document
-        painter.drawRect(18, 12, 16, 20)
-        
-        # Middle document
-        painter.setBrush(QColor(100, 150, 255, 120))
-        painter.drawRect(15, 14, 16, 20)
-        
-        # Front document
-        painter.setBrush(QColor(100, 150, 255))
-        painter.drawRect(12, 16, 16, 20)
-        
-        # Draw pencil/edit icon
-        painter.setPen(QPen(QColor(200, 120, 50), 2.5))
-        painter.setBrush(QColor(240, 160, 80))
-        
-        # Pencil body
-        painter.drawLine(30, 22, 38, 30)
-        painter.drawLine(28, 24, 36, 32)
-        
-        # Pencil tip
-        painter.setPen(QPen(QColor(100, 50, 20), 2))
-        painter.drawLine(30, 22, 28, 24)
-        
-        # Pencil eraser
-        painter.setPen(QPen(QColor(220, 80, 80), 2))
-        painter.drawPoint(38, 30)
-        painter.drawPoint(36, 32)
         
         painter.end()
         return QIcon(pixmap)
@@ -393,16 +346,12 @@ class MapPanel(QWidget):
         self.update_coords_action.triggered.connect(self.update_coordinates_requested.emit)
         toolbar.addAction(self.update_coords_action)
         
-        toolbar.addSeparator()
-        
         # Action: Set active marker from selected image
         self.set_marker_action = QAction(self.set_marker_icon, "Set Marker", self)
         self.set_marker_action.setToolTip("Set active marker from selected image GPS coordinates")
         self.set_marker_action.setEnabled(False)
         self.set_marker_action.triggered.connect(self.set_marker_from_selection_requested.emit)
         toolbar.addAction(self.set_marker_action)
-        
-        toolbar.addSeparator()
         
         # Reverse geocoding toggle action (third position)
         self.reverse_geocoding_action = QAction(self.reverse_geocoding_icon, "Auto Reverse Geocoding", self)
@@ -421,23 +370,12 @@ class MapPanel(QWidget):
         self.set_taken_date_action.triggered.connect(self.set_taken_date_from_creation_requested.emit)
         toolbar.addAction(self.set_taken_date_action)
         
-        toolbar.addSeparator()
-        
         # Action: Set GPS Date from Taken Date
         self.set_gps_date_action = QAction(self.set_gps_date_icon, "Set GPS Date", self)
         self.set_gps_date_action.setToolTip("Set GPS Date from Taken Date for selected images")
         self.set_gps_date_action.setEnabled(False)
         self.set_gps_date_action.triggered.connect(self.set_gps_date_from_taken_requested.emit)
         toolbar.addAction(self.set_gps_date_action)
-        
-        toolbar.addSeparator()
-        
-        # Action: Batch edit metadata for multiple selected images
-        self.batch_edit_action = QAction(self.batch_edit_icon, "Batch Edit", self)
-        self.batch_edit_action.setToolTip("Edit metadata for multiple selected images")
-        self.batch_edit_action.setEnabled(False)
-        self.batch_edit_action.triggered.connect(self.batch_edit_requested.emit)
-        toolbar.addAction(self.batch_edit_action)
         
         toolbar.addSeparator()
         
@@ -505,15 +443,6 @@ class MapPanel(QWidget):
             enabled: True to enable, False to disable
         """
         self.repair_action.setEnabled(enabled)
-    
-    def enable_batch_edit_action(self, enabled: bool):
-        """
-        Enable or disable the batch edit action
-        
-        Args:
-            enabled: True to enable, False to disable
-        """
-        self.batch_edit_action.setEnabled(enabled)
     
     def enable_set_taken_date_action(self, enabled: bool):
         """

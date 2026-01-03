@@ -4,7 +4,7 @@ from .main_window import MainWindow
 from .map_panel import MapPanel
 from .map_widget import MapWidget
 from .metadata_editor import MetadataEditor
-from .batch_edit_dialog import BatchEditDialog
+from .quick_edit_dialog import QuickEditDialog
 from .geocoding_dialog import GeocodingDialog
 from .geolocation_dialog import GeolocationDialog
 from .similarity_dialog import SimilarityDialog
@@ -17,7 +17,7 @@ __all__ = [
     'MapPanel',
     'MapWidget',
     'MetadataEditor',
-    'BatchEditDialog',
+    'QuickEditDialog',
     'GeocodingDialog',
     'GeolocationDialog',
     'SimilarityDialog',
