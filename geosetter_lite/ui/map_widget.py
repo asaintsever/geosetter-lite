@@ -157,7 +157,18 @@ class MapWidget(QWidget):
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41]
             }});
-            var activeMarker = L.marker([{lat}, {lon}], {{icon: redIcon}}).addTo(map).bindPopup('Active Marker');
+            var activeMarker = L.marker([{lat}, {lon}], {{icon: redIcon, draggable: true}}).addTo(map).bindPopup('Active Marker');
+            
+            // Handle marker drag end event
+            activeMarker.on('dragend', function(e) {{
+                var latlng = e.target.getLatLng();
+                if (clickHandler) {{
+                    clickHandler.onMapClick(latlng.lat, latlng.lng);
+                }}
+            }});
+            
+            // Store in window for later reference
+            window.activeMarker = activeMarker;
             """
         
         # Calculate center and zoom
@@ -334,8 +345,16 @@ class MapWidget(QWidget):
                 shadowSize: [41, 41]
             }});
             
-            // Add new active marker
-            window.activeMarker = L.marker([{lat}, {lon}], {{icon: redIcon}}).addTo(window.map).bindPopup('Active Marker');
+            // Add new active marker with draggable option
+            window.activeMarker = L.marker([{lat}, {lon}], {{icon: redIcon, draggable: true}}).addTo(window.map).bindPopup('Active Marker');
+            
+            // Handle marker drag end event
+            window.activeMarker.on('dragend', function(e) {{
+                var latlng = e.target.getLatLng();
+                if (clickHandler) {{
+                    clickHandler.onMapClick(latlng.lat, latlng.lng);
+                }}
+            }});
         }})();
         """
         self.web_view.page().runJavaScript(js)

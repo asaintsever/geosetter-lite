@@ -46,7 +46,7 @@ a = Analysis(
         'geosetter_lite.ui.map_panel',
         'geosetter_lite.ui.map_widget',
         'geosetter_lite.ui.metadata_editor',
-        'geosetter_lite.ui.batch_edit_dialog',
+        'geosetter_lite.ui.quick_edit_dialog',
         'geosetter_lite.ui.geocoding_dialog',
         'geosetter_lite.ui.geolocation_dialog',
         'geosetter_lite.ui.similarity_dialog',
