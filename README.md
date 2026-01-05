@@ -72,7 +72,7 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 
 ### Settings & Preferences
 ![Preferences](_img/GeoSetterLite-Preferences.png)
-*Configure AI features and model cache*
+*App Configuration*
 
 ## Requirements
 
