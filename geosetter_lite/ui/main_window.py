@@ -1157,7 +1157,9 @@ class MainWindow(QMainWindow):
                 ))
         
         # Update map with markers
-        self.map_panel.map_widget.update_markers(markers)
+        # Pass has_active_selection=True if user has selected any photos (even without geolocation)
+        has_active_selection = len(selected_filenames) > 0
+        self.map_panel.map_widget.update_markers(markers, has_active_selection)
     
     def on_map_clicked(self, lat: float, lng: float):
         """Handle map click - enable update button only if images are selected"""

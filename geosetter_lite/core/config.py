@@ -16,6 +16,9 @@ class Config:
         'app_settings': {
             'last_directory': str(Path.home()),
             'exiftool_create_backups': True,
+            'preserve_map_zoom': True,
+            'default_map_zoom': 10,
+            'rename_pattern': '',
         }
     }
     

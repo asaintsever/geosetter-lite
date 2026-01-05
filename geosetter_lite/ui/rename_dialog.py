@@ -34,8 +34,8 @@ class RenameDialog(QDialog):
         self.init_ui()
         
         # Load saved pattern from config
-        config = Config.load()
-        saved_pattern = config.get('rename_pattern', '')
+        app_settings = Config.get_app_settings()
+        saved_pattern = app_settings.get('rename_pattern', '')
         if saved_pattern:
             self.pattern_edit.setText(saved_pattern)
         
@@ -136,9 +136,9 @@ class RenameDialog(QDialog):
     
     def save_pattern(self):
         """Save the current pattern to config file"""
-        config = Config.load()
-        config['rename_pattern'] = self.pattern
-        Config.save(config)
+        app_settings = Config.get_app_settings()
+        app_settings['rename_pattern'] = self.pattern
+        Config.set_app_settings(app_settings)
         
         # Show confirmation
         self.statusBar() if hasattr(self, 'statusBar') else None

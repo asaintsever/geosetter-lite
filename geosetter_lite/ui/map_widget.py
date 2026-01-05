@@ -12,7 +12,7 @@ from PySide6.QtWebChannel import QWebChannel
 from PySide6.QtCore import QUrl, QObject, Signal, Slot
 from PIL import Image
 import io
-
+from ..core.config import Config
 
 class MapClickHandler(QObject):
     """Handler for map click events"""
@@ -35,7 +35,9 @@ class MapWidget(QWidget):
         """Initialize the map widget"""
         super().__init__(parent)
         
-        self.markers: List[Tuple[float, float, str, bool, Optional[str]]] = []  # lat, lon, name, is_selected, filepath
+        # Store markers with unique IDs: Dict[str, Tuple[float, float, str, bool, Optional[str]]]
+        # Key is marker_id, value is (lat, lon, name, is_selected, filepath)
+        self.markers: dict = {}  
         self.active_marker: Optional[Tuple[float, float]] = None
         self.click_handler = MapClickHandler()
         self.click_handler.clicked.connect(self._on_map_clicked)
@@ -50,6 +52,7 @@ class MapWidget(QWidget):
         # For handling async viewport capture before reload
         self.pending_reload: bool = False
         self.preserve_viewport_completely: bool = False  # Set when map click, don't recenter
+        self.skip_viewport_capture: bool = False  # Skip capture when fitting to selected markers
         
         self.init_ui()
     
@@ -84,10 +87,12 @@ class MapWidget(QWidget):
     def load_map(self):
         """Load the OpenStreetMap with Leaflet"""
         # If not auto-fitting, capture current viewport first to preserve user's zoom/pan
-        if not self.auto_fit_bounds and not self.pending_reload:
+        # Skip capture if we're fitting to selected markers
+        if not self.auto_fit_bounds and not self.pending_reload and not self.skip_viewport_capture:
             self.pending_reload = True
             self._capture_viewport_then_reload()
         else:
+            self.skip_viewport_capture = False  # Reset flag
             self._do_load_map()
     
     def _do_load_map(self):
@@ -131,18 +136,23 @@ class MapWidget(QWidget):
         
         # Generate markers JavaScript
         markers_js = icon_definitions
+        markers_js += """
+            // Store markers in a global object for later reference
+            window.imageMarkers = window.imageMarkers || {};
+        """
         
         # Add regular image markers
         if self.markers:
-            for idx, (lat, lon, name, is_selected, filepath) in enumerate(self.markers):
+            for marker_id, (lat, lon, name, is_selected, filepath) in self.markers.items():
                 # Generate popup content with thumbnail
                 popup_html = self._generate_popup_html(name, filepath)
                 escaped_popup = json.dumps(popup_html)
                 
                 # Use different icons for selected vs unselected
                 icon_var = 'blueIcon' if is_selected else 'greyIcon'
+                escaped_id = json.dumps(marker_id)
                 markers_js += f"""
-                L.marker([{lat}, {lon}], {{icon: {icon_var}}}).addTo(map).bindPopup({escaped_popup});
+                window.imageMarkers[{escaped_id}] = L.marker([{lat}, {lon}], {{icon: {icon_var}}}).addTo(map).bindPopup({escaped_popup});
                 """
         
         # Add active marker if set
@@ -174,9 +184,12 @@ class MapWidget(QWidget):
         # Calculate center and zoom
         all_coords = []
         if self.markers:
-            all_coords.extend([(m[0], m[1]) for m in self.markers])
+            all_coords.extend([(m[0], m[1]) for m in self.markers.values()])
         if self.active_marker:
             all_coords.append(self.active_marker)
+        
+        # Check if we have selected markers
+        selected_coords = [(m[0], m[1]) for m in self.markers.values() if m[3]]  # m[3] is is_selected
         
         # Determine viewport based on auto_fit_bounds setting
         if not self.auto_fit_bounds:
@@ -189,8 +202,7 @@ class MapWidget(QWidget):
                 center_lon = self.last_center_lon
                 self.preserve_viewport_completely = False  # Reset flag
             else:
-                # Selection change - center on selected markers but preserve zoom
-                selected_coords = [(m[0], m[1]) for m in self.markers if m[3]]  # m[3] is is_selected
+                # Selection change - center on selected markers
                 if selected_coords:
                     # Center on selected image(s)
                     if len(selected_coords) == 1:
@@ -202,7 +214,7 @@ class MapWidget(QWidget):
                         center_lat = sum(lats) / len(lats)
                         center_lon = sum(lons) / len(lons)
                 else:
-                    # No selection - preserve viewport
+                    # No selection with geolocation - preserve viewport
                     center_lat = self.last_center_lat
                     center_lon = self.last_center_lon
         elif all_coords:
@@ -221,15 +233,30 @@ class MapWidget(QWidget):
             self.last_center_lon = center_lon
             self.last_zoom = zoom
         else:
-            # Default to world view
-            center_lat, center_lon = 0, 0
-            zoom = 2
-            self.last_center_lat = center_lat
-            self.last_center_lon = center_lon
-            self.last_zoom = zoom
+            # No markers - use stored viewport if available, otherwise default to world view
+            if self.has_had_markers and (self.last_center_lat != 0 or self.last_center_lon != 0):
+                # Use stored viewport
+                center_lat = self.last_center_lat
+                center_lon = self.last_center_lon
+                zoom = self.last_zoom
+            else:
+                # Default to world view
+                center_lat, center_lon = 0, 0
+                zoom = 2
+                self.last_center_lat = center_lat
+                self.last_center_lon = center_lon
+                self.last_zoom = zoom
         
         # Generate fit bounds JS if needed
-        fit_bounds_js = self._generate_fit_bounds_js() if self.auto_fit_bounds else ""
+        # Fit bounds when auto_fit is enabled OR when there are selected markers with geolocation
+        if self.auto_fit_bounds:
+            fit_bounds_js = self._generate_fit_bounds_js()
+        elif selected_coords:
+            # Even when not auto-fitting, fit to selected markers to ensure they're visible
+            fit_bounds_js = self._generate_fit_bounds_js(selected_only=True)
+        else:
+            # No fit bounds - preserves viewport (e.g., when selecting photos without geolocation)
+            fit_bounds_js = ""
         
         html = f"""
         <!DOCTYPE html>
@@ -379,19 +406,33 @@ class MapWidget(QWidget):
             self.last_center_lat = result[0]
             self.last_center_lon = result[1]
             self.last_zoom = int(result[2])
-        self._do_load_map()
+            self._do_load_map()
+        else:
+            # Failed to capture viewport - skip reload to preserve current view
+            self.pending_reload = False
     
-    def _generate_fit_bounds_js(self) -> str:
-        """Generate JavaScript to fit map bounds to markers"""
-        all_coords = []
-        if self.markers:
-            all_coords.extend([(m[0], m[1]) for m in self.markers])
-        if self.active_marker:
-            all_coords.append(self.active_marker)
+    def _generate_fit_bounds_js(self, selected_only: bool = False) -> str:
+        """
+        Generate JavaScript to fit map bounds to markers
         
-        if len(all_coords) > 1:
-            lats = [c[0] for c in all_coords]
-            lons = [c[1] for c in all_coords]
+        Args:
+            selected_only: If True, only fit to selected markers; otherwise fit to all markers
+        """
+        coords_to_fit = []
+        
+        if selected_only:
+            # Only include selected markers
+            coords_to_fit = [(m[0], m[1]) for m in self.markers.values() if m[3]]  # m[3] is is_selected
+        else:
+            # Include all markers and active marker
+            if self.markers:
+                coords_to_fit.extend([(m[0], m[1]) for m in self.markers.values()])
+            if self.active_marker:
+                coords_to_fit.append(self.active_marker)
+        
+        if len(coords_to_fit) > 1:
+            lats = [c[0] for c in coords_to_fit]
+            lons = [c[1] for c in coords_to_fit]
             
             min_lat, max_lat = min(lats), max(lats)
             min_lon, max_lon = min(lons), max(lons)
@@ -477,32 +518,159 @@ class MapWidget(QWidget):
                 </div>
             """
     
-    def update_markers(self, markers: List[Tuple[float, float, str, bool, Optional[str]]]):
+    def update_markers(self, markers: List[Tuple[float, float, str, bool, Optional[str]]], has_active_selection: bool = False):
         """
-        Update map markers
+        Update map markers - used when the actual marker set changes (add/remove markers)
         
         Args:
             markers: List of tuples (latitude, longitude, name, is_selected, filepath)
+            has_active_selection: True if user has selected photos (even without geolocation)
         """
-        # Check if any markers are selected
-        has_selection = any(m[3] for m in markers)  # m[3] is is_selected
+        # Convert markers list to dict with unique IDs based on coordinates and name
+        new_markers = {}
+        for lat, lon, name, is_selected, filepath in markers:
+            marker_id = f"{lat}_{lon}_{name}"
+            new_markers[marker_id] = (lat, lon, name, is_selected, filepath)
         
-        # Disable auto-fit after first marker update (user interaction)
-        # But re-enable if no selection (user deselected all)
-        if markers and self.has_had_markers:
-            if has_selection:
-                self.auto_fit_bounds = False  # User selected images, preserve viewport
-            else:
-                self.auto_fit_bounds = True  # No selection, show all markers
+        # Check if markers actually changed (not just selection state)
+        markers_changed = set(new_markers.keys()) != set(self.markers.keys())
         
-        self.markers = markers
-        if markers:
+        # Update markers dict
+        old_markers = self.markers
+        self.markers = new_markers
+        if new_markers:
             self.has_had_markers = True
-        self.load_map()
+        
+        # Check if any selected photos have geolocation
+        has_geolocated_selection = any(m[3] for m in new_markers.values())  # m[3] is is_selected
+        
+        # Determine auto-fit behavior after first marker update
+        if self.has_had_markers:
+            if has_geolocated_selection or has_active_selection:
+                # User has selection - preserve viewport
+                self.auto_fit_bounds = False
+            else:
+                # No selection - show all markers
+                self.auto_fit_bounds = True
+        
+        # If only selection state changed (same markers, different selection), update icons only
+        if not markers_changed and old_markers:
+            self._update_marker_icons()
+            return
+        
+        # Reload map based on selection type
+        if has_geolocated_selection:
+            # Selected photos have geolocation - fit to them (skip viewport capture)
+            self.skip_viewport_capture = True
+            self.load_map()
+        else:
+            # Normal reload (including for selections without geolocation)
+            self.load_map()
+    
+    def _update_marker_icons(self):
+        """
+        Update marker icons based on selection state without reloading the map.
+        This is much faster than reloading the entire map HTML.
+        Also adjusts the viewport to show selected markers.
+        """
+        # Build JavaScript to update all marker icons
+        js_updates = []
+        selected_coords = []
+        
+        for marker_id, (lat, lon, name, is_selected, filepath) in self.markers.items():
+            escaped_id = json.dumps(marker_id)
+            # Determine which icon to use
+            icon_class = 'blueIcon' if is_selected else 'greyIcon'
+            js_updates.append(f"""
+                if (window.imageMarkers && window.imageMarkers[{escaped_id}]) {{
+                    var marker = window.imageMarkers[{escaped_id}];
+                    // Create the appropriate icon
+                    var newIcon = {icon_class};
+                    marker.setIcon(newIcon);
+                }}
+            """)
+            
+            if is_selected:
+                selected_coords.append((lat, lon))
+        
+        # Calculate viewport adjustment for selected markers
+        viewport_js = ""
+        if selected_coords:
+            # Check if we should preserve the current zoom level
+            app_settings = Config.get_app_settings()
+            preserve_zoom = app_settings.get('preserve_map_zoom', False)
+            
+            if len(selected_coords) == 1:
+                # Single selected marker - center on it
+                lat, lon = selected_coords[0]
+                if preserve_zoom:
+                    # Preserve current zoom level, just center on marker
+                    viewport_js = f"""
+                if (window.map) {{
+                    window.map.setView([{lat}, {lon}], window.map.getZoom());
+                }}
+                """
+                else:
+                    # Use configured zoom level
+                    zoom_level = app_settings.get('default_map_zoom', 10)
+                    viewport_js = f"""
+                if (window.map) {{
+                    window.map.setView([{lat}, {lon}], {zoom_level});
+                }}
+                """
+            else:
+                # Multiple selected markers - fit bounds to show all
+                lats = [c[0] for c in selected_coords]
+                lons = [c[1] for c in selected_coords]
+                min_lat, max_lat = min(lats), max(lats)
+                min_lon, max_lon = min(lons), max(lons)
+                viewport_js = f"""
+                if (window.map) {{
+                    var bounds = [[{min_lat}, {min_lon}], [{max_lat}, {max_lon}]];
+                    window.map.fitBounds(bounds, {{padding: [50, 50]}});
+                }}
+                """
+        
+        # Execute JavaScript to update all markers and viewport
+        if js_updates:
+            js = f"""
+            (function() {{
+                // Define icons if they don't exist
+                if (!window.blueIcon) {{
+                    window.blueIcon = L.icon({{
+                        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+                        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41],
+                        className: 'blue-marker'
+                    }});
+                }}
+                if (!window.greyIcon) {{
+                    window.greyIcon = L.icon({{
+                        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+                        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41],
+                        className: 'grey-marker'
+                    }});
+                }}
+                
+                {''.join(js_updates)}
+                
+                {viewport_js}
+            }})();
+            """
+            self.web_view.page().runJavaScript(js)
     
     def clear_markers(self):
         """Clear all markers from the map"""
-        self.markers = []
+        self.markers = {}
         self.auto_fit_bounds = True  # Re-enable auto-fit when no selection
         self.has_had_markers = False  # Reset for next load
         self.load_map()
@@ -518,7 +686,8 @@ class MapWidget(QWidget):
             is_selected: Whether this marker represents a selected image
             filepath: Optional path to the image file for thumbnail generation
         """
-        self.markers.append((latitude, longitude, name, is_selected, filepath))
+        marker_id = f"{latitude}_{longitude}_{name}"
+        self.markers[marker_id] = (latitude, longitude, name, is_selected, filepath)
         self.load_map()
     
     def set_active_marker(self, latitude: float, longitude: float):
