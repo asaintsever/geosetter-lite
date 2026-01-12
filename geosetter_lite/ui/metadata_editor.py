@@ -2,13 +2,13 @@
 Metadata Editor Dialog - Edit EXIF/XMP metadata for images
 """
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Set
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem,
     QPushButton, QLabel, QHeaderView, QMessageBox, QLineEdit, QWidget, QMenu
 )
 from PySide6.QtCore import Qt, QEvent
-from PySide6.QtGui import QKeyEvent
+from PySide6.QtGui import QKeyEvent, QColor
 from ..services.exiftool_service import ExifToolService, ExifToolError
 from .table_delegates import CountryDelegate
 
@@ -30,6 +30,9 @@ class MetadataEditor(QDialog):
         self.exiftool_service = exiftool_service
         self.metadata = {}
         self.all_metadata_rows = []  # Store all rows for filtering
+        self.original_values = {}  # Store original values to detect changes
+        self.modified_tags = set()  # Track modified tags
+        self.added_tags = set()  # Track added tags
         
         self.setWindowTitle("Edit Metadata")
         self.setMinimumSize(700, 500)
@@ -85,6 +88,9 @@ class MetadataEditor(QDialog):
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self.show_context_menu)
+        
+        # Connect to cell changed signal to track modifications
+        self.table.itemChanged.connect(self.on_cell_changed)
         
         # Install event filter for Delete key
         self.table.installEventFilter(self)
@@ -147,6 +153,9 @@ class MetadataEditor(QDialog):
             if not any(k.startswith(prefix) for prefix in excluded_prefixes)
         }
         
+        # Store original values for change detection
+        self.original_values = {k: str(v) if v is not None else "" for k, v in filtered_metadata.items()}
+        
         # Store all metadata rows for filtering
         self.all_metadata_rows = sorted(filtered_metadata.items())
         
@@ -155,29 +164,63 @@ class MetadataEditor(QDialog):
     
     def display_filtered_rows(self, rows_to_display):
         """Display the given rows in the table"""
+        # Temporarily disconnect itemChanged to avoid triggering on population
+        self.table.itemChanged.disconnect(self.on_cell_changed)
+        
         self.table.setRowCount(len(rows_to_display))
         
         for row, (tag, value) in enumerate(rows_to_display):
-            # Tag name (read-only)
+            # Tag name (read-only for existing tags, editable for new tags)
             tag_item = QTableWidgetItem(tag)
-            tag_item.setFlags(tag_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            
+            # Check if this is a new tag (not in original metadata)
+            if tag not in self.original_values:
+                # Mark as new tag
+                tag_item.setData(Qt.ItemDataRole.UserRole, "new_tag")
+            else:
+                # Existing tag - make read-only
+                tag_item.setFlags(tag_item.flags() & ~Qt.ItemFlag.ItemIsEditable)
+            
             self.table.setItem(row, 0, tag_item)
             
             # Value (editable)
             value_str = str(value) if value is not None else ""
             value_item = QTableWidgetItem(value_str)
             self.table.setItem(row, 1, value_item)
+            
+            # Highlight if modified or added
+            if tag in self.modified_tags or tag in self.added_tags:
+                self.highlight_row(row)
+        
+        # Reconnect itemChanged signal
+        self.table.itemChanged.connect(self.on_cell_changed)
     
     def filter_metadata(self, filter_text: str):
         """Filter metadata tags based on the filter text"""
+        # Build complete list including added tags
+        all_rows = list(self.all_metadata_rows)  # Start with original metadata
+        
+        # Add any new tags that were added by the user
+        for tag in self.added_tags:
+            # Find the current value for this tag in the table
+            for row in range(self.table.rowCount()):
+                tag_item = self.table.item(row, 0)
+                value_item = self.table.item(row, 1)
+                if tag_item and tag_item.text().strip() == tag:
+                    value = value_item.text() if value_item else ""
+                    # Check if this tag is not already in all_rows
+                    if not any(existing_tag == tag for existing_tag, _ in all_rows):
+                        all_rows.append((tag, value))
+                    break
+        
         if not filter_text:
             # No filter - show all rows
-            self.display_filtered_rows(self.all_metadata_rows)
+            self.display_filtered_rows(all_rows)
         else:
             # Filter rows where tag name or value contains the filter text (case-insensitive)
             filter_lower = filter_text.lower()
             filtered_rows = [
-                (tag, value) for tag, value in self.all_metadata_rows
+                (tag, value) for tag, value in all_rows
                 if filter_lower in tag.lower() or filter_lower in str(value).lower()
             ]
             self.display_filtered_rows(filtered_rows)
@@ -249,9 +292,73 @@ class MetadataEditor(QDialog):
         value_item = QTableWidgetItem("")
         self.table.setItem(row, 1, value_item)
         
+        # Mark as new row (will be tracked when values are entered)
+        tag_item.setData(Qt.ItemDataRole.UserRole, "new_tag")
+        
         # Scroll to the new row
         self.table.scrollToItem(tag_item)
         self.table.editItem(tag_item)
+    
+    def on_cell_changed(self, item: QTableWidgetItem):
+        """Handle cell value changes to track modifications"""
+        if item.column() != 1:  # Only track value column changes
+            return
+        
+        row = item.row()
+        tag_item = self.table.item(row, 0)
+        
+        if not tag_item:
+            return
+        
+        tag = tag_item.text().strip()
+        if not tag:
+            return
+        
+        current_value = item.text()  # Don't strip - compare as-is
+        
+        # Check if this is a new tag
+        is_new_tag = tag_item.data(Qt.ItemDataRole.UserRole) == "new_tag"
+        
+        if is_new_tag:
+            # New tag with value
+            if current_value.strip():  # Check if non-empty after stripping
+                self.added_tags.add(tag)
+                self.highlight_row(row)
+            else:
+                # New tag with empty value - remove highlight
+                self.added_tags.discard(tag)
+                self.unhighlight_row(row)
+        else:
+            # Existing tag - check if modified
+            original_value = self.original_values.get(tag, "")
+            if current_value != original_value:
+                self.modified_tags.add(tag)
+                self.highlight_row(row)
+            else:
+                # Value restored to original
+                self.modified_tags.discard(tag)
+                self.unhighlight_row(row)
+    
+    def highlight_row(self, row: int):
+        """Highlight a row to indicate it has been modified or added"""
+        # Light yellow/cream color for modified rows
+        highlight_color = QColor(255, 252, 220)
+        text_color = QColor(0, 0, 0)  # Black text
+        
+        for col in range(self.table.columnCount()):
+            item = self.table.item(row, col)
+            if item:
+                item.setBackground(highlight_color)
+                item.setForeground(text_color)
+    
+    def unhighlight_row(self, row: int):
+        """Remove highlight from a row"""
+        # Reset to default - let Qt handle alternating colors
+        for col in range(self.table.columnCount()):
+            item = self.table.item(row, col)
+            if item:
+                item.setData(Qt.ItemDataRole.BackgroundRole, None)  # Clear background
+                item.setData(Qt.ItemDataRole.ForegroundRole, None)  # Clear foreground
     
     def _get_country_code_for_name(self, country_name: str) -> Optional[str]:
         """Get ISO country code for a country name"""
@@ -262,7 +369,7 @@ class MetadataEditor(QDialog):
     
     def apply_changes(self):
         """Apply metadata changes to all selected images"""
-        # Collect changes from table and detect deletions
+        # Only collect changes for modified and added tags (highlighted rows)
         changes = {}
         tags_in_table = set()
         
@@ -277,17 +384,18 @@ class MetadataEditor(QDialog):
                 if tag:
                     tags_in_table.add(tag)
                     
-                    # Only include non-empty values
-                    if value:
-                        changes[tag] = value
-                        
-                        # Auto-set country code when country name is set
-                        if tag in ['IPTC:Country-PrimaryLocationName', 'XMP:Country', 'IPTC:CountryName', 
-                                   'XMP-photoshop:Country']:
-                            country_code = self._get_country_code_for_name(value)
-                            if country_code:
-                                changes['XMP-iptcCore:CountryCode'] = country_code
-                                changes['IPTC:Country-PrimaryLocationCode'] = country_code
+                    # Only include tags that were modified or added
+                    if tag in self.modified_tags or tag in self.added_tags:
+                        if value:  # Only include non-empty values
+                            changes[tag] = value
+                            
+                            # Auto-set country code when country name is set
+                            if tag in ['IPTC:Country-PrimaryLocationName', 'XMP:Country', 'IPTC:CountryName', 
+                                       'XMP-photoshop:Country']:
+                                country_code = self._get_country_code_for_name(value)
+                                if country_code:
+                                    changes['XMP-iptcCore:CountryCode'] = country_code
+                                    changes['IPTC:Country-PrimaryLocationCode'] = country_code
         
         # Detect deleted tags (tags that were in original metadata but not in table)
         tags_to_delete = []
@@ -310,7 +418,7 @@ class MetadataEditor(QDialog):
         
         # Apply changes using ExifTool
         try:
-            # Write updated/new tags
+            # Write updated/new tags (only modified and added ones)
             if changes:
                 self.exiftool_service.write_metadata(self.filepaths, changes)
             
