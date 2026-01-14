@@ -518,7 +518,7 @@ class MainWindow(QMainWindow):
         
         try:
             # Use centralized update_image_field to get keywords metadata
-            metadata = self.update_image_field(image, 'country', country_code)
+            metadata = self.update_image_field(image, 'country_code', country_code)
             
             # Write only keywords metadata (country was already written by delegate)
             if 'IPTC:Keywords' in metadata:
@@ -927,26 +927,32 @@ class MainWindow(QMainWindow):
                 except (ValueError, IndexError):
                     pass
         
-        elif field_name == 'country':
+        elif field_name == 'country' or field_name == 'country_code':
             if new_value:
                 from .table_delegates import CountryDelegate
-                country_name = None
-                for code, name in CountryDelegate.COUNTRY_LIST:
-                    if code == new_value:
-                        country_name = name
-                        break
                 
-                if country_name:
+                # Create lookup dictionaries for efficient searches
+                code_to_name = {code: name for code, name in CountryDelegate.COUNTRY_LIST}
+                name_to_code = {name: code for code, name in CountryDelegate.COUNTRY_LIST}
+                
+                if field_name == 'country_code':
+                    country_code = new_value
+                    country_name = code_to_name.get(country_code)
+                else:
+                    country_name = new_value
+                    country_code = name_to_code.get(country_name)
+                
+                if country_name and country_code:
                     metadata['XMP-photoshop:Country'] = country_name
                     metadata['IPTC:Country-PrimaryLocationName'] = country_name
-                    metadata['XMP-iptcCore:CountryCode'] = new_value
-                    metadata['IPTC:Country-PrimaryLocationCode'] = new_value
+                    metadata['XMP-iptcCore:CountryCode'] = country_code
+                    metadata['IPTC:Country-PrimaryLocationCode'] = country_code
                     image.country = country_name  # Store country name, not code
                     
                     # Add country to keywords
                     keywords_list = list(image.keywords) if image.keywords else []
-                    if new_value and new_value not in keywords_list:
-                        keywords_list.append(new_value)
+                    if country_code and country_code not in keywords_list:
+                        keywords_list.append(country_code)
                     if country_name and country_name not in keywords_list:
                         keywords_list.append(country_name)
                     
@@ -958,8 +964,8 @@ class MainWindow(QMainWindow):
                         image.keywords = keywords_list
                     
                     # Return country info for backward compatibility
-                    metadata['_country_info'] = {'name': country_name, 'code': new_value}
-        
+                    metadata['_country_info'] = {'name': country_name, 'code': country_code}
+                    
         elif field_name == 'city':
             metadata['IPTC:City'] = new_value
             metadata['XMP-photoshop:City'] = new_value
@@ -1338,7 +1344,7 @@ class MainWindow(QMainWindow):
                     # Add keywords with country information if country data exists
                     if country and country_code:
                         # Use centralized update logic
-                        country_metadata = self.update_image_field(image, 'country', country_code)
+                        country_metadata = self.update_image_field(image, 'country_code', country_code)
                         # Merge country metadata into image_metadata
                         image_metadata.update({k: v for k, v in country_metadata.items() if not k.startswith('_')})
                     
@@ -2139,7 +2145,7 @@ class MainWindow(QMainWindow):
                         
                         # If we found a matching country code, use centralized update logic
                         if country_code:
-                            country_metadata = self.update_image_field(image, 'country', country_code)
+                            country_metadata = self.update_image_field(image, 'country_code', country_code)
                             # Merge country metadata into main metadata dict
                             metadata.update({k: v for k, v in country_metadata.items() if not k.startswith('_')})
                         else:
