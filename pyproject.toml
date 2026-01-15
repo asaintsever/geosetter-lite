@@ -1,6 +1,6 @@
 [project]
 name = "geosetter_lite"
-version = "0.5.0"
+version = "0.6.0"
 description = "Geotagging application"
 readme = "README.md"
 requires-python = ">=3.12.9"
