@@ -29,6 +29,7 @@ from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
 from .quick_edit_dialog import QuickEditDialog
 from .rename_dialog import RenameDialog
+from .error_dialog import show_exiftool_error
 from .. import __version__
 
 
@@ -518,7 +519,7 @@ class MainWindow(QMainWindow):
         
         try:
             # Use centralized update_image_field to get keywords metadata
-            metadata = self.update_image_field(image, 'country', country_code)
+            metadata = self.update_image_field(image, 'country_code', country_code)
             
             # Write only keywords metadata (country was already written by delegate)
             if 'IPTC:Keywords' in metadata:
@@ -688,10 +689,11 @@ class MainWindow(QMainWindow):
                     self.update_all_images_on_map()
                     self.statusBar().showMessage(f"Updated GPS coordinates for {image.filename}")
                 except Exception as e:
-                    QMessageBox.critical(
-                        self,
-                        "Error",
-                        f"Failed to update GPS coordinates: {str(e)}"
+                    show_exiftool_error(
+                        "Error Updating GPS Coordinates",
+                        "Failed to update GPS coordinates:",
+                        str(e),
+                        self
                     )
                 return  # GPS coordinates handled separately
             elif col == 4:  # City
@@ -927,26 +929,32 @@ class MainWindow(QMainWindow):
                 except (ValueError, IndexError):
                     pass
         
-        elif field_name == 'country':
+        elif field_name == 'country' or field_name == 'country_code':
             if new_value:
                 from .table_delegates import CountryDelegate
-                country_name = None
-                for code, name in CountryDelegate.COUNTRY_LIST:
-                    if code == new_value:
-                        country_name = name
-                        break
                 
-                if country_name:
+                # Create lookup dictionaries for efficient searches
+                code_to_name = {code: name for code, name in CountryDelegate.COUNTRY_LIST}
+                name_to_code = {name: code for code, name in CountryDelegate.COUNTRY_LIST}
+                
+                if field_name == 'country_code':
+                    country_code = new_value
+                    country_name = code_to_name.get(country_code)
+                else:
+                    country_name = new_value
+                    country_code = name_to_code.get(country_name)
+                
+                if country_name and country_code:
                     metadata['XMP-photoshop:Country'] = country_name
                     metadata['IPTC:Country-PrimaryLocationName'] = country_name
-                    metadata['XMP-iptcCore:CountryCode'] = new_value
-                    metadata['IPTC:Country-PrimaryLocationCode'] = new_value
+                    metadata['XMP-iptcCore:CountryCode'] = country_code
+                    metadata['IPTC:Country-PrimaryLocationCode'] = country_code
                     image.country = country_name  # Store country name, not code
                     
                     # Add country to keywords
                     keywords_list = list(image.keywords) if image.keywords else []
-                    if new_value and new_value not in keywords_list:
-                        keywords_list.append(new_value)
+                    if country_code and country_code not in keywords_list:
+                        keywords_list.append(country_code)
                     if country_name and country_name not in keywords_list:
                         keywords_list.append(country_name)
                     
@@ -958,8 +966,8 @@ class MainWindow(QMainWindow):
                         image.keywords = keywords_list
                     
                     # Return country info for backward compatibility
-                    metadata['_country_info'] = {'name': country_name, 'code': new_value}
-        
+                    metadata['_country_info'] = {'name': country_name, 'code': country_code}
+                    
         elif field_name == 'city':
             metadata['IPTC:City'] = new_value
             metadata['XMP-photoshop:City'] = new_value
@@ -1125,10 +1133,11 @@ class MainWindow(QMainWindow):
                 )
                 
             except Exception as e:
-                QMessageBox.critical(
-                    self,
-                    "Error",
-                    f"Failed to update metadata: {str(e)}"
+                show_exiftool_error(
+                    "Error Updating Metadata",
+                    "Failed to update metadata:",
+                    str(e),
+                    self
                 )
     
     def update_all_images_on_map(self):
@@ -1338,7 +1347,7 @@ class MainWindow(QMainWindow):
                     # Add keywords with country information if country data exists
                     if country and country_code:
                         # Use centralized update logic
-                        country_metadata = self.update_image_field(image, 'country', country_code)
+                        country_metadata = self.update_image_field(image, 'country_code', country_code)
                         # Merge country metadata into image_metadata
                         image_metadata.update({k: v for k, v in country_metadata.items() if not k.startswith('_')})
                     
@@ -1359,10 +1368,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to update GPS coordinates: {str(e)}"
+            show_exiftool_error(
+                "Error Updating GPS Coordinates",
+                "Failed to update GPS coordinates:",
+                str(e),
+                self
             )
     
     def repair_selected_images_metadata(self):
@@ -1424,10 +1434,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to repair metadata: {str(e)}"
+            show_exiftool_error(
+                "Error Repairing Metadata",
+                "Failed to repair metadata:",
+                str(e),
+                self
             )
     
     def set_taken_date_from_creation(self):
@@ -1497,10 +1508,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to set Taken Date: {str(e)}"
+            show_exiftool_error(
+                "Error Setting Taken Date",
+                "Failed to set Taken Date:",
+                str(e),
+                self
             )
     
     def set_gps_date_from_taken(self):
@@ -1599,10 +1611,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to set GPS Date: {str(e)}"
+            show_exiftool_error(
+                "Error Setting GPS Date",
+                "Failed to set GPS Date:",
+                str(e),
+                self
             )
     
     def eventFilter(self, obj, event):
@@ -1915,10 +1928,11 @@ class MainWindow(QMainWindow):
             )
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to clear column: {str(e)}"
+            show_exiftool_error(
+                "Error Clearing Column",
+                "Failed to clear column:",
+                str(e),
+                self
             )
         
         self.statusBar().showMessage("Images reloaded")
@@ -2139,7 +2153,7 @@ class MainWindow(QMainWindow):
                         
                         # If we found a matching country code, use centralized update logic
                         if country_code:
-                            country_metadata = self.update_image_field(image, 'country', country_code)
+                            country_metadata = self.update_image_field(image, 'country_code', country_code)
                             # Merge country metadata into main metadata dict
                             metadata.update({k: v for k, v in country_metadata.items() if not k.startswith('_')})
                         else:
