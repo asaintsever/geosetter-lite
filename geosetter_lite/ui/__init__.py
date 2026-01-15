@@ -10,6 +10,7 @@ from .geolocation_dialog import GeolocationDialog
 from .similarity_dialog import SimilarityDialog
 from .settings_dialog import SettingsDialog
 from .progress_dialog import ProgressDialog
+from .error_dialog import ErrorDialog, show_exiftool_error
 from .table_delegates import CountryDelegate, DateTimeDelegate, TZOffsetDelegate
 
 __all__ = [
@@ -23,6 +24,8 @@ __all__ = [
     'SimilarityDialog',
     'SettingsDialog',
     'ProgressDialog',
+    'ErrorDialog',
+    'show_exiftool_error',
     'CountryDelegate',
     'DateTimeDelegate',
     'TZOffsetDelegate',

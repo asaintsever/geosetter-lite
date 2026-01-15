@@ -11,6 +11,7 @@ from PySide6.QtCore import Qt, QEvent
 from PySide6.QtGui import QKeyEvent, QColor
 from ..services.exiftool_service import ExifToolService, ExifToolError
 from .table_delegates import CountryDelegate
+from .error_dialog import show_exiftool_error
 
 
 class MetadataEditor(QDialog):
@@ -137,10 +138,11 @@ class MetadataEditor(QDialog):
             self.populate_table()
             
         except ExifToolError as e:
-            QMessageBox.warning(
-                self,
-                "Error",
-                f"Failed to load metadata: {str(e)}"
+            show_exiftool_error(
+                "Error Loading Metadata",
+                "Failed to load metadata:",
+                str(e),
+                self
             )
     
     def populate_table(self):
@@ -437,9 +439,10 @@ class MetadataEditor(QDialog):
             self.accept()
             
         except ExifToolError as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to update metadata: {str(e)}"
+            show_exiftool_error(
+                "Error Updating Metadata",
+                "Failed to update metadata:",
+                str(e),
+                self
             )
 

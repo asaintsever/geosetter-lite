@@ -29,6 +29,7 @@ from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
 from .quick_edit_dialog import QuickEditDialog
 from .rename_dialog import RenameDialog
+from .error_dialog import show_exiftool_error
 from .. import __version__
 
 
@@ -688,10 +689,11 @@ class MainWindow(QMainWindow):
                     self.update_all_images_on_map()
                     self.statusBar().showMessage(f"Updated GPS coordinates for {image.filename}")
                 except Exception as e:
-                    QMessageBox.critical(
-                        self,
-                        "Error",
-                        f"Failed to update GPS coordinates: {str(e)}"
+                    show_exiftool_error(
+                        "Error Updating GPS Coordinates",
+                        "Failed to update GPS coordinates:",
+                        str(e),
+                        self
                     )
                 return  # GPS coordinates handled separately
             elif col == 4:  # City
@@ -1131,10 +1133,11 @@ class MainWindow(QMainWindow):
                 )
                 
             except Exception as e:
-                QMessageBox.critical(
-                    self,
-                    "Error",
-                    f"Failed to update metadata: {str(e)}"
+                show_exiftool_error(
+                    "Error Updating Metadata",
+                    "Failed to update metadata:",
+                    str(e),
+                    self
                 )
     
     def update_all_images_on_map(self):
@@ -1365,10 +1368,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to update GPS coordinates: {str(e)}"
+            show_exiftool_error(
+                "Error Updating GPS Coordinates",
+                "Failed to update GPS coordinates:",
+                str(e),
+                self
             )
     
     def repair_selected_images_metadata(self):
@@ -1430,10 +1434,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to repair metadata: {str(e)}"
+            show_exiftool_error(
+                "Error Repairing Metadata",
+                "Failed to repair metadata:",
+                str(e),
+                self
             )
     
     def set_taken_date_from_creation(self):
@@ -1503,10 +1508,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to set Taken Date: {str(e)}"
+            show_exiftool_error(
+                "Error Setting Taken Date",
+                "Failed to set Taken Date:",
+                str(e),
+                self
             )
     
     def set_gps_date_from_taken(self):
@@ -1605,10 +1611,11 @@ class MainWindow(QMainWindow):
             self.reload_images()
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to set GPS Date: {str(e)}"
+            show_exiftool_error(
+                "Error Setting GPS Date",
+                "Failed to set GPS Date:",
+                str(e),
+                self
             )
     
     def eventFilter(self, obj, event):
@@ -1921,10 +1928,11 @@ class MainWindow(QMainWindow):
             )
             
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                "Error",
-                f"Failed to clear column: {str(e)}"
+            show_exiftool_error(
+                "Error Clearing Column",
+                "Failed to clear column:",
+                str(e),
+                self
             )
         
         self.statusBar().showMessage("Images reloaded")
