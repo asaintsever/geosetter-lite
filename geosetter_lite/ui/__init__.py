@@ -12,6 +12,7 @@ from .settings_dialog import SettingsDialog
 from .progress_dialog import ProgressDialog
 from .error_dialog import ErrorDialog, show_exiftool_error
 from .table_delegates import CountryDelegate, DateTimeDelegate, TZOffsetDelegate
+from .directory_toolbar import DirectoryToolbar
 
 __all__ = [
     'MainWindow',
@@ -29,4 +30,5 @@ __all__ = [
     'CountryDelegate',
     'DateTimeDelegate',
     'TZOffsetDelegate',
+    'DirectoryToolbar',
 ]
