@@ -26,12 +26,12 @@ def check_exiftool():
     return True
 
 
-def get_image_file() -> Path | None:
+def get_directory() -> Path | None:
     """
-    Get image file path from command line or file dialog
+    Get directory path from command line or directory dialog
     
     Returns:
-        Path to the image file or None if cancelled
+        Path to the directory or None if cancelled
     """
     # Parse command line arguments
     parser = argparse.ArgumentParser(
@@ -41,7 +41,7 @@ def get_image_file() -> Path | None:
         'filepath',
         nargs='?',
         type=str,
-        help='Path to an image file'
+        help='Path to a directory or image file'
     )
     
     args = parser.parse_args()
@@ -53,39 +53,43 @@ def get_image_file() -> Path | None:
         if not filepath.exists():
             QMessageBox.critical(
                 None,
-                "File Not Found",
-                f"The file does not exist:\n{filepath}"
+                "Path Not Found",
+                f"The path does not exist:\n{filepath}"
             )
             return None
         
-        if not filepath.is_file():
-            QMessageBox.critical(
-                None,
-                "Invalid File",
-                f"The path is not a file:\n{filepath}"
-            )
-            return None
+        # If it's a file, use its parent directory
+        if filepath.is_file():
+            if not FileScanner.is_supported_image(filepath):
+                QMessageBox.critical(
+                    None,
+                    "Unsupported Format",
+                    f"The file is not a supported image format (JPEG/PNG/HEIF):\n{filepath}"
+                )
+                return None
+            return filepath.parent
         
-        if not FileScanner.is_supported_image(filepath):
-            QMessageBox.critical(
-                None,
-                "Unsupported Format",
-                f"The file is not a supported image format (JPEG/PNG/HEIF):\n{filepath}"
-            )
-            return None
+        # If it's a directory, use it directly
+        if filepath.is_dir():
+            return filepath
         
-        return filepath
+        QMessageBox.critical(
+            None,
+            "Invalid Path",
+            f"The path is neither a file nor a directory:\n{filepath}"
+        )
+        return None
     
-    # Otherwise, show file dialog
-    file_dialog = QFileDialog()
-    file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
-    file_dialog.setNameFilter("Images (*.jpg *.jpeg *.png *.heif *.heic *.JPG *.JPEG *.PNG *.HEIF *.HEIC)")
-    file_dialog.setWindowTitle("Select an Image File")
+    # Otherwise, show directory dialog
+    directory = QFileDialog.getExistingDirectory(
+        None,
+        "Select Directory with Images",
+        str(Path.home()),
+        QFileDialog.Option.ShowDirsOnly | QFileDialog.Option.DontResolveSymlinks
+    )
     
-    if file_dialog.exec():
-        selected_files = file_dialog.selectedFiles()
-        if selected_files:
-            return Path(selected_files[0])
+    if directory:
+        return Path(directory)
     
     return None
 
@@ -101,15 +105,12 @@ def main():
     if not check_exiftool():
         return 1
     
-    # Get image file
-    image_file = get_image_file()
+    # Get directory
+    directory = get_directory()
     
-    if not image_file:
+    if not directory:
         # User cancelled or error occurred
         return 0
-    
-    # Get parent directory
-    directory = image_file.parent
     
     # Create ExifTool service
     exiftool_service = ExifToolService()

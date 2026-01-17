@@ -13,8 +13,8 @@ init: ## Init or resync development environment
 clean: ## Remove build and temporary files
 	rm -rf dist/*
 
-run: init ## Run application
-	uv run python main.py
+run: init ## Run application (use ARGS="..." to pass arguments)
+	uv run python main.py $(ARGS)
 
 package: clean init ## Generate Python wheel and macOS App bundle
 	echo "Building Python wheel..."

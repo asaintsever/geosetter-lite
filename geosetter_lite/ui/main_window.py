@@ -30,6 +30,7 @@ from .progress_dialog import ProgressDialog
 from .quick_edit_dialog import QuickEditDialog
 from .rename_dialog import RenameDialog
 from .error_dialog import show_exiftool_error
+from .directory_toolbar import DirectoryToolbar
 from .. import __version__
 
 
@@ -112,6 +113,18 @@ class MainWindow(QMainWindow):
         
         # LEFT SIDE: Vertical splitter for image list (top) and image viewer (bottom)
         left_splitter = QSplitter(Qt.Orientation.Vertical)
+        
+        # Create a container widget for the directory toolbar and table
+        table_container = QWidget()
+        table_layout = QVBoxLayout()
+        table_layout.setContentsMargins(0, 0, 0, 0)
+        table_layout.setSpacing(5)
+        table_container.setLayout(table_layout)
+        
+        # Add directory toolbar
+        self.directory_toolbar = DirectoryToolbar(self.directory)
+        self.directory_toolbar.directory_changed.connect(self.on_directory_changed)
+        table_layout.addWidget(self.directory_toolbar)
         
         # Top-left panel - Image list table
         self.table = QTableWidget()
@@ -199,7 +212,11 @@ class MainWindow(QMainWindow):
         # Setup header with clear buttons
         self._setup_header_buttons()
         
-        left_splitter.addWidget(self.table)
+        # Add table to container layout
+        table_layout.addWidget(self.table)
+        
+        # Add table container to left splitter
+        left_splitter.addWidget(table_container)
         
         # Bottom-left panel - Image viewer
         self.image_viewer = QLabel()
@@ -351,6 +368,27 @@ class MainWindow(QMainWindow):
         self.update_all_images_on_map()
         
         self.statusBar().showMessage(f"Loaded {len(self.images)} images")
+    
+    def on_directory_changed(self, new_directory: Path):
+        """
+        Handle directory change from the toolbar
+        
+        Args:
+            new_directory: The newly selected directory
+        """
+        self.directory = new_directory
+        self.setWindowTitle(f"Image Metadata Viewer - {new_directory.name}")
+        
+        # Clear current selection and image viewer
+        self.table.clearSelection()
+        self.current_image = None
+        self.current_pixmap = None
+        self.image_viewer.clear()
+        self.image_viewer.setText("Select an image to view")
+        
+        # Load images from the new directory
+        self.load_images()
+
     
     def populate_table(self):
         """Populate the table with image data"""

@@ -55,6 +55,7 @@ a = Analysis(
         'geosetter_lite.ui.rename_dialog',
         'geosetter_lite.ui.table_delegates',
         'geosetter_lite.ui.error_dialog',
+        'geosetter_lite.ui.directory_toolbar',
         # Services
         'geosetter_lite.services',
         'geosetter_lite.services.exiftool_service',
