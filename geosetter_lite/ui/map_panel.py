@@ -339,6 +339,27 @@ class MapPanel(QWidget):
         toolbar.setMovable(False)
         toolbar.setIconSize(QSize(32, 32))
         
+        # Add hover effect styling to toolbar buttons
+        toolbar.setStyleSheet("""
+            QToolBar QToolButton {
+                border: none;
+                padding: 4px;
+                border-radius: 4px;
+            }
+            QToolBar QToolButton:hover {
+                background-color: rgba(100, 150, 200, 0.3);
+            }
+            QToolBar QToolButton:pressed {
+                background-color: rgba(100, 150, 200, 0.5);
+            }
+            QToolBar QToolButton:checked {
+                background-color: rgba(100, 150, 200, 0.4);
+            }
+            QToolBar QToolButton:checked:hover {
+                background-color: rgba(100, 150, 200, 0.5);
+            }
+        """)
+        
         # Action: Update selected images with active marker coordinates
         self.update_coords_action = QAction(self.update_gps_icon, "Update GPS", self)
         self.update_coords_action.setToolTip("Update selected images with active marker coordinates")
