@@ -2,7 +2,7 @@
 Map Panel - Map widget with toolbar
 """
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QToolBar, QPushButton, QToolButton, QLabel, QFrame
-from PySide6.QtCore import Signal, Qt, QSize
+from PySide6.QtCore import Signal, Qt, QSize, QPointF
 from PySide6.QtGui import QIcon, QAction, QPixmap, QPainter, QColor, QPen
 from .map_widget import MapWidget
 
@@ -53,41 +53,16 @@ class MapPanel(QWidget):
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw a location pin (left side) - RED
-        pen = QPen(QColor(220, 50, 50), 2.5)
-        painter.setPen(pen)
-        painter.setBrush(QColor(255, 80, 80))
-        # Pin head
-        painter.drawEllipse(6, 8, 10, 10)
-        # Pin point
-        painter.drawLine(11, 18, 11, 26)
-        painter.drawLine(9, 24, 11, 26)
-        painter.drawLine(13, 24, 11, 26)
+        # Simple blue location pin
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(33, 150, 243))  # Blue
         
-        # Draw thick arrow pointing right
-        painter.setPen(QPen(QColor(50, 50, 50), 3))
-        painter.setBrush(QColor(80, 80, 80))
-        # Arrow shaft
-        painter.drawLine(18, 20, 28, 20)
-        # Arrow head
-        painter.drawLine(24, 15, 28, 20)
-        painter.drawLine(24, 25, 28, 20)
-        painter.drawLine(28, 20, 24, 15)
-        painter.drawLine(28, 20, 24, 25)
+        # Pin circle (larger, simpler)
+        painter.drawEllipse(12, 6, 24, 24)
         
-        # Draw multiple images icon (right side) - BLUE
-        painter.setPen(QPen(QColor(50, 100, 200), 2.5))
-        painter.setBrush(QColor(100, 150, 255, 100))
-        # First image (back)
-        painter.drawRect(33, 14, 10, 10)
-        # Second image (front)
-        painter.setBrush(QColor(100, 150, 255))
-        painter.drawRect(30, 17, 10, 10)
-        # Mountain in front image
-        painter.setPen(QPen(QColor(50, 100, 200), 1.5))
-        painter.drawLine(31, 25, 33, 22)
-        painter.drawLine(33, 22, 35, 24)
-        painter.drawLine(35, 24, 38, 20)
+        # Pin point (simple triangle)
+        points = [(24, 30), (18, 42), (30, 42)]
+        painter.drawPolygon([QPointF(x, y) for x, y in points])
         
         painter.end()
         return QIcon(pixmap)
@@ -100,188 +75,151 @@ class MapPanel(QWidget):
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw image icon (left side) - BLUE
-        painter.setPen(QPen(QColor(50, 100, 200), 2.5))
-        painter.setBrush(QColor(100, 150, 255))
-        painter.drawRect(5, 14, 12, 12)
-        # Mountain in image
-        painter.setPen(QPen(QColor(50, 100, 200), 1.5))
-        painter.drawLine(7, 23, 9, 19)
-        painter.drawLine(9, 19, 11, 21)
-        painter.drawLine(11, 21, 14, 17)
+        # Simple green camera
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(76, 175, 80))  # Green
         
-        # Draw thick arrow pointing right
-        painter.setPen(QPen(QColor(50, 50, 50), 3))
-        painter.setBrush(QColor(80, 80, 80))
-        # Arrow shaft
-        painter.drawLine(19, 20, 29, 20)
-        # Arrow head
-        painter.drawLine(25, 15, 29, 20)
-        painter.drawLine(25, 25, 29, 20)
-        painter.drawLine(29, 20, 25, 15)
-        painter.drawLine(29, 20, 25, 25)
+        # Camera body (rounded rectangle)
+        painter.drawRoundedRect(8, 16, 32, 22, 4, 4)
         
-        # Draw a location pin (right side) - RED
-        pen = QPen(QColor(220, 50, 50), 2.5)
-        painter.setPen(pen)
-        painter.setBrush(QColor(255, 80, 80))
-        # Pin head
-        painter.drawEllipse(32, 8, 10, 10)
-        # Pin point
-        painter.drawLine(37, 18, 37, 26)
-        painter.drawLine(35, 24, 37, 26)
-        painter.drawLine(39, 24, 37, 26)
+        # Lens (large circle)
+        painter.setBrush(QColor(46, 125, 50))  # Darker green
+        painter.drawEllipse(16, 20, 16, 16)
+        
+        # Small viewfinder on top
+        painter.setBrush(QColor(76, 175, 80))
+        painter.drawRoundedRect(18, 12, 12, 6, 2, 2)
         
         painter.end()
         return QIcon(pixmap)
     
     def _create_repair_icon(self) -> QIcon:
-        """Create icon for repairing metadata (medical cross/first aid icon)"""
+        """Create icon for repairing metadata (first aid kit)"""
         pixmap = QPixmap(48, 48)
         pixmap.fill(Qt.GlobalColor.transparent)
         
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw circular background - RED/PINK
-        painter.setPen(QPen(QColor(200, 50, 50), 2))
-        painter.setBrush(QColor(220, 60, 60))  # Red background
-        painter.drawEllipse(10, 10, 28, 28)
-        
-        # Draw white medical cross
+        # Red first aid kit box
         painter.setPen(Qt.PenStyle.NoPen)
-        painter.setBrush(QColor(255, 255, 255))  # White cross
+        painter.setBrush(QColor(244, 67, 54))  # Red
         
-        # Vertical bar of cross
-        painter.drawRect(22, 14, 4, 20)
+        # Main kit body (rectangle)
+        painter.drawRoundedRect(10, 14, 28, 22, 3, 3)
         
-        # Horizontal bar of cross
-        painter.drawRect(16, 22, 16, 4)
+        # Handle on top
+        painter.setBrush(QColor(211, 47, 47))  # Darker red
+        painter.drawRoundedRect(17, 10, 14, 6, 2, 2)
+        
+        # White medical cross
+        painter.setBrush(QColor(255, 255, 255))
+        # Vertical bar
+        painter.drawRoundedRect(22, 19, 4, 12, 1, 1)
+        # Horizontal bar
+        painter.drawRoundedRect(18, 23, 12, 4, 1, 1)
         
         painter.end()
         return QIcon(pixmap)
     
     def _create_set_taken_date_icon(self) -> QIcon:
-        """Create icon for setting Taken Date from file creation date (file -> calendar)"""
+        """Create icon for setting Taken Date from file creation date (calendar with plus)"""
         pixmap = QPixmap(48, 48)
         pixmap.fill(Qt.GlobalColor.transparent)
         
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw file icon (left side) - GREY
-        painter.setPen(QPen(QColor(100, 100, 100), 2))
-        painter.setBrush(QColor(180, 180, 180))
-        # File shape
-        painter.drawRect(6, 14, 10, 14)
-        # File corner fold
-        painter.drawLine(16, 14, 16, 18)
-        painter.drawLine(16, 18, 12, 18)
+        # Simple purple calendar
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(156, 39, 176))  # Purple
         
-        # Draw thick arrow pointing right
-        painter.setPen(QPen(QColor(50, 50, 50), 3))
-        painter.setBrush(QColor(80, 80, 80))
-        # Arrow shaft
-        painter.drawLine(18, 21, 26, 21)
-        # Arrow head
-        painter.drawLine(23, 17, 26, 21)
-        painter.drawLine(23, 25, 26, 21)
-        
-        # Draw calendar icon (right side) - BLUE
-        painter.setPen(QPen(QColor(50, 100, 200), 2))
-        painter.setBrush(QColor(100, 150, 255))
         # Calendar body
-        painter.drawRect(28, 16, 12, 12)
-        # Calendar header
-        painter.setBrush(QColor(50, 100, 200))
-        painter.drawRect(28, 16, 12, 3)
+        painter.drawRoundedRect(10, 12, 28, 28, 4, 4)
+        
+        # Calendar header (darker)
+        painter.setBrush(QColor(106, 27, 154))
+        painter.drawRoundedRect(10, 12, 28, 10, 4, 4)
+        painter.drawRect(10, 18, 28, 4)
+        
         # Calendar rings
-        painter.drawLine(30, 15, 30, 17)
-        painter.drawLine(38, 15, 38, 17)
+        painter.setBrush(QColor(186, 104, 200))
+        painter.drawRoundedRect(16, 10, 4, 8, 2, 2)
+        painter.drawRoundedRect(28, 10, 4, 8, 2, 2)
+        
+        # Large green plus badge
+        painter.setBrush(QColor(76, 175, 80))
+        painter.drawEllipse(26, 28, 14, 14)
+        painter.setPen(QPen(QColor(255, 255, 255), 3))
+        painter.drawLine(33, 32, 33, 38)  # Vertical
+        painter.drawLine(30, 35, 36, 35)  # Horizontal
         
         painter.end()
         return QIcon(pixmap)
     
     def _create_set_gps_date_icon(self) -> QIcon:
-        """Create icon for setting GPS Date from Taken Date (calendar -> GPS)"""
+        """Create icon for setting GPS Date from Taken Date (calendar with GPS badge)"""
         pixmap = QPixmap(48, 48)
         pixmap.fill(Qt.GlobalColor.transparent)
         
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw calendar icon (left side) - BLUE
-        painter.setPen(QPen(QColor(50, 100, 200), 2))
-        painter.setBrush(QColor(100, 150, 255))
+        # Simple teal calendar
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QColor(0, 150, 136))  # Teal
+        
         # Calendar body
-        painter.drawRect(6, 16, 12, 12)
-        # Calendar header
-        painter.setBrush(QColor(50, 100, 200))
-        painter.drawRect(6, 16, 12, 3)
+        painter.drawRoundedRect(10, 12, 28, 28, 4, 4)
+        
+        # Calendar header (darker)
+        painter.setBrush(QColor(0, 121, 107))
+        painter.drawRoundedRect(10, 12, 28, 10, 4, 4)
+        painter.drawRect(10, 18, 28, 4)
+        
         # Calendar rings
-        painter.drawLine(8, 15, 8, 17)
-        painter.drawLine(16, 15, 16, 17)
+        painter.setBrush(QColor(77, 182, 172))
+        painter.drawRoundedRect(16, 10, 4, 8, 2, 2)
+        painter.drawRoundedRect(28, 10, 4, 8, 2, 2)
         
-        # Draw thick arrow pointing right
-        painter.setPen(QPen(QColor(50, 50, 50), 3))
-        painter.setBrush(QColor(80, 80, 80))
-        # Arrow shaft
-        painter.drawLine(20, 22, 28, 22)
-        # Arrow head
-        painter.drawLine(25, 18, 28, 22)
-        painter.drawLine(25, 26, 28, 22)
-        
-        # Draw GPS pin (right side) - GREEN
-        painter.setPen(QPen(QColor(50, 150, 50), 2))
-        painter.setBrush(QColor(80, 200, 80))
-        # Pin head
-        painter.drawEllipse(32, 14, 8, 8)
+        # Blue pin badge (bottom right)
+        painter.setBrush(QColor(33, 150, 243))  # Blue
+        # Pin circle
+        painter.drawEllipse(27, 28, 12, 12)
         # Pin point
-        painter.drawLine(36, 22, 36, 28)
-        painter.drawLine(34, 26, 36, 28)
-        painter.drawLine(38, 26, 36, 28)
+        points = [(33, 40), (29, 44), (37, 44)]
+        painter.drawPolygon([QPointF(x, y) for x, y in points])
         
         painter.end()
         return QIcon(pixmap)
     
     def _create_reverse_geocoding_icon(self) -> QIcon:
-        """Create icon for reverse geocoding (globe/map with magnifying glass)"""
+        """Create icon for reverse geocoding (globe with magnifying glass)"""
         pixmap = QPixmap(48, 48)
         pixmap.fill(Qt.GlobalColor.transparent)
         
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw globe/earth (left/center) - BLUE/GREEN
-        painter.setPen(QPen(QColor(50, 100, 200), 2.5))
-        painter.setBrush(QColor(100, 150, 255, 180))
-        # Globe circle
-        painter.drawEllipse(8, 10, 20, 20)
-        
-        # Draw continents/land masses on globe - GREEN
+        # Simple blue globe
         painter.setPen(Qt.PenStyle.NoPen)
-        painter.setBrush(QColor(80, 180, 80))
-        # Simplified continent shapes
-        painter.drawEllipse(11, 14, 6, 5)  # Top left landmass
-        painter.drawEllipse(18, 13, 7, 6)  # Top right landmass
-        painter.drawEllipse(13, 21, 8, 5)  # Bottom landmass
+        painter.setBrush(QColor(66, 165, 245))  # Light blue
+        painter.drawEllipse(6, 8, 26, 26)
         
-        # Draw magnifying glass (right side) - ORANGE/GOLD
-        painter.setPen(QPen(QColor(200, 120, 20), 2.5))
-        painter.setBrush(QColor(255, 200, 100, 100))
-        # Magnifying glass lens
-        painter.drawEllipse(26, 18, 12, 12)
+        # Simple latitude lines (white)
+        painter.setPen(QPen(QColor(255, 255, 255, 120), 2))
+        painter.drawLine(8, 15, 30, 15)
+        painter.drawLine(8, 21, 30, 21)
+        painter.drawLine(8, 27, 30, 27)
+        
+        # Orange magnifying glass
+        painter.setPen(QPen(QColor(255, 152, 0), 4))  # Orange
+        painter.setBrush(QColor(255, 255, 255, 60))
+        painter.drawEllipse(22, 18, 18, 18)  # Lens
+        
         # Handle
-        painter.setPen(QPen(QColor(150, 90, 20), 3))
-        painter.drawLine(35, 27, 40, 32)
-        
-        # Draw small location pin inside magnifying glass - RED
-        painter.setPen(QPen(QColor(220, 50, 50), 1.5))
-        painter.setBrush(QColor(255, 80, 80))
-        # Pin head (small)
-        painter.drawEllipse(30, 22, 4, 4)
-        # Pin point (small)
-        painter.drawLine(32, 26, 32, 28)
+        painter.setPen(QPen(QColor(255, 152, 0), 5))
+        painter.drawLine(36, 32, 42, 38)
         
         painter.end()
         return QIcon(pixmap)
@@ -294,36 +232,25 @@ class MapPanel(QWidget):
         painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         
-        # Draw globe/earth (left/center) - BRIGHT BLUE/GREEN (more vibrant when checked)
-        painter.setPen(QPen(QColor(30, 120, 255), 3))
-        painter.setBrush(QColor(80, 180, 255, 220))
-        # Globe circle
-        painter.drawEllipse(8, 10, 20, 20)
-        
-        # Draw continents/land masses on globe - BRIGHT GREEN
+        # Brighter blue globe when checked
         painter.setPen(Qt.PenStyle.NoPen)
-        painter.setBrush(QColor(50, 220, 50))
-        # Simplified continent shapes
-        painter.drawEllipse(11, 14, 6, 5)  # Top left landmass
-        painter.drawEllipse(18, 13, 7, 6)  # Top right landmass
-        painter.drawEllipse(13, 21, 8, 5)  # Bottom landmass
+        painter.setBrush(QColor(100, 181, 246))  # Brighter blue
+        painter.drawEllipse(6, 8, 26, 26)
         
-        # Draw magnifying glass (right side) - BRIGHT ORANGE/GOLD
-        painter.setPen(QPen(QColor(255, 150, 0), 3))
-        painter.setBrush(QColor(255, 220, 100, 150))
-        # Magnifying glass lens
-        painter.drawEllipse(26, 18, 12, 12)
-        # Handle
-        painter.setPen(QPen(QColor(200, 120, 0), 3.5))
-        painter.drawLine(35, 27, 40, 32)
+        # Brighter latitude lines
+        painter.setPen(QPen(QColor(255, 255, 255, 180), 2.5))
+        painter.drawLine(8, 15, 30, 15)
+        painter.drawLine(8, 21, 30, 21)
+        painter.drawLine(8, 27, 30, 27)
         
-        # Draw small location pin inside magnifying glass - BRIGHT RED
-        painter.setPen(QPen(QColor(255, 30, 30), 2))
-        painter.setBrush(QColor(255, 60, 60))
-        # Pin head (small)
-        painter.drawEllipse(30, 22, 4, 4)
-        # Pin point (small)
-        painter.drawLine(32, 26, 32, 28)
+        # Brighter orange magnifying glass
+        painter.setPen(QPen(QColor(255, 183, 77), 5))  # Lighter orange
+        painter.setBrush(QColor(255, 255, 255, 100))
+        painter.drawEllipse(22, 18, 18, 18)  # Lens
+        
+        # Brighter handle
+        painter.setPen(QPen(QColor(255, 183, 77), 6))
+        painter.drawLine(36, 32, 42, 38)
         
         painter.end()
         return QIcon(pixmap)
@@ -338,6 +265,27 @@ class MapPanel(QWidget):
         toolbar = QToolBar()
         toolbar.setMovable(False)
         toolbar.setIconSize(QSize(32, 32))
+        
+        # Add hover effect styling to toolbar buttons
+        toolbar.setStyleSheet("""
+            QToolBar QToolButton {
+                border: none;
+                padding: 4px;
+                border-radius: 4px;
+            }
+            QToolBar QToolButton:hover {
+                background-color: rgba(100, 150, 200, 0.3);
+            }
+            QToolBar QToolButton:pressed {
+                background-color: rgba(100, 150, 200, 0.5);
+            }
+            QToolBar QToolButton:checked {
+                background-color: rgba(100, 150, 200, 0.4);
+            }
+            QToolBar QToolButton:checked:hover {
+                background-color: rgba(100, 150, 200, 0.5);
+            }
+        """)
         
         # Action: Update selected images with active marker coordinates
         self.update_coords_action = QAction(self.update_gps_icon, "Update GPS", self)
