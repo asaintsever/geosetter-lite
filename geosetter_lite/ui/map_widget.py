@@ -699,7 +699,7 @@ class MapWidget(QWidget):
             longitude: Longitude coordinate
         """
         self.active_marker = (latitude, longitude)
-        self.load_map()
+        self._update_active_marker_js(latitude, longitude)
     
     def get_active_marker(self) -> Optional[Tuple[float, float]]:
         """
