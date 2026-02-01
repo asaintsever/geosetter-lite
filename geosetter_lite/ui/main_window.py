@@ -29,6 +29,7 @@ from .geolocation_dialog import GeolocationDialog
 from .progress_dialog import ProgressDialog
 from .quick_edit_dialog import QuickEditDialog
 from .rename_dialog import RenameDialog
+from .date_time_shift_dialog import DateTimeShiftDialog
 from .error_dialog import show_exiftool_error
 from .directory_toolbar import DirectoryToolbar
 from .. import __version__
@@ -350,6 +351,47 @@ class MainWindow(QMainWindow):
                 f"Successfully renamed files",
                 3000
             )
+
+    def _date_time_shift(self):
+        """Show the date/time shift dialog"""
+        selected_rows = self.table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.information(
+                self,
+                "No Images Selected",
+                "Please select one or more images to shift the date/time."
+            )
+            return
+
+        dialog = DateTimeShiftDialog(self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            time_shift, operation = dialog.get_time_shift()
+            
+            if not any(time_shift.values()):
+                self.statusBar().showMessage("No time shift specified.", 3000)
+                return
+
+            selected_images = []
+            for row in selected_rows:
+                item = self.table.item(row.row(), 0)
+                if item:
+                    image = item.data(Qt.ItemDataRole.UserRole)
+                    if image:
+                        selected_images.append(image)
+            
+            filepaths = [img.filepath for img in selected_images]
+
+            try:
+                self.exiftool_service.shift_date_time(filepaths, time_shift, operation)
+                self.statusBar().showMessage(f"Successfully shifted date/time for {len(filepaths)} images.", 5000)
+                self.reload_images()
+            except Exception as e:
+                show_exiftool_error(
+                    "Error Shifting Date/Time",
+                    "Failed to shift date/time:",
+                    str(e),
+                    self
+                )
     
     def load_images(self):
         """Load images from the directory"""
@@ -867,6 +909,13 @@ class MainWindow(QMainWindow):
             quick_edit_action = QAction("Quick Edit (Basic Fields)", self)
             quick_edit_action.triggered.connect(self.quick_edit_metadata)
             menu.addAction(quick_edit_action)
+
+        menu.addSeparator()
+        
+        # Date/Time Shift
+        date_time_shift_action = QAction("Date/Time Shift...", self)
+        date_time_shift_action.triggered.connect(self._date_time_shift)
+        menu.addAction(date_time_shift_action)
         
         # Show menu at cursor position
         menu.exec(self.table.viewport().mapToGlobal(position))

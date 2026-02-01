@@ -408,3 +408,89 @@ class ExifToolService:
         except Exception as e:
             raise ExifToolError(f"Error repairing metadata: {e}")
 
+    @classmethod
+    def shift_date_time(
+        cls,
+        filepaths: List[Path],
+        time_shift: Dict[str, int],
+        operation: str,
+        preserve_file_dates: bool = True
+    ) -> bool:
+        """
+        Shift date/time for one or more image files using -AllDates
+        
+        Args:
+            filepaths: List of paths to image files
+            time_shift: Dictionary with time shifts for 'years', 'months', 'days', 
+                        'hours', 'minutes', 'seconds'
+            operation: 'increase' or 'decrease'
+            preserve_file_dates: If True, preserve file creation/modification dates (default: True)
+            
+        Returns:
+            True if successful
+            
+        Raises:
+            ExifToolError: If shifting date/time fails
+        """
+        if not filepaths:
+            return True
+
+        # Construct the time shift string for ExifTool: "Y:M:D H:M:S"
+        shift_str = (
+            f"{time_shift.get('years', 0)}:{time_shift.get('months', 0)}:{time_shift.get('days', 0)} "
+            f"{time_shift.get('hours', 0)}:{time_shift.get('minutes', 0)}:{time_shift.get('seconds', 0)}"
+        )
+
+        # Prepend sign for decrease operation
+        if operation == 'decrease':
+            op_char = "-="
+        else:
+            op_char = "+="
+
+        # Save original file times if requested
+        original_times = None
+        if preserve_file_dates:
+            original_times = cls._preserve_file_times(filepaths)
+
+        try:
+            exiftool = cls.get_exiftool_path()
+            cmd = [exiftool]
+
+            # Set IPTC charset to UTF-8
+            cmd.extend(['-charset', 'iptc=utf8'])
+
+            # Check if backups are disabled
+            app_settings = Config.get_app_settings()
+            if not app_settings.get('exiftool_create_backups', True):
+                cmd.append('-overwrite_original')
+
+            # Add the date shift command
+            # The shift value must be quoted to be treated as a single argument
+            cmd.append(f'-AllDates{op_char}{shift_str}')
+
+            # Add file paths
+            cmd.extend([str(fp) for fp in filepaths])
+
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=60
+            )
+
+            if result.returncode != 0:
+                raise ExifToolError(f"ExifTool date/time shift failed: {result.stderr}")
+
+            # Restore original file times if requested
+            if preserve_file_dates and original_times:
+                cls._restore_file_times(original_times)
+
+            return True
+
+        except ExifToolError:
+            raise
+        except subprocess.TimeoutExpired:
+            raise ExifToolError("ExifTool date/time shift timed out")
+        except Exception as e:
+            raise ExifToolError(f"Error shifting date/time: {e}")
+
