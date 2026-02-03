@@ -32,6 +32,7 @@ from .rename_dialog import RenameDialog
 from .date_time_shift_dialog import DateTimeShiftDialog
 from .error_dialog import show_exiftool_error
 from .directory_toolbar import DirectoryToolbar
+from .auto_rotate_dialog import AutoRotateDialog
 from .. import __version__
 
 
@@ -277,6 +278,12 @@ class MainWindow(QMainWindow):
         rename_action = QAction("Rename Photos...", self)
         rename_action.triggered.connect(self._rename_photos)
         file_menu.addAction(rename_action)
+
+        # Auto-rotate Photos
+        rotate_action = QAction("Auto-rotate Photos...", self)
+        rotate_action.triggered.connect(self._auto_rotate_photos)
+        file_menu.addAction(rotate_action)
+        
         
         # AI Tools menu
         ai_menu = menubar.addMenu("AI Tools")
@@ -349,6 +356,24 @@ class MainWindow(QMainWindow):
             self.load_images()
             self.statusBar().showMessage(
                 f"Successfully renamed files",
+                3000
+            )
+
+    def _auto_rotate_photos(self):
+        """Show the auto-rotate photos dialog"""
+        if not self.images:
+            QMessageBox.information(
+                self,
+                "No Images",
+                "No images loaded. Please open a directory with images first."
+            )
+            return
+
+        dialog = AutoRotateDialog(self.images, self.exiftool_service, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.reload_images()
+            self.statusBar().showMessage(
+                f"Successfully auto-rotated images",
                 3000
             )
 
