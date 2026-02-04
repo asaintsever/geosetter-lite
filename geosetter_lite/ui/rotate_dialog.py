@@ -107,21 +107,21 @@ class RotateDialog(QDialog):
                     with Image.open(image_model.filepath) as img:
                         rotated_img = ImageOps.exif_transpose(img)
                         rotated_img.save(image_model.filepath)
-                    metadata['EXIF:Orientation'] = 1
-                    self.exiftool_service.write_metadata([image_model.filepath], metadata)
-                    # Update overlay: no longer auto-rotatable
-                    new_pixmap = self.create_thumbnail(image_model.filepath, 1, manually_rotated=False)
-                    label.setPixmap(new_pixmap)
                 else:
                     with Image.open(image_model.filepath) as img:
                         rotated_img = img.rotate(-90, expand=True)
                         rotated_img.save(image_model.filepath)
-                    if metadata is not None:
-                        metadata['EXIF:Orientation'] = 1
-                        self.exiftool_service.write_metadata([image_model.filepath], metadata)
-                    # Update overlay: show blue arrow for manual rotation
-                    new_pixmap = self.create_thumbnail(image_model.filepath, 1, manually_rotated=True)
-                    label.setPixmap(new_pixmap)
+
+                # Prepare metadata for writing, filtering out non-writable composite tags
+                writable_metadata = {k: v for k, v in metadata.items() if not k.startswith('Composite:')}
+                writable_metadata['EXIF:Orientation'] = 1
+
+                # Write modified metadata back
+                self.exiftool_service.write_metadata([image_model.filepath], writable_metadata)
+
+                # Update overlay
+                new_pixmap = self.create_thumbnail(image_model.filepath, 1, manually_rotated=not auto)
+                label.setPixmap(new_pixmap)
 
             progress.set_value(len(selected_widgets))
             QMessageBox.information(self, "Success", f"Successfully rotated {len(selected_widgets)} images.")
@@ -254,51 +254,3 @@ class RotateDialog(QDialog):
         for widget in self.image_widgets:
             checkbox = widget.property("checkbox")
             checkbox.setChecked(is_checked)
-
-    def on_accept(self):
-        """Handle the 'Rotate Selected' button click"""
-        selected_images = []
-        for widget in self.image_widgets:
-            checkbox = widget.property("checkbox")
-            if checkbox.isChecked():
-                image_model = widget.property("image_model")
-                selected_images.append(image_model)
-
-        if not selected_images:
-            self.reject()
-            return
-        
-        progress = ProgressDialog("Rotating images...", 0, len(selected_images), self)
-        progress.set_message("Starting rotation...")
-        progress.show()
-
-        try:
-            for i, image_model in enumerate(selected_images):
-                progress.set_value(i)
-                progress.set_message(f"Rotating {image_model.filename}...")
-                
-                # 1. Use existing metadata
-                metadata = image_model.metadata
-
-                # 2. Rotate image
-                with Image.open(image_model.filepath) as img:
-                    rotated_img = ImageOps.exif_transpose(img)
-                    # 3. Overwrite original file
-                    rotated_img.save(image_model.filepath)
-
-                # 4. Prepare metadata for writing, filtering out non-writable composite tags
-                writable_metadata = {k: v for k, v in metadata.items() if not k.startswith('Composite:')}
-                writable_metadata['EXIF:Orientation'] = 1
-
-                # 5. Write modified metadata back
-                self.exiftool_service.write_metadata([image_model.filepath], writable_metadata)
-
-            progress.set_value(len(selected_images))
-            QMessageBox.information(self, "Success", f"Successfully rotated {len(selected_images)} images.")
-            self.accept()
-
-        except Exception as e:
-            progress.close()
-            QMessageBox.critical(self, "Error", f"An error occurred during rotation: {e}")
-            self.reject()
-
