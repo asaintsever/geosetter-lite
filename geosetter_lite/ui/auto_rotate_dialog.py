@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QScrollArea, QWidget, QHBoxLayout, QDialogButtonBox, QMessageBox
 )
 from PySide6.QtCore import Qt, QSize, QPointF
-from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen
+from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QPolygonF
 from typing import List
 from ..models.image_model import ImageModel
 from ..services.exiftool_service import ExifToolService
@@ -140,7 +140,7 @@ class AutoRotateDialog(QDialog):
                             QPointF(w - triangle_size, 0),  # top left of triangle
                             QPointF(w, triangle_size)  # bottom right of triangle
                         ]
-                        from PySide6.QtGui import QPolygonF
+
                         poly = QPolygonF(points)
                         painter.setBrush(QColor(0, 128, 0))  # Darker green
                         painter.setPen(Qt.NoPen)
@@ -198,8 +198,8 @@ class AutoRotateDialog(QDialog):
                 progress.set_value(i)
                 progress.set_message(f"Rotating {image_model.filename}...")
                 
-                # 1. Read metadata
-                metadata = self.exiftool_service.read_metadata(image_model.filepath)
+                # 1. Use existing metadata
+                metadata = image_model.metadata
 
                 # 2. Rotate image
                 with Image.open(image_model.filepath) as img:
@@ -207,12 +207,13 @@ class AutoRotateDialog(QDialog):
                     # 3. Overwrite original file
                     rotated_img.save(image_model.filepath)
 
-                # 4. Modify metadata
-                metadata['EXIF:Orientation'] = 1
+                # 4. Prepare metadata for writing, filtering out non-writable composite tags
+                writable_metadata = {k: v for k, v in metadata.items() if not k.startswith('Composite:')}
+                writable_metadata['EXIF:Orientation'] = 1
 
                 # 5. Write modified metadata back
-                self.exiftool_service.write_metadata([image_model.filepath], metadata)
-            
+                self.exiftool_service.write_metadata([image_model.filepath], writable_metadata)
+
             progress.set_value(len(selected_images))
             QMessageBox.information(self, "Success", f"Successfully rotated {len(selected_images)} images.")
             self.accept()
