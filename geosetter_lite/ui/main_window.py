@@ -32,7 +32,7 @@ from .rename_dialog import RenameDialog
 from .date_time_shift_dialog import DateTimeShiftDialog
 from .error_dialog import show_exiftool_error
 from .directory_toolbar import DirectoryToolbar
-from .auto_rotate_dialog import AutoRotateDialog
+from .rotate_dialog import RotateDialog
 from .. import __version__
 
 
@@ -279,9 +279,9 @@ class MainWindow(QMainWindow):
         rename_action.triggered.connect(self._rename_photos)
         file_menu.addAction(rename_action)
 
-        # Auto-rotate Photos
-        rotate_action = QAction("Auto-rotate Photos...", self)
-        rotate_action.triggered.connect(self._auto_rotate_photos)
+        # Rotate Photos
+        rotate_action = QAction("Rotate Photos...", self)
+        rotate_action.triggered.connect(self._rotate_photos)
         file_menu.addAction(rotate_action)
         
         
@@ -359,8 +359,8 @@ class MainWindow(QMainWindow):
                 3000
             )
 
-    def _auto_rotate_photos(self):
-        """Show the auto-rotate photos dialog"""
+    def _rotate_photos(self):
+        """Show the rotate photos dialog"""
         if not self.images:
             QMessageBox.information(
                 self,
@@ -369,11 +369,11 @@ class MainWindow(QMainWindow):
             )
             return
 
-        dialog = AutoRotateDialog(self.images, self.exiftool_service, self)
+        dialog = RotateDialog(self.images, self.exiftool_service, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.reload_images()
             self.statusBar().showMessage(
-                f"Successfully auto-rotated images",
+                f"Successfully rotated images",
                 3000
             )
 
