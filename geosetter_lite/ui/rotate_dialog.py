@@ -12,12 +12,17 @@ from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QPolygonF, QA
 from typing import List
 from ..models.image_model import ImageModel
 from ..services.exiftool_service import ExifToolService
+from ..services.jpegtran_lossless import jpegtran_lossless_rotate
 from .progress_dialog import ProgressDialog
 from PIL import Image, ImageOps
 import io
 
+
 class RotateDialog(QDialog):
     """Dialog to auto-rotate images based on EXIF orientation or manually rotate any image by 90°"""
+
+    def _is_jpeg(self, filepath: Path) -> bool:
+        return str(filepath).lower().endswith(('.jpg', '.jpeg'))
 
     def __init__(self, images: List[ImageModel], exiftool_service: ExifToolService, parent=None):
         super().__init__(parent)
@@ -90,13 +95,19 @@ class RotateDialog(QDialog):
             QMessageBox.warning(self, "No Selection", "No photos selected.")
             return
 
-        progress = ProgressDialog("Rotating images...", 0, len(selected_widgets), self)
-        progress.set_message("Starting rotation...")
+        progress = ProgressDialog("Rotating images...", self)
+        progress.set_status("Starting rotation...")
+        progress.set_progress(0, len(selected_widgets))
         progress.show()
 
         try:
             for i, widget in enumerate(selected_widgets):
-                progress.set_value(i)
+                if progress.is_cancelled():
+                    progress.set_status("Operation cancelled by user.")
+                    break
+
+                progress.set_status(f"Rotating image {i+1}/{len(selected_widgets)}...")
+                progress.set_progress(i+1, len(selected_widgets))
                 image_model = widget.property("image_model")
                 metadata = image_model.metadata
                 orientation = metadata.get('EXIF:Orientation') if metadata else None
@@ -104,17 +115,35 @@ class RotateDialog(QDialog):
                 if auto:
                     if orientation is None or orientation == 1:
                         continue  # skip if not auto-rotatable
-                    with Image.open(image_model.filepath) as img:
-                        rotated_img = ImageOps.exif_transpose(img)
-                        rotated_img.save(image_model.filepath)
+                    if self._is_jpeg(image_model.filepath):
+                        # EXIF auto-rotate is always 90, 180, or 270, but exif_transpose may flip too
+                        # For lossless, only rotate if orientation is 6 (90 CW), 8 (270 CW), 3 (180)
+                        # Map EXIF orientation to degrees
+                        exif_to_degrees = {3: 180, 6: 90, 8: 270}
+                        deg = exif_to_degrees.get(orientation)
+                        if deg:
+                            jpegtran_lossless_rotate(image_model.filepath, deg)
+                        else:
+                            # fallback to PIL if unknown orientation
+                            with Image.open(image_model.filepath) as img:
+                                rotated_img = ImageOps.exif_transpose(img)
+                                rotated_img.save(image_model.filepath)
+                    else:
+                        with Image.open(image_model.filepath) as img:
+                            rotated_img = ImageOps.exif_transpose(img)
+                            rotated_img.save(image_model.filepath)
                 else:
-                    with Image.open(image_model.filepath) as img:
-                        rotated_img = img.rotate(-90, expand=True)
-                        rotated_img.save(image_model.filepath)
+                    if self._is_jpeg(image_model.filepath):
+                        jpegtran_lossless_rotate(image_model.filepath, 90)
+                    else:
+                        with Image.open(image_model.filepath) as img:
+                            rotated_img = img.rotate(-90, expand=True)
+                            rotated_img.save(image_model.filepath)
 
                 # Prepare metadata for writing, filtering out non-writable composite tags
                 writable_metadata = {k: v for k, v in metadata.items() if not k.startswith('Composite:')}
-                writable_metadata['EXIF:Orientation'] = 1
+                # Use '#' suffix to disable print conversion when writing orientation
+                writable_metadata['EXIF:Orientation#'] = 1
 
                 # Write modified metadata back
                 self.exiftool_service.write_metadata([image_model.filepath], writable_metadata)
@@ -123,9 +152,19 @@ class RotateDialog(QDialog):
                 new_pixmap = self.create_thumbnail(image_model.filepath, 1, manually_rotated=not auto)
                 label.setPixmap(new_pixmap)
 
-            progress.set_value(len(selected_widgets))
+            progress.set_status("Completed rotation.")
+            progress.set_progress(len(selected_widgets), len(selected_widgets))
             QMessageBox.information(self, "Success", f"Successfully rotated {len(selected_widgets)} images.")
-            self.accept()
+            progress.close()
+
+            # Re-read metadata only for selected images before refreshing thumbnails
+            for widget in selected_widgets:
+                image_model = widget.property("image_model")
+                image_model.metadata = self.exiftool_service.get_all_tags(image_model.filepath)
+                orientation = image_model.metadata.get('EXIF:Orientation') if image_model.metadata else None
+                label = widget.property("thumbnail_label")
+                pixmap = self.create_thumbnail(image_model.filepath, orientation, manually_rotated=not auto)
+                label.setPixmap(pixmap)
         except Exception as e:
             progress.close()
             QMessageBox.critical(self, "Error", f"An error occurred during rotation: {e}")
@@ -237,7 +276,7 @@ class RotateDialog(QDialog):
                 painter = QPainter(pixmap)
                 try:
                     painter.setRenderHint(QPainter.Antialiasing)
-                    _draw_overlays(painter, pixmap.width(), pixmap.height(), orientation, getattr(self, "_manual_overlay", False))
+                    _draw_overlays(painter, pixmap.width(), pixmap.height(), orientation, manually_rotated)
                 except Exception as paint_exc:
                     print(f"Error painting overlay: {paint_exc}")
                 finally:

@@ -61,6 +61,7 @@ a = Analysis(
         # Services
         'geosetter_lite.services',
         'geosetter_lite.services.exiftool_service',
+        'geosetter_lite.services.jpegtran_lossless',
         'geosetter_lite.services.location_database',
         'geosetter_lite.services.reverse_geocoding_service',
         'geosetter_lite.services.file_scanner',
