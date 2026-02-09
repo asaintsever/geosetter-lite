@@ -8,7 +8,7 @@ from PySide6.QtWidgets import (
     QToolBar
 )
 from PySide6.QtCore import Qt, QSize, QPointF
-from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QPolygonF, QAction
+from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QPolygonF, QAction, QIcon
 from typing import List
 from ..models.image_model import ImageModel
 from ..services.exiftool_service import ExifToolService
@@ -20,6 +20,67 @@ import io
 
 class RotateDialog(QDialog):
     """Dialog to auto-rotate images based on EXIF orientation or manually rotate any image by 90°"""
+
+    def _create_auto_rotate_icon(self) -> QIcon:
+        """Create explicit icon for auto-rotate (EXIF) action"""
+        pixmap = QPixmap(48, 48)
+        pixmap.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        # Draw thick green circular arrow
+        pen = QPen(QColor(76, 175, 80))
+        pen.setWidth(7)
+        painter.setPen(pen)
+        painter.setBrush(Qt.NoBrush)
+        rect = pixmap.rect().adjusted(6, 6, -6, -6)
+        painter.drawArc(rect, 45 * 16, 270 * 16)
+        # Arrow head
+        painter.setBrush(QColor(76, 175, 80))
+        points = [QPointF(38, 14), QPointF(44, 18), QPointF(38, 22)]
+        painter.drawPolygon(points)
+        # Draw photo rectangle
+        painter.setPen(QPen(QColor(120, 120, 120), 2))
+        painter.setBrush(QColor(255, 255, 255))
+        painter.drawRect(16, 18, 16, 12)
+        # Draw tick mark (auto)
+        pen = QPen(QColor(76, 175, 80))
+        pen.setWidth(3)
+        painter.setPen(pen)
+        painter.drawLine(22, 26, 26, 30)
+        painter.drawLine(26, 30, 32, 22)
+        painter.end()
+        return QIcon(pixmap)
+
+    def _create_rotate_90_icon(self) -> QIcon:
+        """Create explicit icon for manual rotate 90° action"""
+        pixmap = QPixmap(48, 48)
+        pixmap.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        # Draw thick blue circular arrow
+        pen = QPen(QColor(33, 150, 243))
+        pen.setWidth(7)
+        painter.setPen(pen)
+        painter.setBrush(Qt.NoBrush)
+        rect = pixmap.rect().adjusted(6, 6, -6, -6)
+        painter.drawArc(rect, 0, 270 * 16)
+        # Arrow head
+        painter.setBrush(QColor(33, 150, 243))
+        points = [QPointF(38, 34), QPointF(44, 28), QPointF(38, 24)]
+        painter.drawPolygon(points)
+        # Draw photo rectangle
+        painter.setPen(QPen(QColor(120, 120, 120), 2))
+        painter.setBrush(QColor(255, 255, 255))
+        painter.drawRect(16, 18, 16, 12)
+        # Draw "90°" label
+        painter.setPen(QPen(QColor(33, 150, 243), 2))
+        font = painter.font()
+        font.setBold(True)
+        font.setPointSize(10)
+        painter.setFont(font)
+        painter.drawText(18, 28, "90°")
+        painter.end()
+        return QIcon(pixmap)
 
     def _is_jpeg(self, filepath: Path) -> bool:
         return str(filepath).lower().endswith(('.jpg', '.jpeg'))
@@ -42,16 +103,41 @@ class RotateDialog(QDialog):
 
         # Toolbar for rotate actions
         toolbar = QToolBar()
+        # Add hover effect styling to toolbar buttons (same as map panel)
+        toolbar.setStyleSheet("""
+            QToolBar QToolButton {
+                border: none;
+                padding: 4px;
+                border-radius: 4px;
+            }
+            QToolBar QToolButton:hover {
+                background-color: rgba(100, 150, 200, 0.3);
+            }
+            QToolBar QToolButton:pressed {
+                background-color: rgba(100, 150, 200, 0.5);
+            }
+            QToolBar QToolButton:checked {
+                background-color: rgba(100, 150, 200, 0.4);
+            }
+            QToolBar QToolButton:checked:hover {
+                background-color: rgba(100, 150, 200, 0.5);
+            }
+        """)
+
         # Auto-rotate action (EXIF)
-        auto_rotate_action = QAction("Auto-rotate (EXIF)", self)
+        auto_rotate_icon = self._create_auto_rotate_icon()
+        auto_rotate_action = QAction(auto_rotate_icon, "Auto-rotate (EXIF)", self)
         auto_rotate_action.setToolTip("Auto-rotate selected photos based on EXIF orientation")
         auto_rotate_action.triggered.connect(self.on_auto_rotate_selected)
         toolbar.addAction(auto_rotate_action)
+
         # Manual rotate 90° action
-        rotate_90_action = QAction("Rotate 90°", self)
+        rotate_90_icon = self._create_rotate_90_icon()
+        rotate_90_action = QAction(rotate_90_icon, "Rotate 90°", self)
         rotate_90_action.setToolTip("Rotate selected photos by 90°")
         rotate_90_action.triggered.connect(self.on_rotate_90_selected)
         toolbar.addAction(rotate_90_action)
+
         main_layout.addWidget(toolbar)
 
         # Select/Deselect All checkbox
