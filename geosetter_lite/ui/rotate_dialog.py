@@ -3,7 +3,7 @@ Rotate dialog - Allow user to auto-rotate images based on EXIF orientation or ma
 """
 from pathlib import Path
 from PySide6.QtWidgets import (
-    QDialog, QVBoxLayout, QGridLayout, QPushButton, QCheckBox, QLabel,
+    QApplication, QDialog, QVBoxLayout, QGridLayout, QPushButton, QCheckBox, QLabel,
     QScrollArea, QWidget, QHBoxLayout, QDialogButtonBox, QMessageBox,
     QToolBar, QSizePolicy
 )
@@ -13,9 +13,9 @@ from typing import List
 from ..models.image_model import ImageModel
 from ..services.exiftool_service import ExifToolService
 from ..services.jpegtran_lossless import jpegtran_lossless_rotate
+from .error_dialog import show_exiftool_error
 from .progress_dialog import ProgressDialog
 from PIL import Image, ImageOps
-import io
 
 
 class RotateDialog(QDialog):
@@ -276,22 +276,32 @@ class RotateDialog(QDialog):
                 new_pixmap = self.create_thumbnail(image_model.filepath, 1, manually_rotated=not auto)
                 label.setPixmap(new_pixmap)
 
+                QApplication.processEvents()
+
             progress.set_status("Completed rotation.")
             progress.set_progress(len(selected_widgets), len(selected_widgets))
-            QMessageBox.information(self, "Success", f"Successfully rotated {len(selected_widgets)} images.")
             progress.close()
 
             # Re-read metadata only for selected images before refreshing thumbnails
             for widget in selected_widgets:
                 image_model = widget.property("image_model")
-                image_model.metadata = self.exiftool_service.get_all_tags(image_model.filepath)
+                try:
+                    image_model.metadata = self.exiftool_service.get_all_tags(image_model.filepath)
+                except Exception as e:
+                    show_exiftool_error("Error Reading Metadata", "Failed to read metadata for:", str(e), self)
+
                 orientation = image_model.metadata.get('EXIF:Orientation') if image_model.metadata else None
                 label = widget.property("thumbnail_label")
                 pixmap = self.create_thumbnail(image_model.filepath, orientation, manually_rotated=not auto)
                 label.setPixmap(pixmap)
         except Exception as e:
             progress.close()
-            QMessageBox.critical(self, "Error", f"An error occurred during rotation: {e}")
+            show_exiftool_error(
+                "Error Rotating Photos",
+                "Failed to rotate photos:",
+                str(e),
+                self
+            )
             self.reject()
 
 
