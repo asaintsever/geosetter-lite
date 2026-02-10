@@ -5,7 +5,7 @@ from pathlib import Path
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QGridLayout, QPushButton, QCheckBox, QLabel,
     QScrollArea, QWidget, QHBoxLayout, QDialogButtonBox, QMessageBox,
-    QToolBar
+    QToolBar, QSizePolicy
 )
 from PySide6.QtCore import Qt, QSize, QPointF
 from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QPolygonF, QAction, QIcon
@@ -82,6 +82,25 @@ class RotateDialog(QDialog):
         painter.end()
         return QIcon(pixmap)
 
+    def _create_select_all_icon(self) -> QIcon:
+        """Create explicit icon for select/deselect all action"""
+        pixmap = QPixmap(48, 48)
+        pixmap.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        # Draw checkbox rectangle
+        painter.setPen(QPen(QColor(0, 0, 0), 2))
+        painter.setBrush(QColor(255, 255, 255))
+        painter.drawRect(12, 12, 24, 24)
+        # Draw checkmark
+        pen = QPen(QColor(0, 0, 0))
+        pen.setWidth(3)
+        painter.setPen(pen)
+        painter.drawLine(18, 24, 24, 30)
+        painter.drawLine(24, 30, 32, 18)
+        painter.end()
+        return QIcon(pixmap)
+
     def _is_jpeg(self, filepath: Path) -> bool:
         return str(filepath).lower().endswith(('.jpg', '.jpeg'))
 
@@ -138,12 +157,20 @@ class RotateDialog(QDialog):
         rotate_90_action.triggered.connect(self.on_rotate_90_selected)
         toolbar.addAction(rotate_90_action)
 
-        main_layout.addWidget(toolbar)
+        # Spacer to push select/deselect all to the right
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        toolbar.addWidget(spacer)
 
-        # Select/Deselect All checkbox
-        self.select_all_checkbox = QCheckBox("Select/Deselect All")
-        self.select_all_checkbox.stateChanged.connect(self.on_select_all_changed)
-        main_layout.addWidget(self.select_all_checkbox)
+        # Select/Deselect All action
+        select_all_icon = self._create_select_all_icon()
+        self.select_all_action = QAction(select_all_icon, "Select/Deselect All", self)
+        self.select_all_action.setToolTip("Select or deselect all photos")
+        self.select_all_action.setCheckable(True)
+        self.select_all_action.triggered.connect(self.on_toggle_select_all)
+        toolbar.addAction(self.select_all_action)
+
+        main_layout.addWidget(toolbar)
 
         # Scroll area for thumbnails
         scroll_area = QScrollArea()
@@ -168,6 +195,17 @@ class RotateDialog(QDialog):
     def on_rotate_90_selected(self):
         """Rotate selected photos by 90° regardless of EXIF orientation"""
         self.rotate_selected_photos(auto=False)
+
+    def on_toggle_select_all(self, checked):
+        """Toggle selection of all checkboxes based on the action's state."""
+        for widget in self.image_widgets:
+            checkbox = widget.property("checkbox")
+            checkbox.setChecked(checked)
+
+    def _update_select_all_action_state(self):
+        """Update the 'Select All' action state based on checkbox states."""
+        all_checked = all(widget.property("checkbox").isChecked() for widget in self.image_widgets)
+        self.select_all_action.setChecked(all_checked)
 
     def rotate_selected_photos(self, auto: bool):
         """Rotate selected photos. If auto=True, only rotate those with EXIF:Orientation != 1. If auto=False, rotate all selected by 90°."""
@@ -277,8 +315,12 @@ class RotateDialog(QDialog):
             self.grid_layout.addWidget(thumbnail_widget, row, col)
 
         if not images_to_rotate_found:
-            self.select_all_checkbox.setChecked(False)
-            self.select_all_checkbox.setEnabled(False)
+            # If no images need rotation, start with all deselected
+            for widget in self.image_widgets:
+                checkbox = widget.property("checkbox")
+                checkbox.setChecked(False)
+
+        self._update_select_all_action_state()
 
 
     def create_thumbnail_widget(self, image_model: ImageModel, orientation: int) -> QWidget:
@@ -295,6 +337,7 @@ class RotateDialog(QDialog):
         # Checkbox for selection
         checkbox = QCheckBox(image_model.filename)
         checkbox.setChecked(orientation is not None and orientation != 1)
+        checkbox.stateChanged.connect(self._update_select_all_action_state)
         layout.addWidget(checkbox)
 
         widget.setProperty("image_model", image_model)
@@ -372,10 +415,3 @@ class RotateDialog(QDialog):
         except Exception as e:
             print(f"Error creating thumbnail for {filepath}: {e}")
             return QPixmap(150, 150) # Return a blank pixmap on error
-
-    def on_select_all_changed(self, state):
-        """Handle the 'Select/Deselect All' checkbox"""
-        is_checked = state == Qt.CheckState.Checked.value
-        for widget in self.image_widgets:
-            checkbox = widget.property("checkbox")
-            checkbox.setChecked(is_checked)
