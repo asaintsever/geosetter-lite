@@ -280,6 +280,15 @@ class RotateDialog(QDialog):
 
             progress.set_status("Completed rotation.")
             progress.set_progress(len(selected_widgets), len(selected_widgets))
+
+        except Exception as e:
+            show_exiftool_error(
+                "Error Rotating Photos",
+                "Failed to rotate photos:",
+                str(e),
+                self
+            )
+        finally:
             progress.close()
 
             # Re-read metadata only for selected images before refreshing thumbnails
@@ -294,15 +303,6 @@ class RotateDialog(QDialog):
                 label = widget.property("thumbnail_label")
                 pixmap = self.create_thumbnail(image_model.filepath, orientation, manually_rotated=not auto)
                 label.setPixmap(pixmap)
-        except Exception as e:
-            progress.close()
-            show_exiftool_error(
-                "Error Rotating Photos",
-                "Failed to rotate photos:",
-                str(e),
-                self
-            )
-            self.reject()
 
 
     def eventFilter(self, watched, event):
