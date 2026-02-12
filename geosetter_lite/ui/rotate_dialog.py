@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QScrollArea, QWidget, QHBoxLayout, QDialogButtonBox, QMessageBox,
     QToolBar, QSizePolicy
 )
-from PySide6.QtCore import Qt, QSize, QPointF
+from PySide6.QtCore import Qt, QSize, QPointF, QEvent
 from PySide6.QtGui import QPixmap, QImage, QPainter, QColor, QPen, QPolygonF, QAction, QIcon
 from typing import List
 from ..models.image_model import ImageModel
@@ -305,6 +305,13 @@ class RotateDialog(QDialog):
             self.reject()
 
 
+    def eventFilter(self, watched, event):
+        if event.type() == QEvent.MouseButtonPress and watched.property("checkbox"):
+            checkbox = watched.property("checkbox")
+            checkbox.setChecked(not checkbox.isChecked())
+            return True
+        return super().eventFilter(watched, event)
+
     def populate_thumbnails(self):
         """Populate the grid with image thumbnails"""
         col_count = 5
@@ -342,6 +349,7 @@ class RotateDialog(QDialog):
         pixmap = self.create_thumbnail(image_model.filepath, orientation, manually_rotated=False)
         label = QLabel()
         label.setPixmap(pixmap)
+        label.setCursor(Qt.CursorShape.PointingHandCursor)
         layout.addWidget(label)
 
         # Checkbox for selection
@@ -349,6 +357,10 @@ class RotateDialog(QDialog):
         checkbox.setChecked(orientation is not None and orientation != 1)
         checkbox.stateChanged.connect(self._update_select_all_action_state)
         layout.addWidget(checkbox)
+
+        # Link label to checkbox and install event filter
+        label.setProperty("checkbox", checkbox)
+        label.installEventFilter(self)
 
         widget.setProperty("image_model", image_model)
         widget.setProperty("checkbox", checkbox)
