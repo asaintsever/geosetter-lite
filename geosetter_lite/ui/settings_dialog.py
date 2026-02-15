@@ -1,4 +1,4 @@
-"""Settings dialog for AI features configuration"""
+"""Settings dialog for features configuration"""
 
 from pathlib import Path
 from PySide6.QtWidgets import (
@@ -12,11 +12,11 @@ from ..core.config import Config
 
 
 class SettingsDialog(QDialog):
-    """Dialog for configuring AI settings"""
+    """Dialog for configuring settings"""
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("AI Settings")
+        self.setWindowTitle("Settings")
         self.setModal(True)
         self.setMinimumWidth(500)
         
@@ -119,6 +119,28 @@ class SettingsDialog(QDialog):
         exiftool_group.setLayout(exiftool_layout)
         layout.addWidget(exiftool_group)
         
+        # Image Settings Group
+        image_group = QGroupBox("Image Display")
+        image_layout = QFormLayout()
+        image_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
+        image_layout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
+
+        # Auto-rotate checkbox
+        self.autorotate_checkbox = QCheckBox("Auto-rotate images according to EXIF orientation tag")
+        self.autorotate_checkbox.setChecked(self.app_settings.get('auto_rotate_images', False))
+        image_layout.addRow(self.autorotate_checkbox)
+
+        # Help text
+        autorotate_help_label = QLabel(
+            "When enabled, images will be automatically rotated based on the EXIF orientation tag."
+        )
+        autorotate_help_label.setWordWrap(True)
+        autorotate_help_label.setStyleSheet("color: #a0a0a0; font-size: 11px;")
+        image_layout.addRow(autorotate_help_label)
+
+        image_group.setLayout(image_layout)
+        layout.addWidget(image_group)
+
         # Map Settings Group
         map_group = QGroupBox("Map")
         map_layout = QFormLayout()
@@ -230,7 +252,8 @@ class SettingsDialog(QDialog):
             self.threshold_slider.setValue(int(ai_defaults['similarity_threshold'] * 100))
             self.cache_dir_edit.setText(ai_defaults['model_cache_dir'])
             self.backup_checkbox.setChecked(app_defaults.get('exiftool_create_backups', True))
-            self.preserve_zoom_checkbox.setChecked(app_defaults.get('preserve_map_zoom', False))
+            self.autorotate_checkbox.setChecked(app_defaults.get('auto_rotate_images', False))
+            self.preserve_zoom_checkbox.setChecked(app_defaults.get('preserve_map_zoom', True))
             self.zoom_slider.setValue(app_defaults.get('default_map_zoom', 10))
             self._on_preserve_zoom_changed()
     
@@ -242,6 +265,7 @@ class SettingsDialog(QDialog):
         }
         app_settings = {
             'exiftool_create_backups': self.backup_checkbox.isChecked(),
+            'auto_rotate_images': self.autorotate_checkbox.isChecked(),
             'preserve_map_zoom': self.preserve_zoom_checkbox.isChecked(),
             'default_map_zoom': self.zoom_slider.value()
         }
@@ -281,6 +305,7 @@ class SettingsDialog(QDialog):
         # Update app settings
         app_settings = Config.get_app_settings()
         app_settings['exiftool_create_backups'] = settings['app_settings']['exiftool_create_backups']
+        app_settings['auto_rotate_images'] = settings['app_settings']['auto_rotate_images']
         app_settings['preserve_map_zoom'] = settings['app_settings']['preserve_map_zoom']
         app_settings['default_map_zoom'] = settings['app_settings']['default_map_zoom']
         Config.set_app_settings(app_settings)

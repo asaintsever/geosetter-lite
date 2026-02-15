@@ -70,10 +70,6 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 ![Geolocation Prediction](_img/GeoSetterLite-GeolocPredict.png)
 *Predict GPS coordinates for photos without location data*
 
-### Settings & Preferences
-![Preferences](_img/GeoSetterLite-Preferences.png)
-*App Configuration*
-
 ## Requirements
 
 - Python 3.12.9 or higher
