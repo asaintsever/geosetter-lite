@@ -24,6 +24,9 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 - **Batch Operations**: Apply metadata changes to multiple images at once
 - **Inline Editing**: Edit metadata directly in the table with specialized editors for different field types
 - **File Renaming**: Pattern-based batch file renaming with metadata tokens and counters
+- **Image Rotation**:
+  - Manually rotate images losslessly (90° left/right, 180°) from the "Rotate Photos" dialog.
+  - Automatically rotate images for display based on their EXIF orientation tag. This can be enabled in the application settings.
 
 ### Advanced Features
 
