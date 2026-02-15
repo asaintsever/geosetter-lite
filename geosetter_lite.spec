@@ -56,9 +56,12 @@ a = Analysis(
         'geosetter_lite.ui.table_delegates',
         'geosetter_lite.ui.error_dialog',
         'geosetter_lite.ui.directory_toolbar',
+        'geosetter_lite.ui.date_time_shift_dialog',
+        'geosetter_lite.ui.rotate_dialog',
         # Services
         'geosetter_lite.services',
         'geosetter_lite.services.exiftool_service',
+        'geosetter_lite.services.jpegtran_lossless',
         'geosetter_lite.services.location_database',
         'geosetter_lite.services.reverse_geocoding_service',
         'geosetter_lite.services.file_scanner',

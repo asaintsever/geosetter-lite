@@ -10,7 +10,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint, QTimer
 from PySide6.QtGui import QPixmap, QAction, QImage, QKeyEvent, QIcon, QPainter, QColor, QPen
-from PIL import Image
+from PIL import Image, ImageOps
 import io
 from ..models.image_model import ImageModel
 from ..services.file_scanner import FileScanner
@@ -32,6 +32,7 @@ from .rename_dialog import RenameDialog
 from .date_time_shift_dialog import DateTimeShiftDialog
 from .error_dialog import show_exiftool_error
 from .directory_toolbar import DirectoryToolbar
+from .rotate_dialog import RotateDialog
 from .. import __version__
 
 
@@ -277,6 +278,12 @@ class MainWindow(QMainWindow):
         rename_action = QAction("Rename Photos...", self)
         rename_action.triggered.connect(self._rename_photos)
         file_menu.addAction(rename_action)
+
+        # Rotate Photos
+        rotate_action = QAction("Rotate Photos...", self)
+        rotate_action.triggered.connect(self._rotate_photos)
+        file_menu.addAction(rotate_action)
+        
         
         # AI Tools menu
         ai_menu = menubar.addMenu("AI Tools")
@@ -349,6 +356,24 @@ class MainWindow(QMainWindow):
             self.load_images()
             self.statusBar().showMessage(
                 f"Successfully renamed files",
+                3000
+            )
+
+    def _rotate_photos(self):
+        """Show the rotate photos dialog"""
+        if not self.images:
+            QMessageBox.information(
+                self,
+                "No Images",
+                "No images loaded. Please open a directory with images first."
+            )
+            return
+
+        dialog = RotateDialog(self.images, self.exiftool_service, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.reload_images()
+            self.statusBar().showMessage(
+                f"Successfully rotated images",
                 3000
             )
 
@@ -838,6 +863,13 @@ class MainWindow(QMainWindow):
         try:
             # Load image using PIL
             pil_image = Image.open(image.filepath)
+
+            # Get app settings and auto-rotate if enabled
+            app_settings = Config.get_app_settings()
+            if app_settings.get('auto_rotate_images', False):
+                orientation = image.metadata.get('EXIF:Orientation') if image.metadata else None
+                if orientation and orientation != 1:
+                    pil_image = ImageOps.exif_transpose(pil_image)
             
             # Convert to RGB if necessary
             if pil_image.mode != 'RGB':

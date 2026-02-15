@@ -24,6 +24,9 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 - **Batch Operations**: Apply metadata changes to multiple images at once
 - **Inline Editing**: Edit metadata directly in the table with specialized editors for different field types
 - **File Renaming**: Pattern-based batch file renaming with metadata tokens and counters
+- **Image Rotation**:
+  - Manually rotate images losslessly (90° left/right, 180°) from the "Rotate Photos" dialog.
+  - Automatically rotate images for display based on their EXIF orientation tag. This can be enabled in the application settings.
 
 ### Advanced Features
 
@@ -70,20 +73,17 @@ A comprehensive Python application for viewing and editing EXIF/IPTC/XMP metadat
 ![Geolocation Prediction](_img/GeoSetterLite-GeolocPredict.png)
 *Predict GPS coordinates for photos without location data*
 
-### Settings & Preferences
-![Preferences](_img/GeoSetterLite-Preferences.png)
-*App Configuration*
-
 ## Requirements
 
 - Python 3.12.9 or higher
 - ExifTool installed on your system
+- jpegtran installed on your system
 
-### Installing ExifTool
+### Installing ExifTool & jpegtran
 
 **macOS:**
 ```bash
-brew install exiftool
+brew install exiftool jpeg-turbo
 ```
 
 **Linux (Debian/Ubuntu):**
@@ -91,8 +91,10 @@ brew install exiftool
 sudo apt-get install libimage-exiftool-perl
 ```
 
+See <https://libjpeg-turbo.org/Downloads/YUM> for jpegtran
+
 **Windows:**
-Download from [https://exiftool.org](https://exiftool.org)
+Download from [https://exiftool.org](https://exiftool.org) and <https://github.com/libjpeg-turbo/libjpeg-turbo/releases>
 
 ## Installation
 
@@ -245,40 +247,6 @@ Keywords are automatically managed:
 - **Auto-Update**: When country is set, country code and country name are automatically added
 - **Preservation**: Existing keywords are preserved when adding country information
 
-## Project Structure
-
-```
-geotag/
-├── main.py                          # Application entry point
-├── data/                            # Data files
-│   └── world_locations.csv          # World locations database (1000+ locations)
-└── geosetter_lite/                  # Main package
-    ├── ui/                          # User interface components
-    │   ├── main_window.py           # Main application window (3-pane layout)
-    │   ├── map_panel.py             # Map panel with toolbar and icons
-    │   ├── map_widget.py            # Map widget with Leaflet/OpenStreetMap
-    │   ├── metadata_editor.py       # Metadata editor dialog with tag deletion and filtering
-    │   ├── batch_edit_dialog.py     # Batch metadata editing dialog
-    │   ├── geocoding_dialog.py      # Reverse geocoding results dialog
-    │   ├── geolocation_dialog.py    # Geolocation prediction results dialog
-    │   ├── similarity_dialog.py     # Similar photos results dialog
-    │   ├── settings_dialog.py       # AI settings configuration dialog
-    │   ├── progress_dialog.py       # Progress dialog for long-running operations
-    │   ├── rename_dialog.py         # Pattern-based batch file renaming dialog
-    │   └── table_delegates.py       # Custom cell editors (country, date, timezone)
-    ├── services/                    # External service integrations
-    │   ├── exiftool_service.py      # ExifTool wrapper with backup management
-    │   ├── reverse_geocoding_service.py # Nominatim API integration
-    │   ├── ai_service.py            # AI services (similarity detection, geolocation prediction)
-    │   ├── file_scanner.py          # Directory scanner with auto-initialization
-    │   └── location_database.py     # SQLite database for world locations
-    ├── models/                      # Data models
-    │   └── image_model.py           # Image data model with metadata fields
-    └── core/                        # Core utilities
-        ├── config.py                # Configuration management for AI settings
-        └── utils.py                 # Utility functions (formatting, etc.)
-```
-
 ## Dependencies
 
 - **PySide6**: Qt-based GUI framework (includes QtWebEngineWidgets for map display)
@@ -287,6 +255,7 @@ geotag/
 
 **External Requirements:**
 - **ExifTool**: Must be installed on your system for reading/writing EXIF/IPTC/XMP metadata
+- **jpegtran**: Must be installed for JPEG lossless rotation
 
 **External APIs:**
 - **OpenStreetMap Nominatim**: Free reverse geocoding service (no API key required)
