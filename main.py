@@ -8,6 +8,7 @@ from pathlib import Path
 from PySide6.QtWidgets import QApplication, QFileDialog, QMessageBox
 from geosetter_lite.services import ExifToolService, FileScanner
 from geosetter_lite.ui import MainWindow
+import geosetter_lite.resources.resources_rc #noqa: F401
 
 
 def check_exiftool():

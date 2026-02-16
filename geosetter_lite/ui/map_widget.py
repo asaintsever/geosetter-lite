@@ -112,9 +112,9 @@ class MapWidget(QWidget):
         icon_definitions = """
             // Create custom icons
             var blueIcon = L.icon({
-                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-                iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
+                iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
+                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -123,9 +123,9 @@ class MapWidget(QWidget):
             });
             
             var greyIcon = L.icon({
-                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-                iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
+                iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
+                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -160,8 +160,8 @@ class MapWidget(QWidget):
             lat, lon = self.active_marker
             markers_js += f"""
             var redIcon = L.icon({{
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconUrl: 'qrc:///resources/leaflet/images/marker-icon-2x-red.png',
+                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -267,14 +267,10 @@ class MapWidget(QWidget):
             <title>Image Map</title>
             
             <!-- Leaflet CSS -->
-            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-                integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-                crossorigin=""/>
+            <link rel="stylesheet" href="qrc:///resources/leaflet/leaflet.css"/>
             
             <!-- Leaflet JavaScript -->
-            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-                crossorigin=""></script>
+            <script src="qrc:///resources/leaflet/leaflet.js"></script>
             
             <!-- Qt WebChannel -->
             <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
@@ -364,8 +360,8 @@ class MapWidget(QWidget):
             
             // Create red icon for active marker
             var redIcon = L.icon({{
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                iconUrl: 'qrc:///resources/leaflet/images/marker-icon-2x-red.png',
+                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -638,9 +634,9 @@ class MapWidget(QWidget):
                 // Define icons if they don't exist
                 if (!window.blueIcon) {{
                     window.blueIcon = L.icon({{
-                        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-                        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-                        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                        iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
+                        iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
+                        shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
                         iconSize: [25, 41],
                         iconAnchor: [12, 41],
                         popupAnchor: [1, -34],
@@ -650,9 +646,9 @@ class MapWidget(QWidget):
                 }}
                 if (!window.greyIcon) {{
                     window.greyIcon = L.icon({{
-                        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-                        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-                        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                        iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
+                        iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
+                        shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
                         iconSize: [25, 41],
                         iconAnchor: [12, 41],
                         popupAnchor: [1, -34],
