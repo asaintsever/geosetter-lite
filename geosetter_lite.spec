@@ -32,9 +32,6 @@ a = Analysis(
         # Include data directory with CSV files
         ('data/world_locations.csv', 'data'),
         ('data/README.md', 'data'),
-        # Include leaflet resources
-        #('geosetter_lite/resources/leaflet/leaflet.css', 'data'),
-        #('geosetter_lite/resources/leaflet/images/marker-icon-2x-red.png', 'data'),
     ],
     hiddenimports=[
         'PySide6.QtCore',
