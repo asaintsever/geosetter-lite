@@ -14,6 +14,21 @@ from PIL import Image
 import io
 from ..core.config import Config
 
+# Import Leaflet resources from Qt resource system
+import geosetter_lite.resources.resources_rc #noqa: F401
+
+
+# Constants for Leaflet resources
+LEAFLET_RESOURCE_PATH = "qrc:///resources/leaflet/"
+LEAFLET_CSS = f"{LEAFLET_RESOURCE_PATH}leaflet.css"
+LEAFLET_JS = f"{LEAFLET_RESOURCE_PATH}leaflet.js"
+LEAFLET_IMAGES_PATH = f"{LEAFLET_RESOURCE_PATH}images/"
+LEAFLET_MARKER_ICON_URL = f"{LEAFLET_IMAGES_PATH}marker-icon.png"
+LEAFLET_MARKER_ICON_RETINA_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x.png"
+LEAFLET_MARKER_SHADOW_URL = f"{LEAFLET_IMAGES_PATH}marker-shadow.png"
+LEAFLET_MARKER_ICON_RED_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x-red.png"
+
+
 class MapClickHandler(QObject):
     """Handler for map click events"""
     
@@ -109,29 +124,29 @@ class MapWidget(QWidget):
             HTML string with embedded Leaflet map
         """
         # Define icon creation JavaScript (done once)
-        icon_definitions = """
+        icon_definitions = f"""
             // Create custom icons
-            var blueIcon = L.icon({
-                iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
-                iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
-                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
+            var blueIcon = L.icon({{
+                iconUrl: '{LEAFLET_MARKER_ICON_URL}',
+                iconRetinaUrl: '{LEAFLET_MARKER_ICON_RETINA_URL}',
+                shadowUrl: '{LEAFLET_MARKER_SHADOW_URL}',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41],
                 className: 'blue-marker'
-            });
+            }});
             
-            var greyIcon = L.icon({
-                iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
-                iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
-                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
+            var greyIcon = L.icon({{
+                iconUrl: '{LEAFLET_MARKER_ICON_URL}',
+                iconRetinaUrl: '{LEAFLET_MARKER_ICON_RETINA_URL}',
+                shadowUrl: '{LEAFLET_MARKER_SHADOW_URL}',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41],
                 className: 'grey-marker'
-            });
+            }});
         """
         
         # Generate markers JavaScript
@@ -160,8 +175,8 @@ class MapWidget(QWidget):
             lat, lon = self.active_marker
             markers_js += f"""
             var redIcon = L.icon({{
-                iconUrl: 'qrc:///resources/leaflet/images/marker-icon-2x-red.png',
-                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
+                iconUrl: '{LEAFLET_MARKER_ICON_RED_URL}',
+                shadowUrl: '{LEAFLET_MARKER_SHADOW_URL}',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -267,10 +282,10 @@ class MapWidget(QWidget):
             <title>Image Map</title>
             
             <!-- Leaflet CSS -->
-            <link rel="stylesheet" href="qrc:///resources/leaflet/leaflet.css"/>
+            <link rel="stylesheet" href="{LEAFLET_CSS}"/>
             
             <!-- Leaflet JavaScript -->
-            <script src="qrc:///resources/leaflet/leaflet.js"></script>
+            <script src="{LEAFLET_JS}"></script>
             
             <!-- Qt WebChannel -->
             <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
@@ -360,8 +375,8 @@ class MapWidget(QWidget):
             
             // Create red icon for active marker
             var redIcon = L.icon({{
-                iconUrl: 'qrc:///resources/leaflet/images/marker-icon-2x-red.png',
-                shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
+                iconUrl: '{LEAFLET_MARKER_ICON_RED_URL}',
+                shadowUrl: '{LEAFLET_MARKER_SHADOW_URL}',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -634,9 +649,9 @@ class MapWidget(QWidget):
                 // Define icons if they don't exist
                 if (!window.blueIcon) {{
                     window.blueIcon = L.icon({{
-                        iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
-                        iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
-                        shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
+                        iconUrl: '{LEAFLET_MARKER_ICON_URL}',
+                        iconRetinaUrl: '{LEAFLET_MARKER_ICON_RETINA_URL}',
+                        shadowUrl: '{LEAFLET_MARKER_SHADOW_URL}',
                         iconSize: [25, 41],
                         iconAnchor: [12, 41],
                         popupAnchor: [1, -34],
@@ -646,9 +661,9 @@ class MapWidget(QWidget):
                 }}
                 if (!window.greyIcon) {{
                     window.greyIcon = L.icon({{
-                        iconUrl: 'qrc:///resources/leaflet/images/marker-icon.png',
-                        iconRetinaUrl: 'qrc:///resources/leaflet/images/marker-icon-2x.png',
-                        shadowUrl: 'qrc:///resources/leaflet/images/marker-shadow.png',
+                        iconUrl: '{LEAFLET_MARKER_ICON_URL}',
+                        iconRetinaUrl: '{LEAFLET_MARKER_ICON_RETINA_URL}',
+                        shadowUrl: '{LEAFLET_MARKER_SHADOW_URL}',
                         iconSize: [25, 41],
                         iconAnchor: [12, 41],
                         popupAnchor: [1, -34],
