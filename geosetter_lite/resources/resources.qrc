@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+    <file alias="resources/leaflet/leaflet.css">leaflet/leaflet.css</file>
+    <file alias="resources/leaflet/leaflet.js">leaflet/leaflet.js</file>
+    <file alias="resources/leaflet/images/marker-icon.png">leaflet/images/marker-icon.png</file>
+    <file alias="resources/leaflet/images/marker-icon-2x.png">leaflet/images/marker-icon-2x.png</file>
+    <file alias="resources/leaflet/images/marker-shadow.png">leaflet/images/marker-shadow.png</file>
+    <file alias="resources/leaflet/images/marker-icon-2x-red.png">leaflet/images/marker-icon-2x-red.png</file>
+</qresource>
+</RCC>

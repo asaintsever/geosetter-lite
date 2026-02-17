@@ -73,6 +73,8 @@ a = Analysis(
         'geosetter_lite.core',
         'geosetter_lite.core.config',
         'geosetter_lite.core.utils',
+        # Resources
+        'geosetter_lite.resources.resources_rc',
     ],
     hookspath=[],
     hooksconfig={},
