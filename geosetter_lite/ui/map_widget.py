@@ -336,7 +336,9 @@ class MapWidget(QWidget):
                 }});
                 
                 // Initialize the map (use window.map for global access)
-                window.map = L.map('map').setView([{center_lat}, {center_lon}], {zoom});
+                window.map = L.map('map', {{
+                    maxBounds: [[-90, -180], [90, 180]]
+                }}).setView([{center_lat}, {center_lon}], {zoom});
                 var map = window.map;  // Keep local reference for convenience
                 
                 // Add OpenStreetMap tile layer
