@@ -29,6 +29,14 @@ LEAFLET_MARKER_SHADOW_URL = f"{LEAFLET_IMAGES_PATH}marker-shadow.png"
 LEAFLET_MARKER_ICON_RED_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x-red.png"
 
 
+def _wrap_longitude(lon: float) -> float:
+    """Wraps longitude to the range [-180, 180] degrees."""
+    # Formula: (lon + 180) % 360 - 180
+    # For a lon of 190: (190 + 180) % 360 - 180 = 370 % 360 - 180 = 10 - 180 = -170
+    # For a lon of -190: (-190 + 180) % 360 - 180 = -10 % 360 - 180 = 350 - 180 = 170
+    return (lon + 180) % 360 - 180
+
+
 class MapClickHandler(QObject):
     """Handler for map click events"""
     
@@ -37,7 +45,7 @@ class MapClickHandler(QObject):
     @Slot(float, float)
     def onMapClick(self, lat: float, lng: float):
         """Handle map click from JavaScript"""
-        self.clicked.emit(lat, lng)
+        self.clicked.emit(lat, _wrap_longitude(lng))
 
 
 class MapWidget(QWidget):
@@ -540,6 +548,7 @@ class MapWidget(QWidget):
         # Convert markers list to dict with unique IDs based on coordinates and name
         new_markers = {}
         for lat, lon, name, is_selected, filepath in markers:
+            lon = _wrap_longitude(lon)
             marker_id = f"{lat}_{lon}_{name}"
             new_markers[marker_id] = (lat, lon, name, is_selected, filepath)
         
@@ -697,6 +706,7 @@ class MapWidget(QWidget):
             is_selected: Whether this marker represents a selected image
             filepath: Optional path to the image file for thumbnail generation
         """
+        longitude = _wrap_longitude(longitude)
         marker_id = f"{latitude}_{longitude}_{name}"
         self.markers[marker_id] = (latitude, longitude, name, is_selected, filepath)
         self.load_map()
@@ -709,6 +719,7 @@ class MapWidget(QWidget):
             latitude: Latitude coordinate
             longitude: Longitude coordinate
         """
+        longitude = _wrap_longitude(longitude)
         self.active_marker = (latitude, longitude)
         self._update_active_marker_js(latitude, longitude)
     
@@ -735,6 +746,7 @@ class MapWidget(QWidget):
             longitude: Longitude coordinate
             zoom: Zoom level (1-19)
         """
+        longitude = _wrap_longitude(longitude)
         js = f"if (window.map) {{ window.map.setView([{latitude}, {longitude}], {zoom}); }}"
         self.web_view.page().runJavaScript(js)
 
