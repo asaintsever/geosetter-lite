@@ -281,8 +281,7 @@ class AIService:
             location_database = self._load_location_database()
             
             # Prepare location descriptions
-            csv_locations = [desc for _, _, desc in location_database]
-            location_texts = [f"a photo taken in {loc}" for loc in csv_locations]
+            location_texts = [f"a photo taken in {desc}" for _, _, desc in location_database]
             
             # Process inputs
             inputs = self.clip_processor(
