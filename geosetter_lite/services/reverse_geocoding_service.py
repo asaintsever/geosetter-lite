@@ -104,9 +104,9 @@ class ReverseGeocodingService:
         Returns:
             GeocodingResult with location information or None if request fails
         """
-        max_attempts = 5
-        base_delay = 1.0
-        max_delay = 30.0
+        max_attempts = 2
+        base_delay = 2.0
+        max_delay = 10.0
 
         params = {
             'lat': latitude,
@@ -135,14 +135,7 @@ class ReverseGeocodingService:
                     return self._parse_response(data)
 
                 if response.status_code == 429:
-                    retry_after = response.headers.get('Retry-After')
-                    if retry_after:
-                        try:
-                            delay = min(max_delay, float(retry_after))
-                        except Exception:
-                            delay = min(max_delay, base_delay * (2 ** attempt))
-                    else:
-                        delay = min(max_delay, base_delay * (2 ** attempt))
+                    delay = min(max_delay, base_delay * (2 ** attempt))
 
                     # add small random jitter to avoid thundering herd
                     delay += random.uniform(0, 1)
@@ -204,4 +197,3 @@ class ReverseGeocodingService:
             city=city,
             raw_data=data
         )
-
