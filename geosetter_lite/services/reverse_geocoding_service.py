@@ -2,6 +2,8 @@
 Reverse Geocoding Service - Convert GPS coordinates to location information
 """
 import requests
+import time
+import random
 from typing import Optional, Dict, Any
 from dataclasses import dataclass
 
@@ -102,42 +104,68 @@ class ReverseGeocodingService:
         Returns:
             GeocodingResult with location information or None if request fails
         """
-        try:
-            params = {
-                'lat': latitude,
-                'lon': longitude,
-                'format': 'json',
-                'addressdetails': 1,
-                'zoom': 10  # City level
-            }
-            
-            headers = {
-                'User-Agent': self.user_agent
-            }
-            
-            response = requests.get(
-                self.base_url,
-                params=params,
-                headers=headers,
-                timeout=self.timeout
-            )
-            
-            if response.status_code == 200:
-                data = response.json()
-                return self._parse_response(data)
-            else:
+        max_attempts = 5
+        base_delay = 1.0
+        max_delay = 30.0
+
+        params = {
+            'lat': latitude,
+            'lon': longitude,
+            'format': 'json',
+            'addressdetails': 1,
+            'zoom': 10  # City level
+        }
+
+        headers = {
+            'User-Agent': self.user_agent
+        }
+
+        attempt = 0
+        while attempt < max_attempts:
+            try:
+                response = requests.get(
+                    self.base_url,
+                    params=params,
+                    headers=headers,
+                    timeout=self.timeout
+                )
+
+                if response.status_code == 200:
+                    data = response.json()
+                    return self._parse_response(data)
+
+                if response.status_code == 429:
+                    retry_after = response.headers.get('Retry-After')
+                    if retry_after:
+                        try:
+                            delay = float(retry_after)
+                        except Exception:
+                            delay = min(max_delay, base_delay * (2 ** attempt))
+                    else:
+                        delay = min(max_delay, base_delay * (2 ** attempt))
+
+                    # add small random jitter to avoid thundering herd
+                    delay += random.uniform(0, 1)
+                    attempt += 1
+                    print(f"Received HTTP 429 — retrying in {delay:.1f}s (attempt {attempt}/{max_attempts})")
+                    time.sleep(delay)
+                    continue
+
                 print(f"Reverse geocoding failed with status code: {response.status_code}")
                 return None
-                
-        except requests.exceptions.Timeout:
-            print("Reverse geocoding request timed out")
-            return None
-        except requests.exceptions.RequestException as e:
-            print(f"Reverse geocoding request failed: {e}")
-            return None
-        except Exception as e:
-            print(f"Error during reverse geocoding: {e}")
-            return None
+
+            except requests.exceptions.Timeout:
+                print("Reverse geocoding request timed out")
+                return None
+            except requests.exceptions.RequestException as e:
+                print(f"Reverse geocoding request failed: {e}")
+                return None
+            except Exception as e:
+                print(f"Error during reverse geocoding: {e}")
+                return None
+
+        print("Reverse geocoding failed after retries due to rate limiting (429)")
+        return None
     
     def _parse_response(self, data: Dict[str, Any]) -> GeocodingResult:
         """
