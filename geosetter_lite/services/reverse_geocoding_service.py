@@ -138,7 +138,7 @@ class ReverseGeocodingService:
                     retry_after = response.headers.get('Retry-After')
                     if retry_after:
                         try:
-                            delay = float(retry_after)
+                            delay = min(max_delay, float(retry_after))
                         except Exception:
                             delay = min(max_delay, base_delay * (2 ** attempt))
                     else:
