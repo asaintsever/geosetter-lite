@@ -103,6 +103,7 @@ Use these standard categories for consistency:
 - `volcanic`: Volcanic landscapes, geothermal areas
 - `waterfall`: Waterfalls and cascades
 - `wilderness`: Remote natural areas
+- `landmark`: Iconic sites and monuments
 
 ## CSV Formatting Tips
 

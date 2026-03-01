@@ -225,8 +225,8 @@ class AIService:
         if self.clip_model is not None or not CLIP_AVAILABLE:
             return
         
-        # Load CLIP model (using ViT-B/32 variant for efficiency)
-        model_name = "openai/clip-vit-base-patch32"
+        # Load CLIP model
+        model_name = "openai/clip-vit-base-patch16"
         self.clip_processor = CLIPProcessor.from_pretrained(
             model_name,
             cache_dir=str(self.cache_dir)
@@ -281,7 +281,7 @@ class AIService:
             location_database = self._load_location_database()
             
             # Prepare location descriptions
-            location_texts = [desc for _, _, desc in location_database]
+            location_texts = [f"a photo taken in {desc}" for _, _, desc in location_database]
             
             # Process inputs
             inputs = self.clip_processor(
@@ -306,8 +306,13 @@ class AIService:
                 image_embeds = image_embeds / image_embeds.norm(dim=-1, keepdim=True)
                 text_embeds = text_embeds / text_embeds.norm(dim=-1, keepdim=True)
                 
-                # Compute similarity (cosine similarity)
-                similarity = (image_embeds @ text_embeds.T).squeeze(0)
+                # Get the learned scale factor from the model
+                logit_scale = self.clip_model.logit_scale.exp()
+
+                # Compute similarity (cosine similarity) and SCALE IT
+                # This 'logit_scale' is usually around 100.0, which makes the 
+                # difference between 0.25 and 0.20 massive for the Softmax.
+                similarity = (image_embeds @ text_embeds.T).squeeze(0) * logit_scale
                 
                 # Apply softmax to get probabilities
                 probabilities = torch.nn.functional.softmax(similarity, dim=0)
@@ -320,7 +325,7 @@ class AIService:
             for prob, idx in zip(top_probs.cpu().numpy(), top_indices.cpu().numpy()):
                 lat, lon, _ = location_database[idx]
                 predictions.append((float(lat), float(lon), float(prob)))
-            
+
             return predictions
             
         except Exception as e:
