@@ -328,6 +328,7 @@ class MainWindow(QMainWindow):
             <li>Interactive map with GPS coordinate management</li>
             <li>Reverse geocoding using OpenStreetMap Nominatim</li>
             <li>Comprehensive metadata editing</li>
+            <li>AI-powered geolocation prediction and similarity detection</li>
             <li>Batch operations support</li>
             <li>Timezone and date/time management</li>
             <li>Keywords auto-update with country information</li>
