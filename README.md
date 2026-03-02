@@ -120,13 +120,11 @@ uv run python main.py
 
 ### Launch with Command-Line Argument
 
-Provide a path to an image file:
+Provide a path to a folder:
 
 ```bash
-uv run python main.py /path/to/your/image.jpg
+uv run python main.py /path/to/your/images
 ```
-
-The application will display all images in the same directory as the provided file.
 
 ## User Interface
 
@@ -159,7 +157,7 @@ The application features a flexible 3-pane layout with resizable borders:
   - **Toolbar Icons** (left to right):
     1. **Update GPS** (red pin → images): Update selected images with active marker coordinates
     2. **Set Marker** (image → red pin): Set active marker from selected image GPS coordinates
-    3. **🌍🔍 Reverse Geocoding** (toggle): Auto-determine country and city from GPS coordinates
+    3. **Reverse Geocoding** (toggle): Auto-determine country and city from GPS coordinates
     4. **Set Taken Date** (file → calendar): Initialize Taken Date from file creation date
     5. **Set GPS Date** (calendar → GPS): Initialize GPS Date from Taken Date (converted to UTC)
     6. **Repair Metadata** (medical cross): Fix/repair metadata using ExifTool
@@ -298,7 +296,7 @@ The application writes to multiple metadata standards for maximum compatibility:
 - Keywords are stored with asterisks (`*`) in metadata for compatibility
 
 ### Reverse Geocoding
-- Enable reverse geocoding (🌍🔍) before updating GPS coordinates
+- Enable reverse geocoding before updating GPS coordinates
 - Review and edit the suggested country/city before applying
 - Uses OpenStreetMap Nominatim API (respects usage policy with proper User-Agent)
 - Has 10-second timeout to prevent hanging
@@ -363,7 +361,7 @@ The app bundle includes:
 pip install dist/geosetter_lite-<VERSION>-py3-none-any.whl
 
 # Run the application
-geosetter-lite /path/to/image.jpg
+geosetter-lite /path/to/images
 ```
 
 ### macOS App Bundle
@@ -375,10 +373,7 @@ Run directly: Double-click `dist/GeoSetter Lite.app`
 - Configure hidden imports
 - Adjust bundle settings
 
-**Note**: The app requires ExifTool to be installed separately on the system:
-```bash
-brew install exiftool
-```
+**Note**: The app requires ExifTool to be installed separately on the system (refer to the Requirements section).
 
 ## License
 
