@@ -7,7 +7,7 @@ import base64
 from pathlib import Path
 from PySide6.QtWidgets import QWidget, QVBoxLayout
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import QWebEngineScript
+from PySide6.QtWebEngineCore import QWebEngineScript, QWebEngineUrlRequestInterceptor, QWebEngineProfile
 from PySide6.QtWebChannel import QWebChannel
 from PySide6.QtCore import QUrl, QObject, Signal, Slot
 from PIL import Image
@@ -27,6 +27,19 @@ LEAFLET_MARKER_ICON_URL = f"{LEAFLET_IMAGES_PATH}marker-icon.png"
 LEAFLET_MARKER_ICON_RETINA_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x.png"
 LEAFLET_MARKER_SHADOW_URL = f"{LEAFLET_IMAGES_PATH}marker-shadow.png"
 LEAFLET_MARKER_ICON_RED_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x-red.png"
+
+
+class OSMUserAgentInterceptor(QWebEngineUrlRequestInterceptor):
+    """Intercepts web requests to set User-Agent header for OpenStreetMap compliance"""
+    
+    def interceptRequest(self, info):
+        """Set User-Agent header for requests"""
+        url = info.requestUrl().toString()
+        # Set User-Agent for OSM tile requests and other external resources
+        # This identifies our app to the OSM tile servers and complies with their policy
+        # See https://operations.osmfoundation.org/policies/tiles/
+        if 'tile.openstreetmap.org' in url or 'openstreetmap.org' in url:
+            info.setHttpHeader(b'User-Agent', b'GeoSetterLite/1.0 (+https://github.com/asaintsever/geosetter-lite)')
 
 
 def _wrap_longitude(lon: float) -> float:
@@ -86,6 +99,10 @@ class MapWidget(QWidget):
         
         # Create web view for displaying the map
         self.web_view = QWebEngineView()
+        
+        # Set up custom URL request interceptor to set User-Agent for OSM compliance
+        self.interceptor = OSMUserAgentInterceptor()
+        self.web_view.page().profile().setUrlRequestInterceptor(self.interceptor)
         
         # Set up web channel for JavaScript communication
         self.channel = QWebChannel()
