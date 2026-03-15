@@ -28,18 +28,19 @@ LEAFLET_MARKER_ICON_RETINA_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x.png"
 LEAFLET_MARKER_SHADOW_URL = f"{LEAFLET_IMAGES_PATH}marker-shadow.png"
 LEAFLET_MARKER_ICON_RED_URL = f"{LEAFLET_IMAGES_PATH}marker-icon-2x-red.png"
 
+# User-Agent for OpenStreetMap compliance
+# See https://operations.osmfoundation.org/policies/tiles/
+OSM_USER_AGENT = b'GeoSetterLite/1.0 (+https://github.com/asaintsever/geosetter-lite)'
+
 
 class OSMUserAgentInterceptor(QWebEngineUrlRequestInterceptor):
     """Intercepts web requests to set User-Agent header for OpenStreetMap compliance"""
     
     def interceptRequest(self, info):
-        """Set User-Agent header for requests"""
+        """Set User-Agent header for OpenStreetMap tile requests"""
         url = info.requestUrl().toString()
-        # Set User-Agent for OSM tile requests and other external resources
-        # This identifies our app to the OSM tile servers and complies with their policy
-        # See https://operations.osmfoundation.org/policies/tiles/
-        if 'tile.openstreetmap.org' in url or 'openstreetmap.org' in url:
-            info.setHttpHeader(b'User-Agent', b'GeoSetterLite/1.0 (+https://github.com/asaintsever/geosetter-lite)')
+        if 'openstreetmap.org' in url:
+            info.setHttpHeader(b'User-Agent', OSM_USER_AGENT)
 
 
 def _wrap_longitude(lon: float) -> float:
