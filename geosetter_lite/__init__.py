@@ -2,7 +2,7 @@
 GeoSetter Lite - Image Metadata Viewer and Editor
 """
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 # Register HEIF/HEIC support for PIL/Pillow
 try:
