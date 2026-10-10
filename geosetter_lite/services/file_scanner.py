@@ -51,44 +51,66 @@ class FileScanner:
             return images
         
         # Find all image files
-        for file_path in sorted(directory.iterdir()):
-            if file_path.is_file() and file_path.suffix in self.SUPPORTED_EXTENSIONS:
-                try:
-                    # Create image model with basic file info
-                    image = ImageModel.from_file(file_path)
+        file_paths = [
+            file_path for file_path in sorted(directory.iterdir())
+            if file_path.is_file() and file_path.suffix in self.SUPPORTED_EXTENSIONS
+        ]
+        
+        # Read all metadata in batched ExifTool calls instead of one call
+        # per file (each call costs ~100ms+ of process startup)
+        try:
+            metadata_by_file = self.exiftool_service.read_metadata_batch(file_paths)
+        except ExifToolError as e:
+            print(f"Warning: Could not read metadata in batch: {e}")
+            metadata_by_file = {}
+        
+        # Queue of files needing the Created Date auto-write-back
+        pending_created_date_writes: list = []
+        
+        for file_path in file_paths:
+            try:
+                # Create image model with basic file info
+                image = ImageModel.from_file(file_path)
+                
+                # Apply metadata loaded in batch (if any)
+                metadata = metadata_by_file.get(file_path)
+                if metadata is not None:
+                    image.update_metadata(metadata)
                     
-                    # Load metadata using ExifTool
-                    try:
-                        metadata = self.exiftool_service.read_metadata(file_path)
-                        image.update_metadata(metadata)
-                        
-                        # Auto-write Created Date if it was set from Taken Date
-                        if image.taken_date and not metadata.get('EXIF:CreateDate'):
-                            try:
-                                created_date_str = image.taken_date.strftime('%Y:%m:%d %H:%M:%S')
-                                # Concatenate timezone offset to XMP tag if available
-                                tz_offset = image.tz_offset or ""
-                                xmp_date_str = created_date_str + tz_offset if tz_offset else created_date_str
-                                self.exiftool_service.write_metadata(
-                                    [file_path],
-                                    {
-                                        'EXIF:CreateDate': created_date_str,
-                                        'XMP-exif:DateTimeDigitized': xmp_date_str
-                                    }
-                                )
-                            except ExifToolError:
-                                # Silently ignore if write fails
-                                pass
-                        
-                    except ExifToolError as e:
-                        # Continue even if metadata reading fails
-                        print(f"Warning: Could not read metadata for {file_path.name}: {e}")
-                    
-                    images.append(image)
-                    
-                except Exception as e:
-                    print(f"Warning: Could not process {file_path.name}: {e}")
-                    continue
+                    # Auto-write Created Date if it was set from Taken Date
+                    if image.taken_date and not metadata.get('EXIF:CreateDate'):
+                        pending_created_date_writes.append(file_path)
+                else:
+                    # Metadata could not be read for this file
+                    print(f"Warning: Could not read metadata for {file_path.name}")
+                
+                images.append(image)
+                
+            except Exception as e:
+                print(f"Warning: Could not process {file_path.name}: {e}")
+                continue
+        
+        # Auto-write Created Date for files that were missing it
+        # (rare path; one write per affected file)
+        for file_path in pending_created_date_writes:
+            image = next((img for img in images if img.filepath == file_path), None)
+            if image is None:
+                continue
+            try:
+                created_date_str = image.taken_date.strftime('%Y:%m:%d %H:%M:%S')
+                # Concatenate timezone offset to XMP tag if available
+                tz_offset = image.tz_offset or ""
+                xmp_date_str = created_date_str + tz_offset if tz_offset else created_date_str
+                self.exiftool_service.write_metadata(
+                    [file_path],
+                    {
+                        'EXIF:CreateDate': created_date_str,
+                        'XMP-exif:DateTimeDigitized': xmp_date_str
+                    }
+                )
+            except ExifToolError:
+                # Silently ignore if write fails
+                pass
         
         return images
     

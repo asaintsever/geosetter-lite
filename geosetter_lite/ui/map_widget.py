@@ -103,6 +103,9 @@ class MapWidget(QWidget):
         self.click_handler = MapClickHandler()
         self.click_handler.clicked.connect(self._on_map_clicked)
         self.popup_provider = PopupProvider(self)
+        # Cache of base64 thumbnails (filepath -> data URL), avoids re-encoding
+        # the same image every time its marker popup is opened
+        self._thumbnail_cache: dict = {}
         self.auto_fit_bounds: bool = True  # Auto-fit on initial load
         self.has_had_markers: bool = False  # Track if markers have been set before
         
@@ -536,6 +539,10 @@ class MapWidget(QWidget):
         if not filepath:
             return None
         
+        # Serve from cache if we already generated this thumbnail
+        if filepath in self._thumbnail_cache:
+            return self._thumbnail_cache[filepath]
+        
         try:
             path = Path(filepath)
             if not path.exists():
@@ -563,7 +570,9 @@ class MapWidget(QWidget):
                 
                 # Encode to base64
                 img_data = base64.b64encode(buffer.read()).decode('utf-8')
-                return f"data:image/jpeg;base64,{img_data}"
+                thumbnail = f"data:image/jpeg;base64,{img_data}"
+                self._thumbnail_cache[filepath] = thumbnail
+                return thumbnail
         
         except Exception as e:
             print(f"Error generating thumbnail for {filepath}: {e}")
@@ -753,6 +762,7 @@ class MapWidget(QWidget):
         self.markers = {}
         self.auto_fit_bounds = True  # Re-enable auto-fit when no selection
         self.has_had_markers = False  # Reset for next load
+        self._thumbnail_cache.clear()  # Free cached thumbnails (directory change)
         self.load_map()
     
     def add_marker(self, latitude: float, longitude: float, name: str = "", is_selected: bool = False, filepath: Optional[str] = None):

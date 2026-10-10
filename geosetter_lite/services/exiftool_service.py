@@ -120,6 +120,81 @@ class ExifToolService:
             raise ExifToolError(f"Error reading metadata: {e}")
     
     @classmethod
+    def read_metadata_batch(
+        cls,
+        filepaths: List[Path],
+        chunk_size: int = 50
+    ) -> Dict[Path, Dict[str, Any]]:
+        """
+        Read metadata for multiple files using batched ExifTool calls
+        
+        A single ExifTool process startup costs ~100ms+ (Perl runtime init),
+        so reading N files in one call is much faster than N separate calls.
+        
+        Args:
+            filepaths: List of image file paths to read
+            chunk_size: Maximum number of files per ExifTool call
+                        (limits command line / output size)
+            
+        Returns:
+            Dictionary mapping each readable filepath to its metadata dict.
+            Files that could not be read are omitted.
+            
+        Raises:
+            ExifToolError: If ExifTool itself fails or times out
+        """
+        if not filepaths:
+            return {}
+        
+        results: Dict[Path, Dict[str, Any]] = {}
+        exiftool = cls.get_exiftool_path()
+        
+        def _read_chunk(chunk: List[Path]) -> Dict[Path, Dict[str, Any]]:
+            cmd = [exiftool, '-charset', 'iptc=utf8', '-j', '-G', '-n']
+            cmd.extend([str(fp) for fp in chunk])
+            
+            try:
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    # Generous timeout: parsing is ~50ms/file, allow 10x margin
+                    timeout=max(30, 10 * len(chunk))
+                )
+                
+                if result.returncode != 0:
+                    raise ExifToolError(f"ExifTool batch read failed: {result.stderr}")
+                
+                # Parse JSON output and map results back to input paths via SourceFile
+                chunk_results: Dict[Path, Dict[str, Any]] = {}
+                for item in json.loads(result.stdout):
+                    source = item.get('SourceFile')
+                    if source:
+                        chunk_results[Path(source)] = item
+                return chunk_results
+                
+            except subprocess.TimeoutExpired:
+                raise ExifToolError("ExifTool batch read timed out")
+            except json.JSONDecodeError as e:
+                raise ExifToolError(f"Failed to parse ExifTool batch output: {e}")
+            except Exception as e:
+                raise ExifToolError(f"Error reading metadata batch: {e}")
+        
+        chunks = [filepaths[i:i + chunk_size] for i in range(0, len(filepaths), chunk_size)]
+        
+        # Read chunks in parallel (exiftool is mostly blocked on disk/CPU in
+        # the subprocess, so threads give real speedup here)
+        if len(chunks) > 1:
+            from concurrent.futures import ThreadPoolExecutor
+            with ThreadPoolExecutor(max_workers=min(4, len(chunks))) as executor:
+                for chunk_results in executor.map(_read_chunk, chunks):
+                    results.update(chunk_results)
+        else:
+            results.update(_read_chunk(chunks[0]))
+        
+        return results
+    
+    @classmethod
     def _preserve_file_times(cls, filepaths: List[Path]) -> Dict[Path, tuple]:
         """
         Get file creation and modification times before metadata write
