@@ -24,6 +24,42 @@ def get_version():
 VERSION = get_version()
 
 # Collect all geosetter_lite package files
+def get_webengine_helper_datas():
+    """Locate QtWebEngineProcess.app helper from the installed PySide6 package.
+
+    PyInstaller's PySide6 hook does not place the WebEngine helper process
+    where Qt looks for it on macOS (QtWebEngineCore.framework/Helpers, which
+    resolves to Versions/Current/Helpers -> Versions/A/Helpers). Without it,
+    the app aborts at startup with 'Qt WebEngine Process ... could not find it'.
+    We copy it explicitly into Versions/A/Helpers inside the bundled framework.
+
+    The same applies to the WebEngine resource files (icudtl.dat, *.pak, locales):
+    the hook drops them under Versions/Resources/Resources/ but Qt resolves the
+    framework's Resources symlink to Versions/A/Resources, so we copy them there.
+    """
+    datas = []
+    try:
+        import PySide6
+        pyside6_dir = os.path.dirname(PySide6.__file__)
+        framework = os.path.join(pyside6_dir, 'Qt', 'lib', 'QtWebEngineCore.framework')
+        # Helper process: QtWebEngineCore.framework/Helpers -> Versions/Current/Helpers
+        helper_app = os.path.join(framework, 'Helpers', 'QtWebEngineProcess.app')
+        if os.path.isdir(helper_app):
+            datas.append((
+                helper_app,
+                'PySide6/Qt/lib/QtWebEngineCore.framework/Versions/A/Helpers/QtWebEngineProcess.app',
+            ))
+        # Resource files: QtWebEngineCore.framework/Resources -> Versions/Current/Resources
+        webengine_resources = os.path.join(framework, 'Resources')
+        if os.path.isdir(webengine_resources):
+            datas.append((
+                webengine_resources,
+                'PySide6/Qt/lib/QtWebEngineCore.framework/Versions/A/Resources',
+            ))
+    except ImportError:
+        pass
+    return datas
+
 a = Analysis(
     ['main.py'],
     pathex=[project_root],
@@ -32,7 +68,7 @@ a = Analysis(
         # Include data directory with CSV files
         ('data/world_locations.csv', 'data'),
         ('data/README.md', 'data'),
-    ],
+    ] + get_webengine_helper_datas(),
     hiddenimports=[
         'PySide6.QtCore',
         'PySide6.QtGui',
