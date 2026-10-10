@@ -14,7 +14,7 @@ clean: ## Remove build and temporary files
 	rm -rf dist/*
 
 run: init ## Run application (use ARGS="..." to pass arguments)
-	uv run python main.py $(ARGS)
+	uv run python main.py $(if $(ARGS),"$(ARGS)")
 
 package: clean init ## Generate Python wheel and macOS App bundle
 	echo "Building Python wheel..."
