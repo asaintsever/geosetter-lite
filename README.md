@@ -98,14 +98,8 @@ Download from [https://exiftool.org](https://exiftool.org) and <https://github.c
 
 ## Installation
 
-1. Install dependencies using uv (recommended) or pip:
-
 ```bash
-# Using uv
-uv sync
-
-# Or using pip
-pip install -e .
+make init
 ```
 
 ## Usage
@@ -115,7 +109,7 @@ pip install -e .
 Simply run the application without arguments to open a file picker:
 
 ```bash
-uv run python main.py
+make run
 ```
 
 ### Launch with Command-Line Argument
@@ -123,7 +117,7 @@ uv run python main.py
 Provide a path to a folder:
 
 ```bash
-uv run python main.py /path/to/your/images
+make run ARGS=/path/to/your/images
 ```
 
 ## User Interface
