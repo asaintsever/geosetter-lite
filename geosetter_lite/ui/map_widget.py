@@ -62,6 +62,30 @@ class MapClickHandler(QObject):
         self.clicked.emit(lat, _wrap_longitude(lng))
 
 
+class PopupProvider(QObject):
+    """Provides marker popup content on demand via WebChannel
+    
+    Popup content (including base64 thumbnails) is generated lazily when a
+    popup is opened, instead of being embedded in the initial map HTML.
+    Embedding a thumbnail per marker would grow the HTML with the number of
+    images and exceed Qt WebEngine's setHtml() size limit (~2 MB), which
+    makes the whole page fail to load and no markers get displayed.
+    """
+    
+    def __init__(self, map_widget: 'MapWidget', parent=None):
+        super().__init__(parent)
+        self.map_widget = map_widget
+    
+    @Slot(str, result=str)
+    def getPopupHtml(self, marker_id: str) -> str:
+        """Generate popup HTML for the given marker id"""
+        marker = self.map_widget.markers.get(marker_id)
+        if marker is None:
+            return ""
+        lat, lon, name, is_selected, filepath = marker
+        return self.map_widget._generate_popup_html(name, filepath)
+
+
 class MapWidget(QWidget):
     """Widget for displaying a map with image markers"""
     
@@ -78,6 +102,7 @@ class MapWidget(QWidget):
         self.active_marker: Optional[Tuple[float, float]] = None
         self.click_handler = MapClickHandler()
         self.click_handler.clicked.connect(self._on_map_clicked)
+        self.popup_provider = PopupProvider(self)
         self.auto_fit_bounds: bool = True  # Auto-fit on initial load
         self.has_had_markers: bool = False  # Track if markers have been set before
         
@@ -108,6 +133,7 @@ class MapWidget(QWidget):
         # Set up web channel for JavaScript communication
         self.channel = QWebChannel()
         self.channel.registerObject("clickHandler", self.click_handler)
+        self.channel.registerObject("popupProvider", self.popup_provider)
         self.web_view.page().setWebChannel(self.channel)
         
         layout.addWidget(self.web_view)
@@ -185,15 +211,27 @@ class MapWidget(QWidget):
         # Add regular image markers
         if self.markers:
             for marker_id, (lat, lon, name, is_selected, filepath) in self.markers.items():
-                # Generate popup content with thumbnail
-                popup_html = self._generate_popup_html(name, filepath)
-                escaped_popup = json.dumps(popup_html)
-                
                 # Use different icons for selected vs unselected
                 icon_var = 'blueIcon' if is_selected else 'greyIcon'
                 escaped_id = json.dumps(marker_id)
+                escaped_name = name.replace('\\', '\\\\').replace("'", "\\'")
                 markers_js += f"""
-                window.imageMarkers[{escaped_id}] = L.marker([{lat}, {lon}], {{icon: {icon_var}}}).addTo(map).bindPopup({escaped_popup});
+                (function() {{
+                    var marker = L.marker([{lat}, {lon}], {{icon: {icon_var}}}).addTo(map);
+                    marker.bindPopup('<div style="font-weight: bold;">{escaped_name}</div>', {{autoClose: true}});
+                    // Load popup content (with thumbnail) on demand to keep the
+                    // initial page small (setHtml has a size limit)
+                    marker.on('popupopen', function(e) {{
+                        if (popupProvider) {{
+                            popupProvider.getPopupHtml({escaped_id}, function(html) {{
+                                if (html) {{
+                                    e.popup.setContent(html);
+                                }}
+                            }});
+                        }}
+                    }});
+                    window.imageMarkers[{escaped_id}] = marker;
+                }})();
                 """
         
         # Add active marker if set
@@ -347,10 +385,12 @@ class MapWidget(QWidget):
             
             <script>
                 var clickHandler;
+                var popupProvider;
                 
                 // Set up Qt WebChannel
                 new QWebChannel(qt.webChannelTransport, function(channel) {{
                     clickHandler = channel.objects.clickHandler;
+                    popupProvider = channel.objects.popupProvider;
                 }});
                 
                 // Initialize the map (use window.map for global access)
