@@ -11,10 +11,9 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal, QEvent, QSize, QPoint, QTimer
 from PySide6.QtGui import QPixmap, QAction, QImage, QKeyEvent, QIcon, QPainter, QColor, QPen
 from PIL import Image, ImageOps
-import io
 from ..models.image_model import ImageModel
 from ..services.file_scanner import FileScanner
-from ..services.exiftool_service import ExifToolService
+from ..services.exiftool_service import ExifToolService, ExifToolError
 from .metadata_editor import MetadataEditor
 from .map_panel import MapPanel
 from .table_delegates import CountryDelegate, DateTimeDelegate, TZOffsetDelegate
@@ -372,7 +371,7 @@ class MainWindow(QMainWindow):
 
         dialog = RotateDialog(self.images, self.exiftool_service, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            self.reload_images()
+            self.reload_images([img.filepath for img in self.images])
             self.statusBar().showMessage(
                 f"Successfully rotated images",
                 3000
@@ -410,7 +409,7 @@ class MainWindow(QMainWindow):
             try:
                 self.exiftool_service.shift_date_time(filepaths, time_shift, operation)
                 self.statusBar().showMessage(f"Successfully shifted date/time for {len(filepaths)} images.", 5000)
-                self.reload_images()
+                self.reload_images(filepaths)
             except Exception as e:
                 show_exiftool_error(
                     "Error Shifting Date/Time",
@@ -876,14 +875,21 @@ class MainWindow(QMainWindow):
             if pil_image.mode != 'RGB':
                 pil_image = pil_image.convert('RGB')
             
-            # Convert PIL Image to QPixmap directly (no temp file needed)
-            # Convert PIL Image to bytes
-            img_byte_array = io.BytesIO()
-            pil_image.save(img_byte_array, format='PNG')
-            img_byte_array.seek(0)
+            # Downscale to ~2x the viewer size (HiDPI friendly) before building
+            # the pixmap - avoids carrying the full-resolution image around and
+            # a full-size PNG re-encode on every selection (was the main cause
+            # of the noticeable delay when clicking photos, see issue #38)
+            viewport = self.scroll_area.viewport().size()
+            max_dimension = max(
+                int(max(viewport.width(), viewport.height()) * 2 * self.devicePixelRatioF()),
+                1024
+            )
+            if max(pil_image.size) > max_dimension:
+                pil_image.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
             
-            # Load into QImage and convert to QPixmap
-            qimage = QImage.fromData(img_byte_array.read())
+            # Build QImage directly from raw RGB bytes (no temp buffer / PNG round-trip)
+            width, height = pil_image.size
+            qimage = QImage(bytes(pil_image.tobytes()), width, height, width * 3, QImage.Format.Format_RGB888)
             self.current_pixmap = QPixmap.fromImage(qimage)
             
             # Scale and display the pixmap
@@ -992,7 +998,7 @@ class MainWindow(QMainWindow):
         
         # Reload images if changes were applied
         if result == QDialog.DialogCode.Accepted:
-            self.reload_images()
+            self.reload_images(filepaths)
     
     def update_image_field(self, image: ImageModel, field_name: str, new_value: str) -> dict:
         """
@@ -1485,7 +1491,7 @@ class MainWindow(QMainWindow):
             )
             
             # Reload images
-            self.reload_images()
+            self.reload_images([img.filepath for img in selected_images])
             
         except Exception as e:
             show_exiftool_error(
@@ -1551,7 +1557,7 @@ class MainWindow(QMainWindow):
             )
             
             # Reload images
-            self.reload_images()
+            self.reload_images(filepaths)
             
         except Exception as e:
             show_exiftool_error(
@@ -1625,7 +1631,7 @@ class MainWindow(QMainWindow):
             )
             
             # Reload images
-            self.reload_images()
+            self.reload_images(filepaths)
             
         except Exception as e:
             show_exiftool_error(
@@ -1728,7 +1734,7 @@ class MainWindow(QMainWindow):
             )
             
             # Reload images
-            self.reload_images()
+            self.reload_images(filepaths)
             
         except Exception as e:
             show_exiftool_error(
@@ -1849,8 +1855,16 @@ class MainWindow(QMainWindow):
         
         return super().eventFilter(obj, event)
     
-    def reload_images(self):
-        """Reload images after metadata changes"""
+    def reload_images(self, changed_files: Optional[List[Path]] = None):
+        """Reload images after metadata changes
+        
+        Args:
+            changed_files: Optional list of file paths whose metadata was
+                modified. When provided, only these files are re-read from
+                disk (in one batched ExifTool call) and the table/map are
+                refreshed in place - this avoids re-scanning the entire
+                directory, which is slow on large folders.
+        """
         self.statusBar().showMessage("Reloading images...")
         
         # Remember current selection
@@ -1863,17 +1877,35 @@ class MainWindow(QMainWindow):
                 if image:
                     selected_filenames.append(image.filename)
         
-        # Reload images
-        self.load_images()
-        
-        # Restore selection
-        if selected_filenames:
-            for row in range(self.table.rowCount()):
-                item = self.table.item(row, 0)
-                if item:
-                    image = item.data(Qt.ItemDataRole.UserRole)
-                    if image and image.filename in selected_filenames:
-                        self.table.selectRow(row)
+        if changed_files:
+            # Fast path: refresh only the changed files in place.
+            # Table rows and selection are preserved (row count unchanged).
+            try:
+                metadata_by_file = self.exiftool_service.read_metadata_batch(changed_files)
+            except ExifToolError as e:
+                print(f"Warning: Could not re-read changed files: {e}")
+                metadata_by_file = {}
+            
+            for image in self.images:
+                metadata = metadata_by_file.get(image.filepath)
+                if metadata is not None:
+                    image.update_metadata(metadata)
+            
+            # Refresh table cells and map (selection is preserved by setItem)
+            self.populate_table()
+            self.update_all_images_on_map()
+        else:
+            # Full rescan (e.g. after rename, file add/delete)
+            self.load_images()
+            
+            # Restore selection
+            if selected_filenames:
+                for row in range(self.table.rowCount()):
+                    item = self.table.item(row, 0)
+                    if item:
+                        image = item.data(Qt.ItemDataRole.UserRole)
+                        if image and image.filename in selected_filenames:
+                            self.table.selectRow(row)
     
     def _create_recycle_bin_icon(self) -> QIcon:
         """Create a recycle bin icon for context menu"""
